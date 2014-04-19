@@ -15,14 +15,18 @@ class Query {
     Boolean instantReply
     String responseMessage
 
-    static hashMany = [posts: Posts]
+    static hashMany = [posts: Post]
     static belongsTo = [user: User]
 
     static constraints = {
-        '*'(nullable: true)
-        searchFrequency nullable: false
-        notify nullable: false
-        instantReply nullable: false
+        searchText nullable: true
+        minRent nullable: true, min: 0
+        maxRent nullable: true, min: 0
+        numBedrooms nullable: true, min: 0
+        type nullable: true
+        cat nullable: true
+        dog nullable: true
+        responseMessage nullable: true
     }
 
     static mapping = {
