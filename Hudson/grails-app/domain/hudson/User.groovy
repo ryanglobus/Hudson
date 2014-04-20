@@ -13,9 +13,13 @@ class User {
     static hashMany = [queries: Query]
 
     static constraints = {
-        '*'(blank: false)
-        email email: true
-        phone nullable: true
+        email email: true, blank: false
+        phone nullable: true, blank: false
+        passwordHash blank: false
+        salt blank: false
+        firstName blank: false
+        lastName blank: false
+        notifyFrequency blank: false
     }
 
     void notifyUser() {
