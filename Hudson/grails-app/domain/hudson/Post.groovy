@@ -5,7 +5,7 @@ class Post {
     String link
     String title
     Boolean isNew
-    Date date
+    Calendar date
 
     static belongsTo = [query: Query]
 
@@ -15,6 +15,6 @@ class Post {
     }
 
     static mapping = {
-        isNew defaultValue: "true"
+        isNew defaultValue: "true" // TODO do these work?
     }
 }

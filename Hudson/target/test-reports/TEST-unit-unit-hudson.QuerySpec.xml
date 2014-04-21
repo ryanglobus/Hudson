@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<testsuite errors="0" failures="0" hostname="rglobus.stanford.edu" name="hudson.QuerySpec" tests="3" time="11.829" timestamp="2014-04-21T01:17:38">
+  <properties />
+  <testcase classname="hudson.QuerySpec" name="test xmlParsing" time="8.341" />
+  <testcase classname="hudson.QuerySpec" name="test craigslistRssUrl" time="0.762" />
+  <testcase classname="hudson.QuerySpec" name="test searchCraigslist" time="2.601" />
+  <system-out><![CDATA[--Output from test xmlParsing--
+--Output from test craigslistRssUrl--
+--Output from test searchCraigslist--
+]]></system-out>
+  <system-err><![CDATA[--Output from test xmlParsing--
+--Output from test craigslistRssUrl--
+--Output from test searchCraigslist--
+]]></system-err>
+</testsuite>
