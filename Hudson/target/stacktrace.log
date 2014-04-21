@@ -1009,3 +1009,111 @@ urlMinFields.equals(Query.CRAIGSLIST_URL + 'search/apa?catAbb=apa&s=0&format=rss
 http://sfbay.craigslist.org/search/apa%3F?catAbb=apa&s=0&format=rss
 
 	at hudson.QuerySpec.test craigslistRssUrl(QuerySpec.groovy:286)
+2014-04-20 18:51:49,488 [main] ERROR StackTrace  - Full Stack Trace:
+Condition not satisfied:
+
+q.searchFrequency == 20
+| |               |
+| null            false
+hudson.Query : (unsaved)
+
+	at hudson.QuerySpec.test defaultValues(QuerySpec.groovy:310)
+2014-04-20 18:51:49,517 [main] ERROR StackTrace  - Full Stack Trace:
+Condition not satisfied:
+
+q.searchFrequency == 20
+| |               |
+| null            false
+hudson.Query : (unsaved)
+
+	at hudson.QuerySpec.test defaultValues(QuerySpec.groovy:310)
+2014-04-20 18:51:49,519 [main] ERROR StackTrace  - Full Stack Trace:
+junit.framework.AssertionFailedError: Condition not satisfied:
+
+q.searchFrequency == 20
+| |               |
+| null            false
+hudson.Query : (unsaved)
+
+	at hudson.QuerySpec.test defaultValues(QuerySpec.groovy:310)
+2014-04-20 18:51:49,519 [main] ERROR StackTrace  - Full Stack Trace:
+junit.framework.AssertionFailedError: Condition not satisfied:
+
+q.searchFrequency == 20
+| |               |
+| null            false
+hudson.Query : (unsaved)
+
+	at hudson.QuerySpec.test defaultValues(QuerySpec.groovy:310)
+2014-04-20 18:51:49,569 [main] ERROR StackTrace  - Full Stack Trace:
+junit.framework.AssertionFailedError: Condition not satisfied:
+
+q.searchFrequency == 20
+| |               |
+| null            false
+hudson.Query : (unsaved)
+
+	at hudson.QuerySpec.test defaultValues(QuerySpec.groovy:310)
+2014-04-20 18:51:49,569 [main] ERROR StackTrace  - Full Stack Trace:
+junit.framework.AssertionFailedError: Condition not satisfied:
+
+q.searchFrequency == 20
+| |               |
+| null            false
+hudson.Query : (unsaved)
+
+	at hudson.QuerySpec.test defaultValues(QuerySpec.groovy:310)
+2014-04-20 18:54:41,471 [main] ERROR StackTrace  - Full Stack Trace:
+Condition not satisfied:
+
+q.searchFrequency == 20
+| |               |
+| null            false
+hudson.Query : (unsaved)
+
+	at hudson.QuerySpec.test defaultValues(QuerySpec.groovy:310)
+2014-04-20 18:54:41,523 [main] ERROR StackTrace  - Full Stack Trace:
+Condition not satisfied:
+
+q.searchFrequency == 20
+| |               |
+| null            false
+hudson.Query : (unsaved)
+
+	at hudson.QuerySpec.test defaultValues(QuerySpec.groovy:310)
+2014-04-20 18:54:41,525 [main] ERROR StackTrace  - Full Stack Trace:
+junit.framework.AssertionFailedError: Condition not satisfied:
+
+q.searchFrequency == 20
+| |               |
+| null            false
+hudson.Query : (unsaved)
+
+	at hudson.QuerySpec.test defaultValues(QuerySpec.groovy:310)
+2014-04-20 18:54:41,525 [main] ERROR StackTrace  - Full Stack Trace:
+junit.framework.AssertionFailedError: Condition not satisfied:
+
+q.searchFrequency == 20
+| |               |
+| null            false
+hudson.Query : (unsaved)
+
+	at hudson.QuerySpec.test defaultValues(QuerySpec.groovy:310)
+2014-04-20 18:54:41,619 [main] ERROR StackTrace  - Full Stack Trace:
+junit.framework.AssertionFailedError: Condition not satisfied:
+
+q.searchFrequency == 20
+| |               |
+| null            false
+hudson.Query : (unsaved)
+
+	at hudson.QuerySpec.test defaultValues(QuerySpec.groovy:310)
+2014-04-20 18:54:41,619 [main] ERROR StackTrace  - Full Stack Trace:
+junit.framework.AssertionFailedError: Condition not satisfied:
+
+q.searchFrequency == 20
+| |               |
+| null            false
+hudson.Query : (unsaved)
+
+	at hudson.QuerySpec.test defaultValues(QuerySpec.groovy:310)

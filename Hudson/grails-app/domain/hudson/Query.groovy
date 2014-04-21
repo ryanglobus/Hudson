@@ -17,7 +17,7 @@ class Query {
 
     static final String CRAIGSLIST_URL = 'http://sfbay.craigslist.org/'
 
-    Integer searchFrequency // in minutes
+    Integer searchFrequency = 20 // in minutes
     String searchText
     Integer minRent
     Integer maxRent
@@ -42,10 +42,6 @@ class Query {
         cat nullable: true
         dog nullable: true
         responseMessage nullable: true
-    }
-
-    static mapping = {
-        searchFrequency defaultValue: "20" // TODO does this work?
     }
 
     /**
@@ -92,7 +88,6 @@ class Query {
             Element elem = (Element) item
             Post p = new Post()
             p.query = this
-            p.isNew = true
             p.link = elem.getElementsByTagName('link').item(0)?.getTextContent()
             p.title = elem.getElementsByTagName('title').item(0)?.getTextContent()
             StringBuilder dateSB =

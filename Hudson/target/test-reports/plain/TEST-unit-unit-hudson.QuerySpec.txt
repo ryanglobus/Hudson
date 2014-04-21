@@ -1,16 +1,19 @@
 Testsuite: hudson.QuerySpec
-Tests run: 3, Failures: 0, Errors: 0, Time elapsed: 11.829 sec
+Tests run: 4, Failures: 0, Errors: 0, Time elapsed: 8.174 sec
 ------------- Standard Output ---------------
 --Output from test xmlParsing--
 --Output from test craigslistRssUrl--
 --Output from test searchCraigslist--
+--Output from test defaultValues--
 ------------- ---------------- ---------------
 ------------- Standard Error -----------------
 --Output from test xmlParsing--
 --Output from test craigslistRssUrl--
 --Output from test searchCraigslist--
+--Output from test defaultValues--
 ------------- ---------------- ---------------
 
-Testcase: test xmlParsing took 8.341 sec
-Testcase: test craigslistRssUrl took 0.762 sec
-Testcase: test searchCraigslist took 2.601 sec
+Testcase: test xmlParsing took 5.56 sec
+Testcase: test craigslistRssUrl took 0.31 sec
+Testcase: test searchCraigslist took 1.963 sec
+Testcase: test defaultValues took 0.263 sec
