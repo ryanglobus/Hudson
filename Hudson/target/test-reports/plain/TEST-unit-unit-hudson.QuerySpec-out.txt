@@ -1,4 +1,0 @@
---Output from test xmlParsing--
---Output from test craigslistRssUrl--
---Output from test searchCraigslist--
---Output from test defaultValues--
