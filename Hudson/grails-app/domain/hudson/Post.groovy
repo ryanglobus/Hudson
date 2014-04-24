@@ -5,7 +5,7 @@ class Post {
     String link
     String title
     Boolean isNew = true
-    Date date
+    Calendar date
 
     static belongsTo = [query: Query]
 
