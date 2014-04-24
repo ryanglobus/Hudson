@@ -7,5 +7,7 @@ class NotifyJob {
 
     def execute(context) {
         // execute job
+		User user = context.mergedJobDataMap.get('user');
+		user.notifyUser();
     }
 }
