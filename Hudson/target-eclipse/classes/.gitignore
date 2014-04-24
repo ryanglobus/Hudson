@@ -1,6 +1,7 @@
 /dbdoc
 /grails
 /hibernate.cfg.xml
+/hudson
 /javascripts
 /messages.properties
 /org
@@ -80,3 +81,4 @@
 /UrlMappings.class
 /resources$_run_closure1.class
 /resources.class
+/HudsonJobs
