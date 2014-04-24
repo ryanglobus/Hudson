@@ -7,6 +7,7 @@ import javax.xml.parsers.DocumentBuilder
 import org.w3c.dom.Document
 import org.xml.sax.InputSource
 import java.io.StringReader
+import hudson.Query.HousingType
 
 /**
  * See the API for {@link grails.test.mixin.domain.DomainClassUnitTestMixin} for usage instructions
@@ -258,16 +259,18 @@ Quiet and safe neighborhood. Close to public transportation (bus and Bart), shop
         }
     }
 
-    void "test craigslistRssUrl"() { // TODO add type
+    void "test craigslistRssUrl"() {
         given:
         Query queryMinFields = new Query()
         Query queryAllFields = new Query(searchText: 'unit',
+            housingType: HousingType.LOFT.getValue(),
             minRent: 500,
             maxRent: 1000,
             numBedrooms: 2,
             cat: false,
             dog: true)
         Query querySomeFields = new Query(maxRent: 2000,
+            housingType: HousingType.HOUSE.getValue(),
             numBedrooms: 1,
             dog: true)
         Query queryWithEscaping = new Query(searchText: 'hello world? & hudson')
@@ -280,13 +283,13 @@ Quiet and safe neighborhood. Close to public transportation (bus and Bart), shop
 
         then: // TODO allow for more flexibility in parameter ordering
         urlMinFields.equals(Query.CRAIGSLIST_URL +
-            'search/apa?catAbb=apa&s=0&format=rss')
+            "search/apa?catAbb=apa&s=0&format=rss")
         urlAllFields.equals(Query.CRAIGSLIST_URL +
-            'search/apa?bedrooms=2&catAbb=apa&maxAsk=1000&minAsk=500&pets_dog=wooof&query=unit&s=0&format=rss')
+            "search/apa?bedrooms=2&catAbb=apa&housing_type=${HousingType.LOFT.getValue()}&maxAsk=1000&minAsk=500&pets_dog=wooof&query=unit&s=0&format=rss")
         urlSomeFields.equals(Query.CRAIGSLIST_URL +
-            'search/apa?bedrooms=1&catAbb=apa&maxAsk=2000&pets_dog=wooof&s=0&format=rss')
+            "search/apa?bedrooms=1&catAbb=apa&housing_type=${HousingType.HOUSE.getValue()}&maxAsk=2000&pets_dog=wooof&s=0&format=rss")
         urlWithEscaping.equals(Query.CRAIGSLIST_URL +
-            'search/apa?catAbb=apa&query=hello+world%3F+%26+hudson&s=0&format=rss')
+            "search/apa?catAbb=apa&query=hello+world%3F+%26+hudson&s=0&format=rss")
     }
 
     void "test searchCraigslist"() {

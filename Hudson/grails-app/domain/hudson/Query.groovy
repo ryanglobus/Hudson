@@ -73,10 +73,10 @@ class Query {
 
     String craigslistRssUrl() {
         // note that the parameter order is important for tests to pass
-        // TODO add type
         def params = [:]
         if (numBedrooms != null) params['bedrooms'] = numBedrooms
         params['catAbb'] = 'apa'
+        if (housingType != null) params['housing_type'] = housingType
         if (maxRent != null) params['maxAsk'] = maxRent
         if (minRent != null) params['minAsk'] = minRent
         if (cat) params['pets_cat'] = 'purrr'
