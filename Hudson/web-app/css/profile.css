@@ -1,0 +1,30 @@
+
+.query-form label {
+    font-weight: bold;
+}
+
+.query-form input[type=number] {
+    width: 7em;
+}
+
+#query-tabs .nav-tabs {
+    border-bottom: none;
+}
+
+#query-tabs .tab-content {
+    border: 1px solid #ddd;
+    padding: 10px 10px;
+}
+
+#query-tabs form {
+    float: none;
+}
+
+#query-tabs input {
+    margin-bottom: 5px;
+}
+
+#query-tabs input[type=checkbox] {
+    margin-left: 7px;
+}
+
