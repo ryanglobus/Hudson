@@ -14,19 +14,18 @@
 				<label>Number Of Bedrooms:</label> <input type = "number" name= "numRooms"/>
 				<label for="type">Style:</label> 
 					<select name = "type" id="type">
-						<option value = "any housing type">Any</option>
-						<option value = "apartment">Apartment</option>
-						<option value = "condo">Condo</option>
-						<option value = "cottage/cabin">Cottage/Cabin</option>
-						<option value = "duplex">Duplex</option>
-						<option value = "flat">Flat</option>
-						<option value = "house">House</option>
-						<option value = "in-law">In-Law</option>
-						<option value = "loft">Loft</option>
-						<option value = "townhouse">Townhouse</option>
-						<option value = "manufactured">Manufactured</option>
-						<option value = "assisted">Assisted Living</option>
-						<option value = "land">Land</option>
+						<option value = "APARTMENT">Apartment</option>
+						<option value = "CONDO">Condo</option>
+						<option value = "COTTAGE_CABIN">Cottage/Cabin</option>
+						<option value = "DUPLEX">Duplex</option>
+						<option value = "FLAT">Flat</option>
+						<option value = "HOUSE">House</option>
+						<option value = "IN_LAW">In-Law</option>
+						<option value = "LOFT">Loft</option>
+						<option value = "TOWNHOUSE">Townhouse</option>
+						<option value = "MANUFACTURED">Manufactured</option>
+						<option value = "ASSISTED_LIVING">Assisted Living</option>
+						<option value = "LAND">Land</option>
 					</select>
 				<input type = "checkbox" name ="cat" id="cat" />
 				<label for="cat">Cat</label>
