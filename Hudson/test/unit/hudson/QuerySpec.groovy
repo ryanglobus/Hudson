@@ -304,4 +304,23 @@ Quiet and safe neighborhood. Close to public transportation (bus and Bart), shop
         posts != null
         posts.size() > 0
     }
+
+    void "test next thing"() {
+        when:
+        User newUser = new User();
+        newUser.email = "ckortel@stanford.edu";
+        newUser.phone = "4108977488";
+        newUser.firstName = "Kelly";
+        Post newPost = new Post();
+        newPost.link = "asdf link!";
+        newPost.isNew = true;
+        Query newQuery = new Query();
+        newQuery.user = newUser;
+
+        List<Post> newList = new ArrayList<Post>();
+        //newUser.queries.add(newQuery);
+
+        then:
+        newUser.notifyUser();
+    }
 }
