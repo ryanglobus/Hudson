@@ -2,6 +2,7 @@ package home
 
 import HudsonJobs.*
 import hudson.User
+import java.security.MessageDigest
 import java.security.SecureRandom
 
 
@@ -12,13 +13,19 @@ class HomeController {
 	}
 	
 	def login() {
-		
-		if(params.username == "garren" && params.password == "derp") {
-			redirect(controller: "profile")	
-		} else {
+		User usr = User.findByEmail(params.username)
+		if(usr == null) {
 			flash.message = "login failed"
-			redirect(action: 'index')
+			redirect(action:'index')
+			return
 		}
+		String hashedPassword = getHashedPassword(params.password, usr.salt)
+		if(hashedPassword != usr.passwordHash) {
+			flash.message = "incorrect username/password"
+			redirect(action:'index')
+		}
+		session["userid"] = user.id
+		redirect(controller:"profile")
 		
 	}
 	
@@ -49,6 +56,22 @@ class HomeController {
 		redirect(controller:"profile")
 	}
 	
+	private static String getHashedPassword(String pass, String salt) {
+		String password = pass + salt
+		MessageDigest digest = MessageDigest.getInstance("SHA-256")
+		byte[] hash = digest.digest(password.getBytes("UTF-8"))
+		return byteArrayToInt(hash)
+	}
+	
+	public static int byteArrayToInt(byte[] b) {
+		int value = 0;
+		for (int i = 0; i < 4; i++) {
+			int shift = (4 - 1 - i) * 8;
+			value += (b[i] & 0x000000FF) << shift;
+		}
+		return value;
+	}
+	
 	private static String getSalt() 
 	{
 		SecureRandom sr = SecureRandom.getInstance("SHA1PRNG");
@@ -56,7 +79,7 @@ class HomeController {
 		sr.nextBytes(salt);
 		return salt.toString();
 	}
-	
+
 	def postRegister(){}
 	
 	
