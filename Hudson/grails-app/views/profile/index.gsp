@@ -36,6 +36,7 @@
 						</div>
 						<br />
 						<select class="form-control" name = "type" id="type">
+							<option value = "ANY">Any Housing Type</option>
 							<option value = "APARTMENT">Apartment</option>
 							<option value = "CONDO">Condo</option>
 							<option value = "COTTAGE_CABIN">Cottage/Cabin</option>

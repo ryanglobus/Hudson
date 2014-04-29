@@ -244,7 +244,6 @@ Quiet and safe neighborhood. Close to public transportation (bus and Bart), shop
         firstPost.title.equals(p1.title)
         firstPost.isNew
         firstPost.date.compareTo(p1.date) == 0
-        firstPost.query.equals(q)
 
         posts3 != null
         posts3.size() == 3
@@ -253,8 +252,7 @@ Quiet and safe neighborhood. Close to public transportation (bus and Bart), shop
                 post.link.equals(it.link) &&
                 post.title.equals(it.title) &&
                 post.isNew &&
-                post.date.compareTo(it.date) == 0 &&
-                post.query.equals(q)
+                post.date.compareTo(it.date) == 0
             }
         }
     }
