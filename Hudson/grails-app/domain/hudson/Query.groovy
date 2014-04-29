@@ -104,7 +104,7 @@ class Query {
             if (!(item instanceof Element)) continue;
             Element elem = (Element) item
             Post p = new Post()
-            p.query = this
+            p.query = null // set when save
             p.link = elem.getElementsByTagName('link').item(0)?.getTextContent()
             p.title = elem.getElementsByTagName('title').item(0)?.getTextContent()
             StringBuilder dateSB =
@@ -120,7 +120,8 @@ class Query {
                 p.date = Calendar.getInstance()
                 p.date.setTime(sdf.parse(dateSB.toString()))
             }
-            if (p.validate()) posts.add(p)
+            // list all fields to be validated
+            if (p.validate(['link', 'title', 'date'])) posts.add(p)
         }
         return posts
     }
@@ -130,7 +131,6 @@ class Query {
      * database. Assumes posts match this query.
      */
     void saveNewPosts(List<Post> posts) {
-        List<Post> newPosts = new ArrayList<Post>();
         for (Post nextPost : posts) {
             boolean found = false;
             for (Post nextOldPost : this.posts) {
@@ -139,9 +139,10 @@ class Query {
                 }
             }
             if (!found) {
-                newPosts.add(nextPost);
+                nextPost.query = this
+                addToPosts(nextPost);
+                nextPost.save(flush: true, failOnError: true)
             }
         }
-        this.posts.add(newPosts);
     }
 }

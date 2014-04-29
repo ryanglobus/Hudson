@@ -26,12 +26,13 @@ class ProfileController {
 			if(params.cat) query.cat = true
 			if(params.dog) query.dog = true
 			if(params.notify) query.notify = true
-			if(params.instantRelpy) {
-				query.instantReply = true
+			query.instantReply = params.instantReply
+			if (query.instantReply == null) query.instantReply = false
+			if (query.instantReply) {
 				query.responseMessage = params.responseMessage
 			}
 			query.user = User.findById(session["userid"])
-			query.save(flush:true)
+			query.save(flush:true, failOnError: true)
 
 			//Create the job to run the query!
 			//Job will be run every ten minutes for 30 days.

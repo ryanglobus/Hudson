@@ -38,7 +38,7 @@ class HomeController {
 		usr.lastName = params.lastName
 		usr.phone = params.phone
 		usr.notifyFrequency = params.frequency.toInteger()
-		usr.save(flush:true)
+		usr.save(flush:true, failOnError: true)
 		session["userid"] = usr.id
 		
 		//Create the job that notifies the user!

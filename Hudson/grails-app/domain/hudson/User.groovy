@@ -40,6 +40,7 @@ class User {
     static constraints = {
         email email: true, blank: false
         phone nullable: true, blank: false
+        carrier nullable: true
         passwordHash blank: false
         salt blank: false
         firstName blank: false
@@ -111,12 +112,13 @@ class User {
         //sendNotification("ckortel@stanford.edu", "Kelly", "www.NEWPOST.com");
         //sendNotification("4108977488@txt.att.net", "Kelly", "www.NEWPOST.com");
         for (Query nextQuery : this.queries) {
-            if (!nextQuery.instantReply) continue;
+            if (!nextQuery.notify) continue;
             for (Post nextPost : nextQuery.posts) {
                 if (nextPost.isNew) {
                     nextPost.isNew = false;
-                    if (!this.email.isEmpty())
+                    if (!this.email.isEmpty()) {
                         sendNotification(this.email, this.firstName, nextPost.link);
+                    }
                     if (!this.phone.isEmpty()) {
                         String newPhoneEmail = phoneEmail(this.phone);
                         sendNotification(newPhoneEmail, this.firstName, nextPost.link);
