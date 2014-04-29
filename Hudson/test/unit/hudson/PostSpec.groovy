@@ -16,5 +16,6 @@ class PostSpec extends Specification {
     }
 
     void "test something"() {
+    
     }
 }
