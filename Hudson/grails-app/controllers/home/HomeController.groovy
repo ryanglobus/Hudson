@@ -1,5 +1,6 @@
 package home
 
+import HudsonJobs.*
 import hudson.User
 import java.security.SecureRandom
 
@@ -27,8 +28,7 @@ class HomeController {
 	
 	//def newuser() {}
 	
-	def newusersession(){
-		
+	def newusersession(){		
 		User usr = new User()
 		usr.salt = getSalt()
 		String password = params.password + usr.salt
@@ -40,6 +40,12 @@ class HomeController {
 		usr.notifyFrequency = params.frequency.toInteger()
 		usr.save(flush:true)
 		session["userid"] = usr.id
+		
+		//Create the job that notifies the user!
+		def frequencyInMilliseconds = usr.notifyFrequency * 60000
+		NotifyJob.schedule(frequencyInMilliseconds, -1, [user:usr]) //we want notifications to run forever!
+		
+		
 		redirect(controller:"profile")
 	}
 	
