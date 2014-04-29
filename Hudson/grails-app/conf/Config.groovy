@@ -47,6 +47,7 @@ grails.controllers.defaultScope = 'singleton'
 
 // GSP settings
 grails {
+	
     views {
         gsp {
             encoding = 'UTF-8'

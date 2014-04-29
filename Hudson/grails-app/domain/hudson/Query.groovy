@@ -47,7 +47,7 @@ class Query {
     String responseMessage
     Boolean isCancelled = false
 
-    static hashMany = [posts: Post]
+    static hasMany = [posts: Post]
     static belongsTo = [user: User]
 
     static constraints = {
@@ -130,6 +130,18 @@ class Query {
      * database. Assumes posts match this query.
      */
     void saveNewPosts(List<Post> posts) {
-        // TODO Kelly
+		List<Post> newPosts = new ArrayList<Post>();
+		for (Post nextPost : posts) {
+			boolean found = false;
+			for (Post nextOldPost : this.posts) {
+				if (nextOldPost.link == nextPost.link) {
+					found = true;
+				}
+			}
+			if (!found) {
+				newPosts.add(nextPost);
+			}
+		}
+		this.posts.add(newPosts);
     }
 }

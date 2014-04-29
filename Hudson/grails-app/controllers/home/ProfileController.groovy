@@ -1,10 +1,8 @@
 package home
 
-import java.nio.file.attribute.UserDefinedFileAttributeView;
-
 import hudson.Query
 import hudson.User
-
+import java.nio.file.attribute.UserDefinedFileAttributeView
 
 class ProfileController {
 

@@ -15,6 +15,19 @@ class PostSpec extends Specification {
     def cleanup() {
     }
 
-    void "test something"() {
+    void "test something2"() {
+		when:
+		User newUser = new User();
+		newUser.email = "ckortel@stanford.edu";
+		newUser.phone = "4108977488";
+		newUser.firstName = "Kelly";
+		Post newPost = new Post();
+		newPost.link = "asdf link!";
+		Boolean isNew = true;
+		List<Post> newList = new ArrayList<Post>();
+		newList.add(newPost);
+		
+		then:
+		newUser.notifyUser(newList);
     }
 }

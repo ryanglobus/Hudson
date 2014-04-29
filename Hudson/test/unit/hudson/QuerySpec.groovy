@@ -13,7 +13,7 @@ import hudson.Query.HousingType
  * See the API for {@link grails.test.mixin.domain.DomainClassUnitTestMixin} for usage instructions
  */
 @TestFor(Query)
-@Mock([Post])
+//@Mock([Post])
 class QuerySpec extends Specification {
 
     private static final String CRAIGSLIST_XML0 =
@@ -303,5 +303,26 @@ Quiet and safe neighborhood. Close to public transportation (bus and Bart), shop
         notThrown(Exception)
         posts != null
         posts.size() > 0
+		
     }
+	
+	void "test next thing"() {
+		when:
+		User newUser = new User();
+		newUser.email = "ckortel@stanford.edu";
+		newUser.phone = "4108977488";
+		newUser.firstName = "Kelly";
+		Post newPost = new Post();
+		newPost.link = "asdf link!";
+		newPost.isNew = true;
+		Query newQuery = new Query();
+		newQuery.user = newUser;
+		
+		List<Post> newList = new ArrayList<Post>();
+		//newUser.queries.add(newQuery);
+		
+		then:
+		newUser.notifyUser();
+	}
 }
+
