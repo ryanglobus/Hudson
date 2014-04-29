@@ -3,10 +3,15 @@
 	<classpathentry kind="src" path="grails-app/conf"/>
 	<classpathentry kind="src" path="grails-app/controllers"/>
 	<classpathentry kind="src" path="grails-app/domain"/>
+<<<<<<< HEAD
 	<classpathentry kind="src" path="test/unit"/>
 	<classpathentry kind="src" path="grails-app/services"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry exported="true" kind="con" path="GROOVY_SUPPORT"/>
+=======
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry exported="true" kind="con" path="GROOVY_DSL_SUPPORT"/>
+>>>>>>> master
 	<classpathentry excluding="BuildConfig.groovy|*DataSource.groovy|UrlMappings.groovy|Config.groovy|BootStrap.groovy|spring/resources.groovy" kind="src" path=".link_to_grails_plugins/cache-1.1.1/grails-app/conf">
 		<attributes>
 			<attribute name="org.grails.ide.eclipse.core.SOURCE_FOLDER" value="true"/>
@@ -92,27 +97,57 @@
 			<attribute name="org.grails.ide.eclipse.core.SOURCE_FOLDER" value="true"/>
 		</attributes>
 	</classpathentry>
+<<<<<<< HEAD
 	<classpathentry kind="src" path=".link_to_grails_plugins/mail-1.0.4/grails-app/i18n">
+=======
+	<classpathentry excluding="BuildConfig.groovy|*DataSource.groovy|UrlMappings.groovy|Config.groovy|BootStrap.groovy|spring/resources.groovy" kind="src" path=".link_to_grails_plugins/quartz-1.0.1/grails-app/conf">
+>>>>>>> master
 		<attributes>
 			<attribute name="org.grails.ide.eclipse.core.SOURCE_FOLDER" value="true"/>
 		</attributes>
 	</classpathentry>
+<<<<<<< HEAD
 	<classpathentry kind="src" path=".link_to_grails_plugins/mail-1.0.4/grails-app/services">
+=======
+	<classpathentry kind="src" path=".link_to_grails_plugins/quartz-1.0.1/grails-app/services">
+>>>>>>> master
 		<attributes>
 			<attribute name="org.grails.ide.eclipse.core.SOURCE_FOLDER" value="true"/>
 		</attributes>
 	</classpathentry>
+<<<<<<< HEAD
 	<classpathentry kind="src" path=".link_to_grails_plugins/mail-1.0.4/grails-app/taglib">
+=======
+	<classpathentry kind="src" path=".link_to_grails_plugins/quartz-1.0.1/src/groovy">
+>>>>>>> master
 		<attributes>
 			<attribute name="org.grails.ide.eclipse.core.SOURCE_FOLDER" value="true"/>
 		</attributes>
 	</classpathentry>
+<<<<<<< HEAD
 	<classpathentry kind="src" path=".link_to_grails_plugins/mail-1.0.4/grails-app/views">
+=======
+	<classpathentry kind="src" path=".link_to_grails_plugins/quartz-1.0.1/src/java">
+>>>>>>> master
 		<attributes>
 			<attribute name="org.grails.ide.eclipse.core.SOURCE_FOLDER" value="true"/>
 		</attributes>
 	</classpathentry>
+<<<<<<< HEAD
 	<classpathentry kind="src" path=".link_to_grails_plugins/mail-1.0.4/src/groovy">
+=======
+	<classpathentry kind="src" path=".link_to_grails_plugins/quartz-monitor-0.3-RC3/grails-app/controllers">
+		<attributes>
+			<attribute name="org.grails.ide.eclipse.core.SOURCE_FOLDER" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="src" path=".link_to_grails_plugins/quartz-monitor-0.3-RC3/grails-app/views">
+		<attributes>
+			<attribute name="org.grails.ide.eclipse.core.SOURCE_FOLDER" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="src" path=".link_to_grails_plugins/quartz-monitor-0.3-RC3/src/groovy">
+>>>>>>> master
 		<attributes>
 			<attribute name="org.grails.ide.eclipse.core.SOURCE_FOLDER" value="true"/>
 		</attributes>
@@ -178,7 +213,10 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry kind="con" path="org.grails.ide.eclipse.core.CLASSPATH_CONTAINER"/>
+<<<<<<< HEAD
 	<classpathentry kind="lib" path="/Users/kellyortel/Hudson/Hudson/lib/activation.jar"/>
 	<classpathentry kind="lib" path="/Users/kellyortel/Hudson/Hudson/lib/mail.jar"/>
+=======
+>>>>>>> master
 	<classpathentry kind="output" path="target-eclipse/classes"/>
 </classpath>
