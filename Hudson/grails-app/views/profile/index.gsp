@@ -62,7 +62,7 @@
 						<br />
 						<div class="checkbox">
 							<label>
-								<g:checkBox name="notify" /> Receive Notifications?
+								<g:checkBox name="notify" value="true" /> Receive Notifications?
 							</label>
 						</div>
 						<input type="checkbox" name="instantReply" id="instantReply"/>
