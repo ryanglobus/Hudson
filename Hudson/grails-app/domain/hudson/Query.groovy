@@ -32,7 +32,7 @@ class Query {
 
         private final int value;
     }
-
+	
     Integer searchFrequency = 20 // in minutes
     String searchText
     Integer minRent
@@ -130,6 +130,6 @@ class Query {
      * database. Assumes posts match this query.
      */
     void saveNewPosts(List<Post> posts) {
-        // TODO Kelly
+        //TODO: KELLY
     }
 }
