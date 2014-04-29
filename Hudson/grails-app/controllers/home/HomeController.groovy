@@ -38,13 +38,14 @@ class HomeController {
 	def newusersession(){		
 		User usr = new User()
 		usr.salt = getSalt()
-		String password = params.password + usr.salt
-		usr.passwordHash = password.hashCode() //hopefully this works?
+		
+		usr.passwordHash = getHashedPassword(params.password + usr.salt) //hopefully this works?
 		usr.email = params.email
 		usr.firstName = params.firstName
 		usr.lastName = params.lastName
 		usr.phone = params.phone
 		usr.notifyFrequency = params.frequency.toInteger()
+		usr.carrier = User.Carrier.valueOf(params.carrier).getValue()
 		usr.save(flush:true)
 		session["userid"] = usr.id
 		

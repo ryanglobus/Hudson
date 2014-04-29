@@ -34,6 +34,20 @@
 				</div>
 			</div>
 			<div class="form-group">
+				<label for="carrier" class="col-sm-offset-3 col-sm-2 control-label">Carrier:</label>
+				<div class="col-sm-3">
+					<select class="form-control" name="carrier" id="carrier">
+						<option value="ATT" selected="selected">AT&T</option>
+						<option value="TMOBILE">T-Mobile</option>
+						<option value="VIRGIN">Virgin</option>
+						<option value="CINGULAR">Cingular</option>
+						<option value="SPRINT">Sprint</option>
+						<option value="VERIZON">Verizon</option>
+						<option value="NEXTEL">Nextel</option>
+					</select>
+				</div>
+			</div>
+			<div class="form-group">
 				<div class="col-sm-offset-5 col-sm-4">
 					<g:field class="btn btn-default" name="submit" type="submit" value="Submit"/>
 				</div>
