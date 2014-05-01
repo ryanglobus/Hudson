@@ -15,7 +15,7 @@ class HomeController {
 	def login() {
 		User usr = User.findByEmail(params.username)
 		if(usr == null) {
-			flash.message = "login failed"
+			flash.message = "incorrect username/password"
 			redirect(action:'index')
 			return
 		}
@@ -23,6 +23,7 @@ class HomeController {
 		if(hashedPassword != usr.passwordHash) {
 			flash.message = "incorrect username/password"
 			redirect(action:'index')
+			return
 		}
 		session["userid"] = user.id
 		redirect(controller:"profile")
@@ -61,17 +62,17 @@ class HomeController {
 		String password = pass + salt
 		MessageDigest digest = MessageDigest.getInstance("SHA-256")
 		byte[] hash = digest.digest(password.getBytes("UTF-8"))
-		return byteArrayToInt(hash)
+		return printHexBinary(hash);
 	}
 	
-	public static int byteArrayToInt(byte[] b) {
+	/*public static int byteArrayToInt(byte[] b) {
 		int value = 0;
 		for (int i = 0; i < 4; i++) {
 			int shift = (4 - 1 - i) * 8;
 			value += (b[i] & 0x000000FF) << shift;
 		}
 		return value;
-	}
+	}*/
 	
 	private static String getSalt() 
 	{
