@@ -141,8 +141,8 @@ class Query {
             }
             if (!found) {
                 nextPost.query = this
-                addToPosts(nextPost);
                 nextPost.save(flush: true, failOnError: true)
+                addToPosts(nextPost);
             }
         }
     }
