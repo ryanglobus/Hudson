@@ -21,6 +21,12 @@ class HomeController {
 		}
 		
 	}
+
+	def logout() {
+		session["userid"] = null
+		session.invalidate() // invalidate session for security reasons
+		redirect(uri: '/')
+	}
 	
 	//User information and their first search query.
 	//JUST DO ONE FOR NOW!

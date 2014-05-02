@@ -1,3 +1,4 @@
+<%@ page import="hudson.User" %>
 <!DOCTYPE html>
 <!--[if lt IE 7 ]> <html lang="en" class="no-js ie6"> <![endif]-->
 <!--[if IE 7 ]>    <html lang="en" class="no-js ie7"> <![endif]-->
@@ -40,9 +41,13 @@
 					<ul class="nav navbar-nav">
 					</ul>
 					<ul class="nav navbar-nav navbar-right">
-						<%-- TODO: only show if user is logged in/out --%>
-						<li><g:link controller="home" action="index">Log In</g:link></li>
-						<!-- <li><a href="#">Logout</a></li> -->
+						<% def user = User.findById(session["userid"]) %>
+						<% if (user == null) { %>
+							<li><g:link controller="home" action="index">Log In</g:link></li>
+						<% } else { %>
+							<li><p class="navbar-text">Hi, ${user.firstName}</p></li>
+							<li><g:link controller="home" action="logout">Log Out</g:link></li>
+						<% } %>
 					</ul>
 				</div>
 			</div>
