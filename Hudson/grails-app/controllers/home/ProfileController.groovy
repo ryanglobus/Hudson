@@ -18,14 +18,17 @@ class ProfileController {
 		//figure out how to fix this double invocation...everything I've seen doesn't seem to work.
 		if (params.size() > 3) {
 			Query query = new Query()
-			query.searchText = params.searchText
-			query.minRent = params.minrent.toInteger()
-			query.maxRent = params.maxrent.toInteger()
-			query.numBedrooms = params.numRooms.toInteger()
+			query.searchText = params?.searchText
+			if(params.minrent.length() == 0) query.minRent = null
+			else query.minRent = params.minrent.toInteger()
+			if(params.maxrent.length() == 0) query.maxRent = null
+			else query.maxRent = params.maxrent.toInteger()
+			if(params.numRooms.length() == 0) query.numBedrooms = null
+			else query.numBedrooms = params.numRooms.toInteger()
 			query.housingType = Query.HousingType.valueOf(params.type).getValue()
 			if(params.cat) query.cat = true
 			if(params.dog) query.dog = true
-			if(params.notify) query.notify = true
+			query.notify = query.notify
 			if(params.instantRelpy) {
 				query.instantReply = true
 				query.responseMessage = params.responseMessage
