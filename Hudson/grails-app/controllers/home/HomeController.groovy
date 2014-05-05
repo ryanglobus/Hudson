@@ -21,6 +21,12 @@ class HomeController {
 		}
 		
 	}
+
+	def logout() {
+		session["userid"] = null
+		session.invalidate() // invalidate session for security reasons
+		redirect(uri: '/')
+	}
 	
 	//User information and their first search query.
 	//JUST DO ONE FOR NOW!
@@ -38,7 +44,7 @@ class HomeController {
 		usr.lastName = params.lastName
 		usr.phone = params.phone
 		usr.notifyFrequency = params.frequency.toInteger()
-		usr.save(flush:true)
+		usr.save(flush:true, failOnError: true)
 		session["userid"] = usr.id
 		
 		//Create the job that notifies the user!

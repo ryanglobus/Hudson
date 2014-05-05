@@ -40,6 +40,7 @@ class User {
 	static constraints = {
 		email email: true, blank: false
 		phone nullable: true, blank: false
+		carrier nullable: true
 		passwordHash blank: false
 		salt blank: false
 		firstName blank: false
@@ -116,7 +117,7 @@ class User {
 		ArrayList<String> linksToSend = new ArrayList<String>();
 
 		for (Query nextQuery : this.queries) {
-			if (!nextQuery.instantReply) continue;
+			if (!nextQuery.notify) continue;
 			for (Post nextPost : nextQuery.posts) {
 				if (nextPost.isNew) {
 					nextPost.isNew = false;
@@ -141,7 +142,5 @@ class User {
 				sendNotification(newPhoneEmail, this.firstName, allLinks);
 			}
 		}
-
 	}
-
 }
