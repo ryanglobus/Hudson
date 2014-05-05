@@ -107,8 +107,6 @@ class User {
 		}
 	}
 
-
-
 	void notifyUser() {
 		// below two lines are for testing
 		//sendNotification("ckortel@stanford.edu", "Kelly", "www.NEWPOST.com");
@@ -129,7 +127,7 @@ class User {
 		String allLinks = "";
 		boolean isFirst = true;
 		for (String nextLink : linksToSend) {
-			if (!isFirst) allLinks += ", ";
+			if (!isFirst) allLinks += "\n ";
 			if (isFirst) isFirst = false;
 			allLinks += linksToSend;
 		}
