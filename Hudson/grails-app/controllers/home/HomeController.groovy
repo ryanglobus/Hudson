@@ -48,7 +48,7 @@ class HomeController {
 		session["userid"] = usr.id
 		
 		//Create the job that notifies the user!
-		def frequencyInMilliseconds = usr.notifyFrequency * 60000
+		def frequencyInMilliseconds = 60000; //usr.notifyFrequency * 60000
 		NotifyJob.schedule(frequencyInMilliseconds, -1, [user:usr]) //we want notifications to run forever!
 		
 		

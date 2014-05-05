@@ -36,7 +36,7 @@ class ProfileController {
 
 			//Create the job to run the query!
 			//Job will be run every ten minutes for 30 days.
-			CrawlJob.schedule(600000, 4319, [query: query])
+			CrawlJob.schedule(60000, 4319, [query: query]) //should be 600000
 
 			[usr:query.user, query: query]
 		}
