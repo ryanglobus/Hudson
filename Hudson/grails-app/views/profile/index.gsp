@@ -9,6 +9,9 @@
 	</head>
 	
 	<body>
+		<g:if test="${flash.invalidToken }">
+			Invalid form token!
+		</g:if>
 		<div class="col-sm-offset-2 col-sm-8" id="query-tabs">
 			<ul class="nav nav-tabs">
 				<li class="active"><a href="#search1" data-toggle="tab">Search 1</a></li>
@@ -16,7 +19,7 @@
 			</ul>
 			<div class="tab-content">
 				<div class="tab-pane active" id="search1">
-					<g:form class="form-inline query-form" action = "newquery" useToken="true" role="form">
+					<g:form useToken="true" class="form-inline query-form" action = "newquery" role="form">
 						<div class="form-group">
 							<label for="searchText" class="sr-only control-label">Search:</label>
 							<g:field type="text" name="searchText" class="form-control" placeholder="Search" />

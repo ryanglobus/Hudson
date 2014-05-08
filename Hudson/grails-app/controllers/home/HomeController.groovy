@@ -14,6 +14,16 @@ class HomeController {
 	}
 	
 	def login() {
+		boolean validForm
+		withForm {
+			//empty
+		} .invalidToken {
+			flash.message = "Login failed. Please try again."
+			redirect(action:'index')
+			validForm = false 
+		}
+		if(!validForm) return
+		
 		User usr = User.findByEmail(params.username)
 		if(usr == null) {
 			flash.message = "incorrect username/password"
@@ -34,24 +44,31 @@ class HomeController {
 	def register(){}
 		
 	def newusersession(){		
-		User usr = new User()
-		usr.salt = getSalt()
+		boolean validForm
+		withForm{
+			//empty
+		} .invalidToken {
+		 	 flash.message = "Query failed. Please try again."
+		 	 redirect(controller:"profile")
+			 validForm = false
+		}
+		if(!validForm) return
 		
-		usr.passwordHash = getHashedPassword(params.password, usr.salt) //hopefully this works?
+		User usr = new User()
+		usr.salt = getSalt()		
+		usr.passwordHash = getHashedPassword(params.password, usr.salt)
 		usr.email = params.email
 		usr.firstName = params.firstName
 		usr.lastName = params.lastName
-		usr.phone = params.phone
+		usr.phone = params?.phone
 		usr.notifyFrequency = params.frequency.toInteger()
 		usr.carrier = User.Carrier.valueOf(params.carrier).getValue()
 		usr.save(flush:true)
 		session["userid"] = usr.id
 		
-		//Create the job that notifies the user!
 		def frequencyInMilliseconds = usr.notifyFrequency * 60000
 		NotifyJob.schedule(frequencyInMilliseconds, -1, [user:usr]) //we want notifications to run forever!
-		
-		
+				
 		redirect(controller:"profile")
 	}
 	
@@ -72,7 +89,5 @@ class HomeController {
 		return salt.toString();
 	}
 
-	def postRegister(){}
-	
-	
+	def postRegister(){}	
 }
