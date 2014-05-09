@@ -16,7 +16,7 @@ class HomeController {
 	def login() {
 		boolean validForm
 		withForm {
-			//empty
+			validForm = true
 		} .invalidToken {
 			flash.message = "Login failed. Please try again."
 			redirect(action:'index')
@@ -46,7 +46,7 @@ class HomeController {
 	def newusersession(){		
 		boolean validForm
 		withForm{
-			//empty
+			validForm = true
 		} .invalidToken {
 		 	 flash.message = "Query failed. Please try again."
 		 	 redirect(controller:"profile")

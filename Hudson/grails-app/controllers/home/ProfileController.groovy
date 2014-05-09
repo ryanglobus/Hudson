@@ -10,15 +10,15 @@ class ProfileController {
 	def index() { }
 
 	def newquery() {
-		boolean validForm;
+		boolean validForm
 		withForm {
-			//empty
+			validForm = true
 		} .invalidToken {
 			flash.message = "Form token test failed"
 			redirect(action:'index')
-			validForm = false;
+			validForm = false
 		}
-		if(!validForm) return;
+		if(!validForm) return
 
 		if (params.size() > 3) {
 			Query query = new Query()
