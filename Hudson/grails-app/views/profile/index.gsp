@@ -14,7 +14,6 @@
 		</g:if>
 		<div class="col-sm-offset-2 col-sm-8" id="query-tabs">
 			<ul class="nav nav-tabs">
-				<li class="active"><a href="#search1" data-toggle="tab">Search 1</a></li>
 				<li><a href="#" id="new-tab">+</a></li>
 			</ul>
 			<div class="tab-content">
@@ -39,6 +38,7 @@
 						</div>
 						<br />
 						<select class="form-control" name = "type" id="type">
+							<option value = "ANY">Any Housing Type</option>
 							<option value = "APARTMENT">Apartment</option>
 							<option value = "CONDO">Condo</option>
 							<option value = "COTTAGE_CABIN">Cottage/Cabin</option>

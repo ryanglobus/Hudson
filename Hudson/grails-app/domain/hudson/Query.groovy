@@ -18,7 +18,7 @@ class Query {
     static final String CRAIGSLIST_URL = 'http://sfbay.craigslist.org/'
 
     enum HousingType {
-        APARTMENT(1), CONDO(2), COTTAGE_CABIN(3), DUPLEX(4), FLAT(5),
+        ANY(0), APARTMENT(1), CONDO(2), COTTAGE_CABIN(3), DUPLEX(4), FLAT(5),
         HOUSE(6), IN_LAW(7), LOFT(8), TOWNHOUSE(9), MANUFACTURED(10),
         ASSISTED_LIVING(11), LAND(12)
 
@@ -38,7 +38,7 @@ class Query {
     Integer minRent
     Integer maxRent
     Integer numBedrooms // min number of bedrooms
-    Integer housingType
+    Integer housingType = HousingType.ANY.getValue()
     // for Booleans, null means "indifferent"
     Boolean cat
     Boolean dog
@@ -47,7 +47,7 @@ class Query {
     String responseMessage
     Boolean isCancelled = false
 
-    static hashMany = [posts: Post]
+    static hasMany = [posts: Post]
     static belongsTo = [user: User]
 
     static constraints = {
@@ -55,7 +55,6 @@ class Query {
         minRent nullable: true, min: 0
         maxRent nullable: true, min: 0
         numBedrooms nullable: true, min: 0
-        housingType nullable: true
         cat nullable: true
         dog nullable: true
         responseMessage nullable: true
@@ -76,7 +75,9 @@ class Query {
         def params = [:]
         if (numBedrooms != null) params['bedrooms'] = numBedrooms
         params['catAbb'] = 'apa'
-        if (housingType != null) params['housing_type'] = housingType
+        if (housingType != HousingType.ANY.getValue()) {
+            params['housing_type'] = housingType
+        }
         if (maxRent != null) params['maxAsk'] = maxRent
         if (minRent != null) params['minAsk'] = minRent
         if (cat) params['pets_cat'] = 'purrr'
@@ -104,7 +105,7 @@ class Query {
             if (!(item instanceof Element)) continue;
             Element elem = (Element) item
             Post p = new Post()
-            p.query = this
+            p.query = null // set when save
             p.link = elem.getElementsByTagName('link').item(0)?.getTextContent()
             p.title = elem.getElementsByTagName('title').item(0)?.getTextContent()
             StringBuilder dateSB =
@@ -120,7 +121,8 @@ class Query {
                 p.date = Calendar.getInstance()
                 p.date.setTime(sdf.parse(dateSB.toString()))
             }
-            if (p.validate()) posts.add(p)
+            // list all fields to be validated
+            if (p.validate(['link', 'title', 'date'])) posts.add(p)
         }
         return posts
     }
@@ -130,6 +132,18 @@ class Query {
      * database. Assumes posts match this query.
      */
     void saveNewPosts(List<Post> posts) {
-        //TODO: KELLY
+        for (Post nextPost : posts) {
+            boolean found = false;
+            for (Post nextOldPost : this.posts) {
+                if (nextOldPost.link == nextPost.link) {
+                    found = true;
+                }
+            }
+            if (!found) {
+                nextPost.query = this
+                nextPost.save(flush: true, failOnError: true)
+                addToPosts(nextPost);
+            }
+        }
     }
 }

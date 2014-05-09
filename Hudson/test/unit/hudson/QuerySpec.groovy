@@ -244,7 +244,6 @@ Quiet and safe neighborhood. Close to public transportation (bus and Bart), shop
         firstPost.title.equals(p1.title)
         firstPost.isNew
         firstPost.date.compareTo(p1.date) == 0
-        firstPost.query.equals(q)
 
         posts3 != null
         posts3.size() == 3
@@ -253,8 +252,7 @@ Quiet and safe neighborhood. Close to public transportation (bus and Bart), shop
                 post.link.equals(it.link) &&
                 post.title.equals(it.title) &&
                 post.isNew &&
-                post.date.compareTo(it.date) == 0 &&
-                post.query.equals(q)
+                post.date.compareTo(it.date) == 0
             }
         }
     }
@@ -303,5 +301,24 @@ Quiet and safe neighborhood. Close to public transportation (bus and Bart), shop
         notThrown(Exception)
         posts != null
         posts.size() > 0
+    }
+
+    void "test next thing"() {
+        when:
+        User newUser = new User();
+        newUser.email = "ckortel@stanford.edu";
+        newUser.phone = "4108977488";
+        newUser.firstName = "Kelly";
+        Post newPost = new Post();
+        newPost.link = "asdf link!";
+        newPost.isNew = true;
+        Query newQuery = new Query();
+        newQuery.user = newUser;
+
+        List<Post> newList = new ArrayList<Post>();
+        //newUser.queries.add(newQuery);
+
+        then:
+        newUser.notifyUser();
     }
 }

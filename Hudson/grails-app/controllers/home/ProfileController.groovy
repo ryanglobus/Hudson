@@ -38,7 +38,7 @@ class ProfileController {
 				query.responseMessage = params.responseMessage
 			}
 			query.user = User.findById(session["userid"])
-			query.save(flush:true)
+			query.save(flush:true, failOnError: true)
 
 			CrawlJob.schedule(600000, 4319, [query: query])
 			[usr:query.user, query: query]

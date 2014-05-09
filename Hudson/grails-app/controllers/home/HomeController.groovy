@@ -40,6 +40,12 @@ class HomeController {
 		redirect(controller:"profile")
 		
 	}
+
+	def logout() {
+		session["userid"] = null
+		session.invalidate() // invalidate session for security reasons
+		redirect(uri: '/')
+	}
 	
 	def register(){}
 		
@@ -62,8 +68,12 @@ class HomeController {
 		usr.lastName = params.lastName
 		usr.phone = params?.phone
 		usr.notifyFrequency = params.frequency.toInteger()
+<<<<<<< HEAD
 		usr.carrier = User.Carrier.valueOf(params.carrier).getValue()
 		usr.save(flush:true)
+=======
+		usr.save(flush:true, failOnError: true)
+>>>>>>> master
 		session["userid"] = usr.id
 		
 		def frequencyInMilliseconds = usr.notifyFrequency * 60000
