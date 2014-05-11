@@ -56,6 +56,7 @@ grails.project.dependency.resolution = {
             excludes 'xml-apis'
             excludes 'groovy'
         }
+        // runtime 'io.iron.ironmq:ironmq:0.0.17'
     }
 
     plugins {
