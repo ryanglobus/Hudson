@@ -51,8 +51,7 @@ class ProfileController {
 		query.user = User.findById(session["userid"])
 		query.save(flush:true, failOnError: true)
 
-		//CHANGE BACK TO 600000 when not developing!!!
-		CrawlJob.schedule(60000, 4319, [query: query])
+		CrawlJob.schedule(600000, 4319, [query: query])
 
 		redirect(action:"queryCreated", params: [queryid : query.id, housingType: params.type])
 	}
