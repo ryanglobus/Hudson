@@ -5,7 +5,7 @@ import hudson.User
 import java.security.MessageDigest
 import java.security.SecureRandom
 import javax.xml.bind.DatatypeConverter
-
+import hudson.Post
 
 class HomeController {
 
@@ -14,7 +14,7 @@ class HomeController {
 	}
 	
 	def login() {
-		boolean validForm
+		boolean validForm = true
 		withForm {
 			validForm = true
 		} .invalidToken {
@@ -37,6 +37,20 @@ class HomeController {
 			return
 		}
 		session["userid"] = usr.id
+		
+		//Find out how many new posts they have to update the navbar badge!
+		//Better to store it in a session var then have to recalculate the value
+		//every time we need to render the navbar.
+		def newPostCount = 0
+		for(q in usr.queries) {
+			def result = Post.findAll {
+				query == q && deleted == false
+			}
+			
+			newPostCount += result.size()
+		}
+		session["newPostCount"] = newPostCount
+		
 		redirect(controller:"profile")
 		
 	}
@@ -68,17 +82,13 @@ class HomeController {
 		usr.lastName = params.lastName
 		usr.phone = params?.phone
 		usr.notifyFrequency = params.frequency.toInteger()
-<<<<<<< HEAD
 		usr.carrier = User.Carrier.valueOf(params.carrier).getValue()
-		usr.save(flush:true)
-=======
-		usr.save(flush:true, failOnError: true)
->>>>>>> master
+		usr.save(flush:true, failOnError:true)
 		session["userid"] = usr.id
 		
 		def frequencyInMilliseconds = usr.notifyFrequency * 60000
 		NotifyJob.schedule(frequencyInMilliseconds, -1, [user:usr]) //we want notifications to run forever!
-				
+			
 		redirect(controller:"profile")
 	}
 	
