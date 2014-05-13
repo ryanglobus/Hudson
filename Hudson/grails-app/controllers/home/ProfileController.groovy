@@ -1,6 +1,7 @@
 package home
 
 import hudson.Query
+import grails.util.Environment
 import hudson.User
 import HudsonJobs.*
 
@@ -36,8 +37,11 @@ class ProfileController {
 
 			//Create the job to run the query!
 			//Job will be run every ten minutes for 30 days.
-			CrawlJob.schedule(60000, 4319, [query: query]) //should be 600000
-
+			if (Environment.current.equals(Environment.PRODUCTION))
+				CrawlJob.schedule(600000, 4319, [query: query]) 
+			else 
+				CrawlJob.schedule(60000, 4319, [query: query])
+				
 			[usr:query.user, query: query]
 		}
 	}

@@ -1,9 +1,11 @@
 package hudson
 
+
 class Post {
 
     String link
     String title
+	String replyEmail
     Boolean isNew = true
     Calendar date
 
@@ -12,6 +14,7 @@ class Post {
     static constraints = {
         link url: true
         title nullable: true
+		replyEmail nullable: true
     }
 
 }

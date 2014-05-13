@@ -64,10 +64,11 @@
 								<g:checkBox name="notify" value="true" /> Receive Notifications?
 							</label>
 						</div>
+						<br/>
 						<input type="checkbox" name="instantReply" id="instantReply"/>
 						<label for="instantReply">Auto-Reply?</label>
-						<input type = "text" name="responseMessage">
-							
+						<input type = "text" name="responseMessage" placeholder = "Auto-reply message"/>
+						
 						<input class="btn btn-primary" type= "submit" value="newquery"/>
 					</g:form>
 				</div>

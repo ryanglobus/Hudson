@@ -13,6 +13,8 @@ import javax.xml.parsers.ParserConfigurationException
 import java.io.IOException
 import org.xml.sax.SAXException
 
+
+
 class Query {
 
     static final String CRAIGSLIST_URL = 'http://sfbay.craigslist.org/'
@@ -47,8 +49,8 @@ class Query {
     String responseMessage
     Boolean isCancelled = false
 
-    static hasMany = [posts: Post]
-    static belongsTo = [user: User]
+	static hasMany = [posts: Post]
+	static belongsTo = [user: User]
 
     static constraints = {
         searchText nullable: true
@@ -63,7 +65,7 @@ class Query {
     /**
      * Returns null upon failure. Does NOT save list of posts to database.
      */
-    List<Post> searchCraigslist() throws FactoryConfigurationError,
+	List<Post> searchCraigslist() throws FactoryConfigurationError,
             ParserConfigurationException, IOException, SAXException {
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance()
         DocumentBuilder dBuilder = dbFactory.newDocumentBuilder()
@@ -95,17 +97,18 @@ class Query {
     /**
      * xmlDocument: XML Document of posts which much already match the query
      */
-    List<Post> searchCraigslist(Document xmlDocument) {
-        if (xmlDocument == null)
-            throw IllegalArgumentException("xmlDocument in Query.searchCraigslist cannot be null")
-        List<Post> posts = new ArrayList<Post>()
-        NodeList items = xmlDocument.getElementsByTagName('item')
-        for (int i = 0; i < items.getLength(); i++) {
-            Node item = items.item(i)
-            if (!(item instanceof Element)) continue;
-            Element elem = (Element) item
-            Post p = new Post()
+	List<Post> searchCraigslist(Document xmlDocument) {
+		if (xmlDocument == null)
+			throw IllegalArgumentException("xmlDocument in Query.searchCraigslist cannot be null")
+		List<Post> posts = new ArrayList<Post>()
+		NodeList items = xmlDocument.getElementsByTagName('item')
+		for (int i = 0; i < items.getLength(); i++) {
+			Node item = items.item(i)
+			if (!(item instanceof Element)) continue;
+			Element elem = (Element) item
+			Post p = new Post()
             p.query = null // set when save
+			p.replyEmail = ""
             p.link = elem.getElementsByTagName('link').item(0)?.getTextContent()
             p.title = elem.getElementsByTagName('title').item(0)?.getTextContent()
             StringBuilder dateSB =

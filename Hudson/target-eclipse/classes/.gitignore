@@ -1,3 +1,7 @@
+/HudsonJobs
+/hibernate
+/home
+/hudson
 /ApplicationResources$_run_closure1.class
 /ApplicationResources$_run_closure1_closure2.class
 /ApplicationResources.class
@@ -31,13 +35,10 @@
 /DataSource$_run_closure3_closure6_closure9.class
 /DataSource$_run_closure3_closure6_closure9_closure10.class
 /DataSource.class
-/HudsonJobs
 /UrlMappings$__clinit__closure1.class
 /UrlMappings$__clinit__closure1_closure2.class
 /UrlMappings$__clinit__closure1_closure2_closure3.class
 /UrlMappings.class
-/home
-/hudson
 /resources$_run_closure1.class
 /resources$_run_closure1_closure2.class
 /resources.class

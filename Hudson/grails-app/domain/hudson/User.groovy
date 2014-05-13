@@ -3,11 +3,19 @@ import javax.mail.*
 import javax.mail.internet.*
 import javax.media.j3d.Switch;
 
+import org.jsoup.nodes.Document
+import org.jsoup.nodes.Element
+import org.jsoup.select.Elements
 import org.springframework.mail.*
 import org.springframework.activation.*
 import org.springframework.mail.MailException
 import org.springframework.mail.MailSender
 import org.springframework.mail.SimpleMailMessage
+import grails.util.Environment
+
+import java.net.URL;
+
+import org.jsoup.Jsoup;
 
 class User {
 
@@ -48,7 +56,7 @@ class User {
 		notifyFrequency blank: false
 	}
 
-	void sendNotification(String to, String recFirstName, String link) {
+	void sendNotification(String to, String messageBody, Boolean autoReply) {
 		// Sender's email ID needs to be mentioned
 		String from = "Hudson";
 
@@ -77,12 +85,16 @@ class User {
 		// Set To: header field of the header.
 		message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
 
-		// Set Subject: header field
-		message.setSubject("Hudson: New Post!");
-
+		if (autoReply) {
+			//TODO: Subject
+			message.setReplyTo([new InternetAddress(this.email, this.firstName)]);
+		} else {
+			// Set Subject: header field
+			message.setSubject("Hudson: New Post!");
+		}
 		// Now set the actual message
-		message.setText("Hey, " + recFirstName + "! Check out this awesome new listing that matches your criteria: " + link);
-
+		message.setText(messageBody);
+		
 		Transport.send(message);
 	}
 
@@ -107,19 +119,48 @@ class User {
 		}
 	}
 
+	String getReplyEmail(String link) {
+		System.out.println(link);
+		Document doc = Jsoup.connect(link).get();
+		Element replyLinkElem = doc.select("#replylink").first();
+		if (replyLinkElem != null) {
+			System.out.println(replyLinkElem);
+			String linkHead = "http://sfbay.craigslist.org";
+			String replyLink = linkHead + replyLinkElem.attr("href");
+			System.out.println(replyLink);
+			Document replyDoc = Jsoup.connect(replyLink).get();
+			Elements replyEmail = replyDoc.select(".anonemail").first();
+			if (replyEmail != null) {
+				String replyEmailAddr = replyEmail.attr("value");
+				return replyEmailAddr;
+			}
+		}
+		return "";
+	}
+	
+	void notifyUserOfReplyIssue(String link) {
+		sendNotification(this.email, "There was an issue auto-replying to the following post: " + 
+			link + " Please check out the original listing.", false);
+	}
+
 	void notifyUser() {
-		// below two lines are for testing
-		//sendNotification("ckortel@stanford.edu", "Kelly", "www.NEWPOST.com");
-		//sendNotification("4108977488@txt.att.net", "Kelly", "www.NEWPOST.com");
-
 		ArrayList<String> linksToSend = new ArrayList<String>();
-
 		for (Query nextQuery : this.queries) {
 			if (!nextQuery.notify) continue;
 			for (Post nextPost : nextQuery.posts) {
 				if (nextPost.isNew) {
 					nextPost.isNew = false;
 					linksToSend.add(nextPost.link);
+					if (nextPost.replyEmail.isEmpty() && nextQuery.instantReply) {
+						String email = getReplyEmail(nextPost.link);
+						nextPost.replyEmail = email;
+						if (email == "") notifyUserOfReplyIssue(nextPost.link);
+						if (Environment.current.equals(Environment.PRODUCTION))
+							sendNotification(nextPost.replyEmail, nextQuery.responseMessage, true);
+					} else if (!nextPost.replyEmail.isEmpty() && nextQuery.instantReply) {
+						if (Environment.current.equals(Environment.PRODUCTION))
+							sendNotification(nextPost.replyEmail, nextQuery.responseMessage, true);
+					}
 				}
 			}
 		}
@@ -132,13 +173,17 @@ class User {
 			allLinks += linksToSend;
 		}
 
+		String messageBody = "Hey " + this.firstName + ", \nCheck out these new Craigslist listings " +
+		" that match your criteria: \n" + allLinks;
+		
 		if (!allLinks.isEmpty()) {
 			if (!this.email.isEmpty())
-				sendNotification(this.email, this.firstName, allLinks);
+				sendNotification(this.email, messageBody, false);
 			if (!this.phone.isEmpty()) {
 				String newPhoneEmail = phoneEmail(this.phone);
-				sendNotification(newPhoneEmail, this.firstName, allLinks);
+				sendNotification(newPhoneEmail, messageBody, false);
 			}
 		}
+		
 	}
 }
