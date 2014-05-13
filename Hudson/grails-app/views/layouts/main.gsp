@@ -25,7 +25,7 @@
 		<r:layoutResources />
 	</head>
 	<body>
-		<nav class="navbar navbar-default" role="navigation">
+		<nav class="navbar navbar-inverse" role="navigation">
 			<div class="container-fluid">
 				<div class="navbar-header">
 					<button type="button" class="navbar-toggle"
@@ -38,10 +38,16 @@
 					<g:link class="navbar-brand" uri="/">Hudson</g:link>
 				</div>
 				<div class="collapse navbar-collapse" id="main-navbar-body">
+					<% def user = User.findById(session["userid"]) %>
 					<ul class="nav navbar-nav">
 					</ul>
+					<ul class="nav navbar-nav navbar-left">
+						<%if (user != null) { %>
+							<li><g:link controller="profile" action="index">Create Query</g:link></li>
+							<li><g:link controller="profile" action="newResults" params="[queryName: "all"]">New Posts <span class="badge"><%=session["newPostCount"]%></span></g:link></li>
+						<% } %>
+					</ul>
 					<ul class="nav navbar-nav navbar-right">
-						<% def user = User.findById(session["userid"]) %>
 						<% if (user == null) { %>
 							<li><g:link controller="home" action="index">Log In</g:link></li>
 						<% } else { %>

@@ -17,20 +17,51 @@ hibernate {
 environments {
     development {
         dataSource {
+            logSql = true
             dbCreate = "create-drop" // one of 'create', 'create-drop', 'update', 'validate', ''
-            url = "jdbc:h2:mem:devDb;MVCC=TRUE;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE"
+            // H2
+            //url = "jdbc:h2:mem:devDb;MVCC=TRUE;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE"
+            //driverClassName = "org.h2.Driver"
+
+            // MySQL
+            //url = "jdbc:mysql://127.0.0.1:3306/hudson-dev"
+            //dialect = "org.hibernate.dialect.MySQL5Dialect"
+            //driverClassName = "com.mysql.jdbc.Driver"
+
+            // SQLite
+            url = "jdbc:sqlite:../hudson-dev.db"
+            dialect = "org.hibernate.dialect.SQLiteDialect"
+            driverClassName="org.sqlite.JDBC"
         }
     }
     test {
         dataSource {
+            logSql = true
             dbCreate = "update"
-            url = "jdbc:h2:mem:testDb;MVCC=TRUE;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE"
+            // H2
+            //url = "jdbc:h2:mem:testDb;MVCC=TRUE;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE"
+            //driverClassName = "org.h2.Driver"
+
+            // MySQL
+            //url = "jdbc:mysql://127.0.0.1:3306/hudson-test"
+            //dialect = "org.hibernate.dialect.MySQL5Dialect"
+            //driverClassName = "com.mysql.jdbc.Driver"
+
+            // SQLite
+            url = "jdbc:sqlite:../hudson-test.db"
+            dialect = "org.hibernate.dialect.SQLiteDialect"
+            driverClassName="org.sqlite.JDBC"
         }
     }
     production {
         dataSource {
             dbCreate = "update"
-            url = "jdbc:h2:prodDb;MVCC=TRUE;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE"
+            //url = "jdbc:h2:prodDb;MVCC=TRUE;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE"
+            url = "jdbc:mysql://hudsondb.cyxciiu7qvuv.us-west-2.rds.amazonaws.com:3306"
+            username="hudson"
+            password="bgkrMDWAMDCA12!"
+            dialect = "org.hibernate.dialect.MySQL5Dialect"
+            driverClassName = "com.mysql.jdbc.Driver"
             properties {
                // See http://grails.org/doc/latest/guide/conf.html#dataSource for documentation
                jmxEnabled = true

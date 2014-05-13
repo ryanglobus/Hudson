@@ -37,6 +37,7 @@ class Query {
 	
     Integer searchFrequency = 20 // in minutes
     String searchText
+	String name
     Integer minRent
     Integer maxRent
     Integer numBedrooms // min number of bedrooms
@@ -47,7 +48,7 @@ class Query {
     Boolean notify
     Boolean instantReply
     String responseMessage
-    Boolean isCancelled = false
+    Boolean isCancelled = Boolean.FALSE
 
 	static hasMany = [posts: Post]
 	static belongsTo = [user: User]
