@@ -21,6 +21,11 @@
 				<div class="tab-pane active" id="search1">
 					<g:form useToken="true" class="form-inline query-form" action = "newquery" role="form">
 						<div class="form-group">
+							<label for="queryName" class="sr-only control-label">Name:</label>
+							<g:field type="text" name="queryName" class="form-control" placeholder="Name" />
+						</div>
+						
+						<div class="form-group">
 							<label for="searchText" class="sr-only control-label">Search:</label>
 							<g:field type="text" name="searchText" class="form-control" placeholder="Search" />
 						</div>
@@ -73,7 +78,7 @@
 						<label for="instantReply">Auto-Reply?</label>
 						<input type = "text" name="responseMessage">
 							
-						<input class="btn btn-primary" type= "submit" value="newquery"/>
+						<input class="btn btn-primary" type= "submit" value="Create Query"/>
 					</g:form>
 				</div>
 			</div>
