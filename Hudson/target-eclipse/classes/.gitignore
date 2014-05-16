@@ -1,3 +1,4 @@
+/_testemails
 /dbdoc
 /grails
 /hibernate
@@ -6,6 +7,7 @@
 /hudson
 /javascripts
 /messages.properties
+/messages_fr.properties
 /org
 /ApplicationResources$_run_closure1.class
 /ApplicationResources$_run_closure1_closure2.class
@@ -91,4 +93,5 @@
 /UrlMappings$__clinit__closure1_closure2_closure3.class
 /UrlMappings.class
 /resources$_run_closure1.class
+/resources$_run_closure1_closure2.class
 /resources.class
