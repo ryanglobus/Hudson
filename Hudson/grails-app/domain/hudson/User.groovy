@@ -119,10 +119,10 @@ class User {
                     if (!this.email.isEmpty()) {
                         sendNotification(this.email, this.firstName, nextPost.link);
                     }
-                    if (!this.phone.isEmpty()) {
-                        String newPhoneEmail = phoneEmail(this.phone);
-                        sendNotification(newPhoneEmail, this.firstName, nextPost.link);
-                    }
+//                    if (!this.phone.isEmpty()) {
+//                        String newPhoneEmail = phoneEmail(this.phone);
+//                        sendNotification(newPhoneEmail, this.firstName, nextPost.link);
+//                    }
                 }
             }
         }

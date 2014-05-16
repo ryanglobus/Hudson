@@ -46,6 +46,7 @@
   						<!-- Default panel contents -->
   						<div class="panel-heading"><h3>Results For ${postList.key}   
   						<button type="button" class="btn btn-danger"><g:link action="deleteQuery" params="[queryName: postList.key]"><span class="glyphicon glyphicon-trash"></span> Delete Query</g:link></button>
+  						<a class="btn btn-danger" href="/Hudson/profile/deleteQuery?queryName=${postList.key}"><span class="glyphicon glyphicon-trash"></span> Delete Query</a>
   						</h3></div>
   						<!-- Table -->
   						<table class="table table-striped table-hover">

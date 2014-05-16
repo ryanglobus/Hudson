@@ -51,8 +51,9 @@ class ProfileController {
 		query.user = User.findById(session["userid"])
 		query.save(flush:true, failOnError: true)
 
-		CrawlJob.schedule(600000, 4319, [query: query])
-
+		//CrawlJob.schedule(600000, 4319, [query: query])
+		CrawlJob.schedule(60000, 4319, [query: query])
+			
 		redirect(action:"queryCreated", params: [queryid : query.id, housingType: params.type])
 	}
 
@@ -122,6 +123,7 @@ class ProfileController {
 	
 	//'Deletes' and individual query so that it is no longer viewable by the user.
 	def deleteQuery() {
+		//Find by name AND user!!!
 		def query = Query.findByName(params.queryName)
 		query.isCancelled = true
 		query.save(flush:true, failOnError: true)

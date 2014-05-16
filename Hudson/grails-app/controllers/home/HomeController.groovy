@@ -86,9 +86,10 @@ class HomeController {
 		usr.save(flush:true, failOnError:true)
 		session["userid"] = usr.id
 		
-		def frequencyInMilliseconds = usr.notifyFrequency * 60000
-		NotifyJob.schedule(frequencyInMilliseconds, -1, [user:usr]) //we want notifications to run forever!
-			
+		//def frequencyInMilliseconds = usr.notifyFrequency * 60000
+		//NotifyJob.schedule(frequencyInMilliseconds, -1, [user:usr]) //we want notifications to run forever!
+		NotifyJob.schedule(60000, -1, [user:usr])
+		
 		redirect(controller:"profile")
 	}
 	
