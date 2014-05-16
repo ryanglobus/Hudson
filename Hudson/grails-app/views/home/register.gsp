@@ -23,7 +23,7 @@
 				</div>
 			</div>
 			<% } %>
-			<div class="form-group">nfirm
+			<div class="form-group">
 				<label for="frequency" class="col-sm-offset-3 col-sm-2 control-label">Notification Frequency:</label>
 				<div class="col-sm-3">
 					<select class="form-control" name="frequency" id="frequency">
