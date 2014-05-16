@@ -22,7 +22,8 @@ class ProfileController {
 		if(!validForm) return
 
 
-			Query query = new Query()
+		Query query = new Query()
+
 		query.name = params.queryName
 		query.searchText = params.searchText
 		if(params.minrent.length() == 0) query.minRent = null
@@ -128,5 +129,43 @@ class ProfileController {
 		
 		redirect(action: "newResults", params:[queryName: "all"])
 	}
-
+	
+	def settings() {}
+	
+	def changePassword() {
+		boolean validForm
+		withForm {
+			validForm = true
+		} .invalidToken {
+			flash.message = "Form token test failed"
+			redirect(action:'index')
+			validForm = false
+		}
+		if(!validForm) return
+		
+		User usr = User.findById(session["userid"])	
+		if(!passwordCheck(params.oldPassword, usr)) {
+			flash.message = "Error: Please enter your old password"
+			redirect(action:'settings')
+			return
+		}
+		
+		if(params.newPassword != params.confirmPassword) { //or .equals?
+			flash.message = "Error: Make sure you confirm the correct password"
+			redirect(action:'settings')
+			return
+		}
+		
+		usr.salt = HomeController.getSalt()
+		usr.passwordHash = HomeController.getHashedPassword(params.newPassword, usr.salt)
+		usr.save(flush:true, failOnError:true)
+		flash.message = "Your password has been updated."
+		redirect(action:'settings')
+	}
+	
+	private static boolean passwordCheck(String pass, User usr) {
+		String hashedPassword = HomeController.getHashedPassword(pass, usr.salt)
+		if(hashedPassword != usr.passwordHash) return false
+		return true
+	}
 }

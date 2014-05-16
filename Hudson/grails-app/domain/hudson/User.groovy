@@ -127,5 +127,44 @@ class User {
             }
         }
     }
+	
+	public void sendPassword (String to, String recFirstName, String link) {
+		// Sender's email ID needs to be mentioned
+		String from = "Hudson";
+
+		// Get system properties
+		Properties properties = System.getProperties();
+
+		properties.setProperty ("mail.host", "smtp.gmail.com");
+		properties.setProperty("mail.smtp.auth", "true");
+		properties.setProperty("mail.smtp.port", "" + 587);
+		properties.setProperty("mail.smtp.starttls.enable", "true");
+		properties.setProperty ("mail.transport.protocol", "smtp");
+
+		Session session = Session.getInstance(properties, new Authenticator() {
+					@Override
+					protected PasswordAuthentication getPasswordAuthentication() {
+						return new PasswordAuthentication("hudson.no.reply.please", "TeamHudson9");
+					}
+				});
+
+		// Create a default MimeMessage object.
+		MimeMessage message = new MimeMessage(session);
+
+		// Set From: header field of the header.
+		message.setFrom(new InternetAddress(from));
+
+		// Set To: header field of the header.
+		message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
+
+		// Set Subject: header field
+		message.setSubject("Hudson: Temporary Password");
+
+		// Now set the actual message
+		message.setText("Hey, " + recFirstName + ", log in with this temporary password. You can reset your password once logged into Hudson: " + link);
+
+		Transport.send(message);
+	}
+
 
 }

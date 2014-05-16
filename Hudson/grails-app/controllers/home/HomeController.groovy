@@ -9,9 +9,10 @@ import hudson.Post
 
 class HomeController {
 
-    def index() { 
-		
-	}
+	private static final Random RANDOM = new SecureRandom();
+	public static final int PASSWORD_LENGTH = 8;
+	
+    def index() {}
 	
 	def login() {
 		boolean validForm = true
@@ -73,7 +74,16 @@ class HomeController {
 			 validForm = false
 		}
 		if(!validForm) return
-		
+		if(User.findByEmail(params.email) != null) {
+			flash.message = "A user already exists with this email address. Please try again with alternate email."
+			redirect(action:'register')
+			return
+		}
+		if(params.password != params.confirmPassword) {
+			flash.message = "Your passwords did not match. Try again!"
+			redirect(action:'register')
+			return
+		}
 		User usr = new User()
 		usr.salt = getSalt()		
 		usr.passwordHash = getHashedPassword(params.password, usr.salt)
@@ -83,7 +93,8 @@ class HomeController {
 		usr.phone = params?.phone
 		usr.notifyFrequency = params.frequency.toInteger()
 		usr.carrier = User.Carrier.valueOf(params.carrier).getValue()
-		usr.save(flush:true, failOnError:true)
+
+		usr.save(flush:true, failOnError: true)
 		session["userid"] = usr.id
 		
 		def frequencyInMilliseconds = usr.notifyFrequency * 60000
@@ -92,7 +103,7 @@ class HomeController {
 		redirect(controller:"profile")
 	}
 	
-	private static String getHashedPassword(String pass, String salt) {
+	public static String getHashedPassword(String pass, String salt) {
 		String password = pass + salt
 		
 		MessageDigest digest = MessageDigest.getInstance("SHA-256")
@@ -101,7 +112,7 @@ class HomeController {
 	}
 	
 
-	private static String getSalt() 
+	public static String getSalt() 
 	{
 		SecureRandom sr = SecureRandom.getInstance("SHA1PRNG");
 		byte[] salt = new byte[32];
@@ -109,5 +120,49 @@ class HomeController {
 		return salt.toString();
 	}
 
-	def postRegister(){}	
+	def postRegister(){}
+	
+	def forgotPassword() {}
+		
+	def sendPassword() {
+		boolean validForm
+		withForm {
+			validForm = true
+		} .invalidToken {
+			flash.message = "Login failed. Please try again."
+			redirect(action:'forgotPassword')
+			validForm = false
+		}
+		if(!validForm) return
+		if(params.username.length() == 0) {
+			flash.message = "Please enter a valid email address"
+			redirect(action:'forgotPassword')
+			return
+		}
+		User usr = User?.findByEmail(params.username)
+		if(usr == null) {
+			flash.message = "Please enter a valid email address"
+			redirect(action:'forgotPassword')	
+			return
+		}
+		String temporary = getTemporaryPassword()
+		usr.salt = getSalt()
+		usr.passwordHash = getHashedPassword(temporary, usr.salt)
+		usr.sendPassword(usr.email, usr.firstName, temporary)
+		usr.save(flush:true, failOnError:true)
+		flash.message = "An email has been sent with a temporary password. You may change it to a password of your choosing when you log in."
+		redirect(action:'index')
+	}
+	
+	private String getTemporaryPassword() {
+		String letters = "abcdefghjkmnpqrstuvwxyzABCDEFGHJKMNPQRSTUVWXYZ23456789+@";
+		
+		String pw = "";
+		for (int i=0; i<PASSWORD_LENGTH; i++) {
+			int index = (int)(RANDOM.nextDouble()*letters.length());
+			pw += letters.substring(index, index+1);
+		}
+		return pw;
+	}
+		
 }

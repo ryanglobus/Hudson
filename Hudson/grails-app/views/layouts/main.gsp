@@ -53,6 +53,7 @@
 						<% } else { %>
 							<li><p class="navbar-text">Hi, ${user.firstName}</p></li>
 							<li><g:link controller="home" action="logout">Log Out</g:link></li>
+							<li><g:link controller="profile" action="settings">Profile Settings</g:link></li>
 						<% } %>
 					</ul>
 				</div>
