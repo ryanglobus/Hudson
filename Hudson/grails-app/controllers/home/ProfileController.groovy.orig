@@ -1,7 +1,6 @@
 package home
 
 import hudson.Query
-import grails.util.Environment
 import hudson.User
 import HudsonJobs.*
 import hudson.Post
@@ -53,12 +52,7 @@ class ProfileController {
 		query.user = User.findById(session["userid"])
 		query.save(flush:true, failOnError: true)
 
-		//Create the job to run the query!
-		//Job will be run every ten minutes for 30 days.
-		if (Environment.current.equals(Environment.PRODUCTION))
-			CrawlJob.schedule(600000, 4319, [query: query]) 
-		else 
-			CrawlJob.schedule(60000, 4319, [query: query])
+		CrawlJob.schedule(600000, 4319, [query: query])
 
 		redirect(action:"queryCreated", params: [queryid : query.id, housingType: params.type])
 	}
@@ -106,6 +100,7 @@ class ProfileController {
 
 		[results: results, queryTitle:queryTitle, queryNames: queryNames]
 	}
+
 
 	//This action is called when the user chooses to delete posts from the "new post" page
 	//It deletes the post and then redirects back to the new, updated, new post page.

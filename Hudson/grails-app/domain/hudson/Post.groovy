@@ -1,9 +1,11 @@
 package hudson
 
+
 class Post {
 
     String link
     String title
+	String replyEmail
     Boolean isNew = Boolean.TRUE //Has a notification been sent?
     Calendar date
 	Boolean deleted = Boolean.FALSE     //Has the user marked this post as "seen" on the site?
@@ -15,6 +17,7 @@ class Post {
     static constraints = {
         link url: true
         title nullable: true
+		replyEmail nullable: true
     }
 
 }

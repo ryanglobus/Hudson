@@ -48,13 +48,15 @@ grails.project.dependency.resolution = {
 
     dependencies {
         // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes e.g.
-        // runtime 'mysql:mysql-connector-java:5.1.27'
+        runtime 'mysql:mysql-connector-java:5.1.30'
         // runtime 'org.postgresql:postgresql:9.3-1100-jdbc41'
+        runtime 'org.xerial:sqlite-jdbc:3.6.17'
         runtime('org.codehaus.groovy.modules.http-builder:http-builder:0.5.1') {
             excludes 'xalan'
             excludes 'xml-apis'
             excludes 'groovy'
         }
+        // runtime 'io.iron.ironmq:ironmq:0.0.17'
     }
 
     plugins {

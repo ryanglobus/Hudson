@@ -1,7 +1,6 @@
 package home
 
 import HudsonJobs.*
-import grails.util.Environment
 import hudson.User
 import java.security.MessageDigest
 import java.security.SecureRandom
@@ -15,8 +14,6 @@ class HomeController {
 	
     def index() {}
 	
-	
-	//The below if else statement seems like it should be taken out..
 	def login() {
 		boolean validForm = true
 		withForm {
@@ -96,14 +93,14 @@ class HomeController {
 		usr.phone = params?.phone
 		usr.notifyFrequency = params.frequency.toInteger()
 		usr.carrier = User.Carrier.valueOf(params.carrier).getValue()
-
+<<<<<<< HEAD
 		usr.save(flush:true, failOnError: true)
+=======
+		usr.save(flush:true, failOnError:true)
+>>>>>>> master
 		session["userid"] = usr.id
 		
-		def frequencyInMilliseconds = usr.notifyFrequency * 6000
-		//Create the job that notifies the user!
-		if (Environment.current.equals(Environment.PRODUCTION))
-			frequencyInMilliseconds = usr.notifyFrequency * 60000
+		def frequencyInMilliseconds = usr.notifyFrequency * 60000
 		NotifyJob.schedule(frequencyInMilliseconds, -1, [user:usr]) //we want notifications to run forever!
 			
 		redirect(controller:"profile")
