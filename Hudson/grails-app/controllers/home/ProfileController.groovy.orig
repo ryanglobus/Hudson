@@ -1,11 +1,9 @@
 package home
 
 import hudson.Query
-import grails.util.Environment
 import hudson.User
 import HudsonJobs.*
 import hudson.Post
-import hudson.queue.Message
 
 
 class ProfileController {
@@ -54,19 +52,7 @@ class ProfileController {
 		query.user = User.findById(session["userid"])
 		query.save(flush:true, failOnError: true)
 
-		// TODO below is slow, and what if it fails?
-
-		// run the query now to get results
-		query.searchAndSaveNewPosts()
-
-		// Enqueue the job to run the query
-		Message<Query> msg = new Message<Query>(query)
-		if (Environment.current.equals(Environment.PRODUCTION)) {
-			msg.delay = 600 // every 10 minutes
-		} else {
-			msg.delay = 60 // every minute
-		}
-		Query.queue.enqueue(msg)
+		CrawlJob.schedule(600000, 4319, [query: query])
 
 		redirect(action:"queryCreated", params: [queryid : query.id, housingType: params.type])
 	}
@@ -101,7 +87,7 @@ class ProfileController {
 					query == q && deleted == false
 				}
 
-				if (params.queryName != "all") { // TODO can I name my query all?
+				if (params.queryName != "all") {
 					if(q == qry)
 						results.put(q.name, tempRes)
 				}
@@ -114,6 +100,7 @@ class ProfileController {
 
 		[results: results, queryTitle:queryTitle, queryNames: queryNames]
 	}
+
 
 	//This action is called when the user chooses to delete posts from the "new post" page
 	//It deletes the post and then redirects back to the new, updated, new post page.

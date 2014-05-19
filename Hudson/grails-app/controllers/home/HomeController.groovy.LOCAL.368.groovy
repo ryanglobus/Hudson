@@ -1,12 +1,11 @@
 package home
 
 import HudsonJobs.*
-import grails.util.Environment
 import hudson.User
 import java.security.MessageDigest
 import java.security.SecureRandom
 import javax.xml.bind.DatatypeConverter
-import hudson.Post
+
 
 class HomeController {
 
@@ -15,10 +14,8 @@ class HomeController {
 	
     def index() {}
 	
-	
-	//The below if else statement seems like it should be taken out..
 	def login() {
-		boolean validForm = true
+		boolean validForm
 		withForm {
 			validForm = true
 		} .invalidToken {
@@ -41,20 +38,6 @@ class HomeController {
 			return
 		}
 		session["userid"] = usr.id
-		
-		//Find out how many new posts they have to update the navbar badge!
-		//Better to store it in a session var then have to recalculate the value
-		//every time we need to render the navbar.
-		def newPostCount = 0
-		for(q in usr.queries) {
-			def result = Post.findAll {
-				query == q && deleted == false
-			}
-			
-			newPostCount += result.size()
-		}
-		session["newPostCount"] = newPostCount
-		
 		redirect(controller:"profile")
 		
 	}
@@ -96,16 +79,12 @@ class HomeController {
 		usr.phone = params?.phone
 		usr.notifyFrequency = params.frequency.toInteger()
 		usr.carrier = User.Carrier.valueOf(params.carrier).getValue()
-
 		usr.save(flush:true, failOnError: true)
 		session["userid"] = usr.id
 		
-		def frequencyInMilliseconds = usr.notifyFrequency * 6000
-		//Create the job that notifies the user!
-		if (Environment.current.equals(Environment.PRODUCTION))
-			frequencyInMilliseconds = usr.notifyFrequency * 60000
+		def frequencyInMilliseconds = usr.notifyFrequency * 60000
 		NotifyJob.schedule(frequencyInMilliseconds, -1, [user:usr]) //we want notifications to run forever!
-			
+				
 		redirect(controller:"profile")
 	}
 	

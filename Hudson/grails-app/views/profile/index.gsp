@@ -9,6 +9,7 @@
 	</head>
 	
 	<body>
+	${flash.message }
 		<g:if test="${flash.invalidToken }">
 			Invalid form token!
 		</g:if>
@@ -72,7 +73,7 @@
 								<g:checkBox name="notify" value="true" /> Receive Notifications?
 							</label>
 						</div>
-						<br/>
+
 						<input type="checkbox" name="instantReply" id="instantReply"/>
 						<label for="instantReply">Auto-Reply?</label>
 						<input type = "text" name="responseMessage" placeholder = "Auto-reply message">
