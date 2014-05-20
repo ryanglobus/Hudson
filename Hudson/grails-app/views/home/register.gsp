@@ -6,13 +6,15 @@
 	</head>
 	
 	<body>
+		${flash.message}
 		<h2 class="text-center">Register an Account</h2>
 		<g:form class="form-horizontal" action="newusersession" useToken="true" role="form">
 			<% def fields = [['firstName', 'First Name', 'text'],
 							 ['lastName', 'Last Name', 'text'],
 							 ['email', 'Email', 'email'],
 							 ['phone', 'Phone', 'tel'],
-							 ['password', 'Password', 'password']] %>
+							 ['password', 'Password', 'password'],
+							 ['confirmPassword', 'Confirm Password', 'password']] %>
 			<% for (def field : fields) { %>
 			<div class="form-group">
 				<label for="${field[0]}" class="col-sm-offset-3 col-sm-2 control-label">${field[1]}:</label>

@@ -56,6 +56,65 @@ class User {
 		notifyFrequency blank: false
 	}
 
+	String phoneEmail(String phone) {
+		switch (carrier) {
+			case Carrier.ATT.getValue():
+				return phone + "@txt.att.net";
+			case Carrier.TMOBILE.getValue():
+				return phone + "@tmomail.net";
+			case Carrier.VIRGIN.getValue():
+				return phone + "@vmobl.com";
+			case Carrier.CINGULAR.getValue():
+				return phone + "@cingularme.com";
+			case Carrier.SPRINT.getValue():
+				return phone + "@messaging.sprintpcs.com";
+			case Carrier.VERIZON.getValue():
+				return phone + "@vtext.com";
+			case Carrier.NEXTEL.getValue():
+				return phone + "@messaging.nextel.com";
+			default:
+				return null;
+		}
+	}
+
+	public void sendPassword (String to, String recFirstName, String link) {
+		// Sender's email ID needs to be mentioned
+		String from = "Hudson";
+
+		// Get system properties
+		Properties properties = System.getProperties();
+
+		properties.setProperty ("mail.host", "smtp.gmail.com");
+		properties.setProperty("mail.smtp.auth", "true");
+		properties.setProperty("mail.smtp.port", "" + 587);
+		properties.setProperty("mail.smtp.starttls.enable", "true");
+		properties.setProperty ("mail.transport.protocol", "smtp");
+
+		Session session = Session.getInstance(properties, new Authenticator() {
+					@Override
+					protected PasswordAuthentication getPasswordAuthentication() {
+						return new PasswordAuthentication("hudson.no.reply.please", "TeamHudson9");
+					}
+				});
+
+		// Create a default MimeMessage object.
+		MimeMessage message = new MimeMessage(session);
+
+		// Set From: header field of the header.
+		message.setFrom(new InternetAddress(from));
+
+		// Set To: header field of the header.
+		message.addRecipient(Message.RecipientType.TO, new InternetAddress(to));
+
+		// Set Subject: header field
+		message.setSubject("Hudson: Temporary Password");
+
+		// Now set the actual message
+		message.setText("Hey, " + recFirstName + ", log in with this temporary password. You can reset your password once logged into Hudson: " + link);
+
+		Transport.send(message);
+	}
+
 	void sendNotification(String to, String messageBody, Boolean autoReply) {
 		// Sender's email ID needs to be mentioned
 		String from = "Hudson";
@@ -94,29 +153,8 @@ class User {
 		}
 		// Now set the actual message
 		message.setText(messageBody);
-		
-		Transport.send(message);
-	}
 
-	String phoneEmail(String phone) {
-		switch (carrier) {
-			case Carrier.ATT.getValue():
-				return phone + "@txt.att.net";
-			case Carrier.TMOBILE.getValue():
-				return phone + "@tmomail.net";
-			case Carrier.VIRGIN.getValue():
-				return phone + "@vmobl.com";
-			case Carrier.CINGULAR.getValue():
-				return phone + "@cingularme.com";
-			case Carrier.SPRINT.getValue():
-				return phone + "@messaging.sprintpcs.com";
-			case Carrier.VERIZON.getValue():
-				return phone + "@vtext.com";
-			case Carrier.NEXTEL.getValue():
-				return phone + "@messaging.nextel.com";
-			default:
-				return null;
-		}
+		Transport.send(message);
 	}
 
 	String getReplyEmail(String link) {
@@ -137,10 +175,10 @@ class User {
 		}
 		return "";
 	}
-	
+
 	void notifyUserOfReplyIssue(String link) {
-		sendNotification(this.email, "There was an issue auto-replying to the following post: " + 
-			link + " Please check out the original listing.", false);
+		sendNotification(this.email, "There was an issue auto-replying to the following post: " +
+				link + " Please check out the original listing.", false);
 	}
 
 	void notifyUser() {
@@ -174,8 +212,8 @@ class User {
 		}
 
 		String messageBody = "Hey " + this.firstName + ", \nCheck out these new Craigslist listings " +
-		" that match your criteria: \n" + allLinks;
-		
+				" that match your criteria: \n" + allLinks;
+
 		if (!allLinks.isEmpty()) {
 			if (!this.email.isEmpty())
 				sendNotification(this.email, messageBody, false);
@@ -184,6 +222,7 @@ class User {
 				sendNotification(newPhoneEmail, messageBody, false);
 			}
 		}
-		
+
 	}
 }
+

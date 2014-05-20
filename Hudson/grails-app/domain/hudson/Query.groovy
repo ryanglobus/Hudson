@@ -15,6 +15,10 @@ import javax.xml.parsers.FactoryConfigurationError
 import javax.xml.parsers.ParserConfigurationException
 
 import java.io.IOException
+import org.xml.sax.SAXException
+import hudson.queue.Queue
+import hudson.queue.StringConverter
+import grails.util.Environment
 
 import org.xml.sax.SAXException
 import org.jsoup.Jsoup
@@ -46,17 +50,9 @@ class Query {
 	Integer searchFrequency = 20 // in minutes
 	String searchText
 	String name
-	Integer minRent
-	Integer maxRent
-	Integer numBedrooms // min number of bedrooms
-	Integer housingType = HousingType.ANY.getValue()
-	// for Booleans, null means "indifferent"
-	Boolean cat
-	Boolean dog
-	Boolean notify
-	Boolean instantReply
-	String responseMessage
-	Boolean isCancelled = Boolean.FALSE
+	
+    // if changing isCancelled from false to true, need to put query back in queue
+    Boolean isCancelled = Boolean.FALSE 
 
 	static hasMany = [posts: Post]
 	static belongsTo = [user: User]
@@ -74,6 +70,53 @@ class Query {
 	/**
 	 * Returns null upon failure. Does NOT save list of posts to database.
 	 */
+    transient static final Queue<Query> queue = new Queue<Query>(queueName(), new StringConverter<Query>() {
+        @Override
+        String generateString(Query q) {
+            return q.id.toString()
+        }
+
+        @Override
+        Query parseString(String s) {
+            try {
+                Integer id = s.toInteger()
+                return Query.get(id)
+            } catch (NumberFormatException nfe) {
+                nfe.printStackTrace()
+                return null
+            }
+        }
+    })
+
+    private static String queueName() {
+        if (Environment.current.equals(Environment.PRODUCTION)) {
+            return 'query'
+        } else {
+            // create a timestamped query for each dev/test run to ensure
+            // starting with an empty queue
+            return 'query' + Long.toString(System.currentTimeMillis())
+        }
+    }
+
+    /**
+     * Searches for new posts, saves them, and returns them.
+     */
+    List<Post> searchAndSaveNewPosts() {
+        List<Post> posts = searchCraigslist();
+        // closure below assumes posts are all unique
+        posts = posts.findAll { p ->
+            Post.findByLink(p.link) == null
+        }
+        posts.each { p ->
+            p.query = this
+            p.save(flush: true, failOnError: true)
+        }
+        return posts
+    }
+
+    /**
+     * Returns null upon failure. Does NOT save list of posts to database.
+     */
 	List<Post> searchCraigslist() throws FactoryConfigurationError,
 			ParserConfigurationException, IOException, SAXException {
 		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance()
@@ -232,4 +275,6 @@ class Query {
 			}
 		}
 	}
+    }
+
 }

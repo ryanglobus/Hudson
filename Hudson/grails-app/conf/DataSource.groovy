@@ -1,9 +1,10 @@
 dataSource {
     pooled = true
     jmxExport = true
-    driverClassName = "org.h2.Driver"
-    username = "sa"
-    password = ""
+    // H2
+    //driverClassName = "org.h2.Driver"
+    //username = "sa"
+    //password = ""
 }
 hibernate {
     cache.use_second_level_cache = true
@@ -57,7 +58,7 @@ environments {
         dataSource {
             dbCreate = "update"
             //url = "jdbc:h2:prodDb;MVCC=TRUE;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE"
-            url = "jdbc:mysql://hudsondb.cyxciiu7qvuv.us-west-2.rds.amazonaws.com:3306"
+            url = "jdbc:mysql://hudsondb.cyxciiu7qvuv.us-west-2.rds.amazonaws.com:3306/hudsondb"
             username="hudson"
             password="bgkrMDWAMDCA12!"
             dialect = "org.hibernate.dialect.MySQL5Dialect"

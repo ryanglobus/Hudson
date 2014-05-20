@@ -35,6 +35,9 @@
 		<p class="text-center">
 			<g:link action= "register">Don't have an account? Register for Hudson!</g:link>
 		</p>
+		<p class="text-center">
+			<g:link action ="forgotPassword">Forgot password? Click here to reset</g:link>
+		</p>
 			
 	</body>
 
