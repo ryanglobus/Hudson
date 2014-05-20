@@ -3,8 +3,11 @@ package hudson.queue
 import grails.util.Environment
 import groovy.transform.PackageScope
 import groovyx.net.http.RESTClient
+import groovyx.net.http.AsyncHTTPBuilder
+import groovyx.net.http.Method
 import groovyx.net.http.ContentType
 import groovyx.net.http.HttpResponseDecorator
+import java.util.concurrent.Future
 
 class Queue<E> {
 
@@ -27,7 +30,7 @@ class Queue<E> {
         }
     }
     private final StringConverter<E> converter
-    private final RESTClient client
+    private final AsyncHTTPBuilder client
     private final String name
     private final String endpoint // without the last '/'
 
@@ -35,7 +38,10 @@ class Queue<E> {
         this.converter = converter
         this.name = name
         this.endpoint = "https://mq-aws-us-east-1.iron.io/1/projects/${PROJECT_ID}/queues/${name}"
-        client = new RESTClient(this.endpoint + '/')
+        client = new AsyncHTTPBuilder(
+            poolSize: 10,
+            uri: this.endpoint + '/'
+        )
     }
 
     // this method returns the argument after resetting its id.
@@ -47,17 +53,19 @@ class Queue<E> {
         if (msg.expiresIn != null) body['expires_in'] = msg.expiresIn
         def response = null
         try {
-            response = client.post(
+            Future<?> future = client.post(
                 path: 'messages',
+                requestContentType: ContentType.JSON,
                 contentType: ContentType.JSON,
                 headers: [Authorization: "OAuth ${TOKEN}"],
                 body: [messages: [body]]
             )
+            response = future.get()
         } catch (Exception e) {
             throw new QueueException(e)
         }
         checkResponseSuccess(response)
-        def ids = response.data['ids']
+        def ids = response.ids
         if (ids == null || ids.size() == 0) 
             throw new QueueException("enqueue did not return any ids")
         String id = ids[0]
@@ -68,21 +76,26 @@ class Queue<E> {
     Message<E> dequeue() throws QueueException {
         def response = null
         try {
-            response = client.get(
+            Future<?> future = client.get(
                 path: 'messages',
                 contentType: ContentType.JSON,
                 headers: [Authorization: "OAuth ${TOKEN}"],
                 query: [n: 1]
             )
+            response = future.get()
         } catch (Exception e) {
             throw new QueueException(e)
         }
         // TODO type checks
         checkResponseSuccess(response)
-        def messages = response.data['messages']
+        def messages = response.messages
         if (messages == null || messages.size() == 0) return null
         def message = messages[0]
-        Message<E> m = new Message<E>(converter.parseString(message['body']))
+        String bodyString = message['body']
+        E body = converter.parseString(bodyString)
+        if (body == null)
+            throw new QueueException("Could not parse ${bodyString} in Queue ${getName()}")
+        Message<E> m = new Message<E>(body)
         m.setId(message['id'])
         m.timeout = message['timeout']
         return m
@@ -91,11 +104,12 @@ class Queue<E> {
     void delete(Message<E> msg) throws QueueException {
         def response = null
         try {
-            response = client.delete(
-                path: "messages/${msg.getId()}",
-                contentType: ContentType.JSON,
-                headers: [Authorization: "OAuth ${TOKEN}"]
-            )
+            // DELETE requests formed differently than GET/POST
+            Future<?> future = client.request(Method.DELETE, ContentType.JSON) {req ->
+                uri.path = "messages/${msg.getId()}"
+                headers.Authorization = "OAuth ${TOKEN}"
+            }
+            response = future.get()
         } catch (Exception e) {
             throw new QueueException(e)
         }
@@ -105,27 +119,29 @@ class Queue<E> {
     Integer size() throws QueueException {
         def response = null
         try {
-            response = client.get(
+            Future<?> future = client.get(
                 uri: endpoint, // hack since clear doesn't work with trailing '/'
                 contentType: ContentType.JSON,
                 headers: [Authorization: "OAuth ${TOKEN}"]
             )
+            response = future.get()
         } catch (Exception e) {
             throw new QueueException(e)
         }
         checkResponseSuccess(response)
-        return response.data['size']
+        return response.size
     }
 
     // used for dev and testing
     void clear() throws QueueException {
         def response = null
         try {
-            response = client.post(
+            Future<?> future = client.post(
                 path: 'clear',
                 contentType: ContentType.JSON,
                 headers: [Authorization: "OAuth ${TOKEN}"]
             )
+            response = future.get()
         } catch (Exception e) {
             throw new QueueException(e)
         }
@@ -139,10 +155,8 @@ class Queue<E> {
     private static boolean checkResponseSuccess(response) throws QueueException {
         if (response == null)
             throw new QueueException("client response is null")
-        if (!(response instanceof HttpResponseDecorator))
+        if (!(response instanceof net.sf.json.JSONObject))
             throw new QueueException("client response is of unexpected type ${response.getClass()}")
-        if (!response.isSuccess())
-            throw new QueueException("client resposne has non-success status code of ${response.status}")
     }
 
 }

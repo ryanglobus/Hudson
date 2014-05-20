@@ -5,6 +5,7 @@ import grails.util.Environment
 import hudson.User
 import HudsonJobs.*
 import hudson.Post
+import hudson.queue.Message
 
 
 class ProfileController {
@@ -53,12 +54,19 @@ class ProfileController {
 		query.user = User.findById(session["userid"])
 		query.save(flush:true, failOnError: true)
 
-		//Create the job to run the query!
-		//Job will be run every ten minutes for 30 days.
-		if (Environment.current.equals(Environment.PRODUCTION))
-			CrawlJob.schedule(600000, 4319, [query: query]) 
-		else 
-			CrawlJob.schedule(60000, 4319, [query: query])
+		// TODO below is slow, and what if it fails?
+
+		// run the query now to get results
+		query.searchAndSaveNewPosts()
+
+		// Enqueue the job to run the query
+		Message<Query> msg = new Message<Query>(query)
+		if (Environment.current.equals(Environment.PRODUCTION)) {
+			msg.delay = 600 // every 10 minutes
+		} else {
+			msg.delay = 60 // every minute
+		}
+		Query.queue.enqueue(msg)
 
 		redirect(action:"queryCreated", params: [queryid : query.id, housingType: params.type])
 	}
@@ -93,7 +101,7 @@ class ProfileController {
 					query == q && deleted == false
 				}
 
-				if (params.queryName != "all") {
+				if (params.queryName != "all") { // TODO can I name my query all?
 					if(q == qry)
 						results.put(q.name, tempRes)
 				}
