@@ -7,6 +7,7 @@ import java.security.MessageDigest
 import java.security.SecureRandom
 import javax.xml.bind.DatatypeConverter
 import hudson.Post
+import hudson.Query
 
 class HomeController {
 
