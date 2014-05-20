@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<region name="SF Bay Area" value="sfbay">
+<city name="san francisco" value="sfc">
+<neighborhoods>
+<neighborhood value="149">alamo square / nopa</neighborhood>
+<neighborhood value="110">bayview</neighborhood>
+<neighborhood value="3">bernal heights</neighborhood>
+<neighborhood value="4">castro / upper market</neighborhood>
+<neighborhood value="5">cole valley / ashbury hts</neighborhood>
+<neighborhood value="6">downtown / civic / van ness</neighborhood>
+<neighborhood value="7">excelsior / outer mission</neighborhood>
+<neighborhood value="8">financial district</neighborhood>
+<neighborhood value="9">glen park</neighborhood>
+<neighborhood value="11">haight ashbury</neighborhood>
+<neighborhood value="12">hayes valley</neighborhood>
+<neighborhood value="13">ingleside / SFSU / CCSF</neighborhood>
+<neighborhood value="14">inner richmond</neighborhood>
+<neighborhood value="15">inner sunset / UCSF</neighborhood>
+<neighborhood value="16">laurel hts / presidio</neighborhood>
+<neighborhood value="10">lower haight</neighborhood>
+<neighborhood value="20">lower nob hill</neighborhood>
+<neighborhood value="24">lower pac hts</neighborhood>
+<neighborhood value="17">marina / cow hollow</neighborhood>
+<neighborhood value="18">mission district</neighborhood>
+<neighborhood value="19">nob hill</neighborhood>
+<neighborhood value="21">noe valley</neighborhood>
+<neighborhood value="22">north beach / telegraph hill</neighborhood>
+<neighborhood value="23">pacific heights</neighborhood>
+<neighborhood value="164">portola district</neighborhood>
+<neighborhood value="25">potrero hill</neighborhood>
+<neighborhood value="26">richmond / seacliff</neighborhood>
+<neighborhood value="27">russian hill</neighborhood>
+<neighborhood value="1">SOMA / south beach</neighborhood>
+<neighborhood value="28">sunset / parkside</neighborhood>
+<neighborhood value="156">tenderloin</neighborhood>
+<neighborhood value="157">treasure island</neighborhood>
+<neighborhood value="29">twin peaks / diamond hts</neighborhood>
+<neighborhood value="2">USF / panhandle</neighborhood>
+<neighborhood value="118">visitacion valley</neighborhood>
+<neighborhood value="30">western addition</neighborhood>
+<neighborhood value="114">west portal / forest hill</neighborhood>
+</neighborhoods>
+</city>
+<city name="south bay" value="sby">
+<neighborhoods>
+<neighborhood value="31">campbell</neighborhood>
+<neighborhood value="32">cupertino</neighborhood>
+<neighborhood value="33">gilroy</neighborhood>
+<neighborhood value="158">hollister</neighborhood>
+<neighborhood value="34">los gatos</neighborhood>
+<neighborhood value="109">milpitas</neighborhood>
+<neighborhood value="119">morgan hill</neighborhood>
+<neighborhood value="35">mountain view</neighborhood>
+<neighborhood value="36">san jose downtown</neighborhood>
+<neighborhood value="37">san jose east</neighborhood>
+<neighborhood value="38">san jose north</neighborhood>
+<neighborhood value="39">san jose south</neighborhood>
+<neighborhood value="40">san jose west</neighborhood>
+<neighborhood value="41">santa clara</neighborhood>
+<neighborhood value="43">saratoga</neighborhood>
+<neighborhood value="44">sunnyvale</neighborhood>
+<neighborhood value="45">willow glen / cambrian</neighborhood>
+</neighborhoods>
+</city>
+<city name="east bay" value="eby">
+<neighborhoods>
+<neighborhood value="46">alameda</neighborhood>
+<neighborhood value="47">albany / el cerrito</neighborhood>
+<neighborhood value="48">berkeley</neighborhood>
+<neighborhood value="49">berkeley north / hills</neighborhood>
+<neighborhood value="142">brentwood / oakley</neighborhood>
+<neighborhood value="51">concord / pleasant hill / martinez</neighborhood>
+<neighborhood value="52">danville / san ramon</neighborhood>
+<neighborhood value="53">dublin / pleasanton / livermore</neighborhood>
+<neighborhood value="112">emeryville</neighborhood>
+<neighborhood value="154">fairfield / vacaville</neighborhood>
+<neighborhood value="54">fremont / union city / newark</neighborhood>
+<neighborhood value="55">hayward / castro valley</neighborhood>
+<neighborhood value="56">hercules, pinole, san pablo, el sob</neighborhood>
+<neighborhood value="57">lafayette / orinda / moraga</neighborhood>
+<neighborhood value="58">oakland downtown</neighborhood>
+<neighborhood value="59">oakland east</neighborhood>
+<neighborhood value="60">oakland hills / mills</neighborhood>
+<neighborhood value="61">oakland lake merritt / grand</neighborhood>
+<neighborhood value="62">oakland north / temescal</neighborhood>
+<neighborhood value="63">oakland piedmont / montclair</neighborhood>
+<neighborhood value="66">oakland rockridge / claremont</neighborhood>
+<neighborhood value="64">oakland west</neighborhood>
+<neighborhood value="113">pittsburg / antioch</neighborhood>
+<neighborhood value="65">richmond / point / annex</neighborhood>
+<neighborhood value="67">san leandro</neighborhood>
+<neighborhood value="68">vallejo / benicia</neighborhood>
+<neighborhood value="69">walnut creek</neighborhood>
+</neighborhoods>
+</city>
+<city name="peninsula" value="pen">
+<neighborhoods>
+<neighborhood value="70">atherton</neighborhood>
+<neighborhood value="71">belmont</neighborhood>
+<neighborhood value="73">brisbane</neighborhood>
+<neighborhood value="74">burlingame</neighborhood>
+<neighborhood value="115">coastside/pescadero</neighborhood>
+<neighborhood value="75">daly city</neighborhood>
+<neighborhood value="76">east palo alto</neighborhood>
+<neighborhood value="77">foster city</neighborhood>
+<neighborhood value="161">half moon bay</neighborhood>
+<neighborhood value="78">los altos</neighborhood>
+<neighborhood value="79">menlo park</neighborhood>
+<neighborhood value="80">millbrae</neighborhood>
+<neighborhood value="81">mountain view</neighborhood>
+<neighborhood value="82">pacifica</neighborhood>
+<neighborhood value="83">palo alto</neighborhood>
+<neighborhood value="163">portola valley</neighborhood>
+<neighborhood value="84">redwood city</neighborhood>
+<neighborhood value="85">redwood shores</neighborhood>
+<neighborhood value="86">san bruno</neighborhood>
+<neighborhood value="87">san carlos</neighborhood>
+<neighborhood value="88">san mateo</neighborhood>
+<neighborhood value="89">south san francisco</neighborhood>
+<neighborhood value="162">woodside</neighborhood>
+</neighborhoods>
+</city>
+<city name="north bay" value="nby">
+<neighborhoods>
+<neighborhood value="91">corte madera</neighborhood>
+<neighborhood value="92">fairfax</neighborhood>
+<neighborhood value="93">greenbrae</neighborhood>
+<neighborhood value="155">healdsburg / windsor</neighborhood>
+<neighborhood value="94">kentfield / ross</neighborhood>
+<neighborhood value="152">lake county</neighborhood>
+<neighborhood value="95">larkspur</neighborhood>
+<neighborhood value="153">mendocino county</neighborhood>
+<neighborhood value="96">mill valley</neighborhood>
+<neighborhood value="97">napa county</neighborhood>
+<neighborhood value="98">novato</neighborhood>
+<neighborhood value="99">petaluma</neighborhood>
+<neighborhood value="117">rohnert pk / cotati</neighborhood>
+<neighborhood value="143">russian river</neighborhood>
+<neighborhood value="101">san anselmo</neighborhood>
+<neighborhood value="102">san rafael</neighborhood>
+<neighborhood value="103">santa rosa</neighborhood>
+<neighborhood value="104">sausalito</neighborhood>
+<neighborhood value="105">sebastopol</neighborhood>
+<neighborhood value="106">sonoma</neighborhood>
+<neighborhood value="108">tiburon / belvedere</neighborhood>
+<neighborhood value="107">west marin</neighborhood>
+</neighborhoods>
+</city>
+<city name="santa cruz" value="scz">
+<neighborhoods>
+<neighborhood value="144">aptos</neighborhood>
+<neighborhood value="148">boulder creek</neighborhood>
+<neighborhood value="145">capitola</neighborhood>
+<neighborhood value="42">santa cruz</neighborhood>
+<neighborhood value="146">scotts valley</neighborhood>
+<neighborhood value="151">soquel</neighborhood>
+<neighborhood value="147">watsonville</neighborhood>
+</neighborhoods>
+</city>
+</region>

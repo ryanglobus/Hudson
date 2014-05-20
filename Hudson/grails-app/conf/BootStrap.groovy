@@ -1,10 +1,15 @@
 import hudson.*
 import hudson.queue.*
 import HudsonJobs.*
+import hudson.neighborhood.*
+
 
 class BootStrap {
 
     def init = { servletContext ->
+        
+        Region.initializeData()
+
         environments {
             development {
                 /* insert your own email address and phone number to easily
