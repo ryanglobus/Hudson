@@ -9,6 +9,13 @@
 	</head>
 	
 	<body>
+		<iframe
+  			width="600"
+ 		 	height="450"
+  			frameborder="0" style="border:0"
+  			src="https://www.google.com/maps/embed/v1/place?key=AIzaSyB2Uf9nK2gPGQ7z-1x_rR4-96psSngZL-8
+  			&q=Starbucks+Coffee,Seattle+WA">
+		</iframe>
 		<h1>Query Results For ${queryTitle}</h1>
 		<g:form action="deletePosts">
 		<%
