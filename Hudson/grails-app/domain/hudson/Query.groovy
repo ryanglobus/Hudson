@@ -15,12 +15,11 @@ import org.xml.sax.SAXException
 import hudson.queue.Queue
 import hudson.queue.StringConverter
 import grails.util.Environment
+import hudson.neighborhood.*
 
 
 
 class Query {
-
-    static final String CRAIGSLIST_URL = 'http://sfbay.craigslist.org/'
 
     enum HousingType {
         ANY(0), APARTMENT(1), CONDO(2), COTTAGE_CABIN(3), DUPLEX(4), FLAT(5),
@@ -54,8 +53,8 @@ class Query {
     // if changing isCancelled from false to true, need to put query back in queue
     Boolean isCancelled = Boolean.FALSE 
 
-	static hasMany = [posts: Post]
-	static belongsTo = [user: User]
+	static hasMany = [posts: Post, neighborhoods: Neighborhood]
+	static belongsTo = [user: User, region: Region, city: City] // TODO make region default to SFBAY
 
     static constraints = {
         searchText nullable: true
@@ -65,6 +64,8 @@ class Query {
         cat nullable: true
         dog nullable: true
         responseMessage nullable: true
+        city nullable: true
+        neighborhoods nullable: true
     }
 
     transient static final Queue<Query> queue = new Queue<Query>(queueName(), new StringConverter<Query>() {
@@ -122,6 +123,10 @@ class Query {
     }
 
     String craigslistRssUrl() {
+        String domain = "http://${region.value}.craigslist.org/"
+        String path = 'search/apa'
+        if (city != null) path += "/${city.value}"
+
         // note that the parameter order is important for tests to pass
         def params = [:]
         if (numBedrooms != null) params['bedrooms'] = numBedrooms
@@ -131,14 +136,15 @@ class Query {
         }
         if (maxRent != null) params['maxAsk'] = maxRent
         if (minRent != null) params['minAsk'] = minRent
+        if (neighborhoods != null) params['nh'] = neighborhoods.collect { it.value }
         if (cat) params['pets_cat'] = 'purrr'
         if (dog) params['pets_dog'] = 'wooof'
         if (searchText != null) params['query'] = searchText
         params['s'] = '0'
         params['format'] = 'rss'
 
-        URIBuilder uri = new URIBuilder(CRAIGSLIST_URL)
-        uri.path = 'search/apa'
+        URIBuilder uri = new URIBuilder(domain)
+        uri.path = path
         uri.query = params
         return uri.toString()
     }

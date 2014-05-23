@@ -17,15 +17,12 @@ class Region {
         value blank: false, unique: true
     }
 
-    private static boolean initializeDataHasRun = false
     /**
      * This method is here because for some reason while testing, 
      * Bootstrap.groovy does not run. Thus, tests can call this to initialize
-     * Region/City/Neighborhood data. If runs once and succeeds, future calls
-     * do nothing.
+     * Region/City/Neighborhood data.
      */
     static void initializeData() {
-        if (initializeDataHasRun) return
         Region sfbay = Region.findOrCreateWhere(name: 'SF Bay Area',
             value: 'sfbay')
         sfbay.save(flush: true, failOnError: true)
@@ -56,10 +53,13 @@ class Region {
                     }
                 }
             }
-            initializeDataHasRun = true
         } finally {
             if (neighborhoodFile != null) neighborhoodFile.close()
         }
+    }
+
+    static Region sfbay() {
+        return Region.findByValue('sfbay')
     }
 
 }

@@ -6,6 +6,7 @@ import hudson.User
 import HudsonJobs.*
 import hudson.Post
 import hudson.queue.Message
+import hudson.neighborhood.*
 
 
 class ProfileController {
@@ -24,7 +25,7 @@ class ProfileController {
 		if(!validForm) return
 
 
-		Query query = new Query()
+		Query query = new Query(region: Region.sfbay())
 
 		query.name = params.queryName
 		query.searchText = params.searchText

@@ -28,6 +28,7 @@ class BootStrap {
                 ryan.save(failOnError: true)
                 NotifyJob.schedule(60_000, -1, [user: ryan])
                 Query q1 = new Query(
+                    TODO region!
                     user: ryan,
                     name: 'bootstrap query q1',
                     minRent: 300,

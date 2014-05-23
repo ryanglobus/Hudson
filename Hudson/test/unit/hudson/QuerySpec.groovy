@@ -8,13 +8,16 @@ import org.w3c.dom.Document
 import org.xml.sax.InputSource
 import java.io.StringReader
 import hudson.Query.HousingType
+import hudson.neighborhood.*
 
 /**
  * See the API for {@link grails.test.mixin.domain.DomainClassUnitTestMixin} for usage instructions
  */
 @TestFor(Query)
-@Mock([Post])
+@Mock([Post, Neighborhood, City, Region])
 class QuerySpec extends Specification {
+
+    private static String CRAIGSLIST_URL = 'http://sfbay.craigslist.org/'
 
     private static final String CRAIGSLIST_XML0 =
     """<?xml version="1.0" encoding="iso-8859-1"?>
@@ -188,6 +191,7 @@ Quiet and safe neighborhood. Close to public transportation (bus and Bart), shop
 </rdf:RDF>""" // dummy XML string
 
     def setup() {
+        
     }
 
     def cleanup() {
@@ -195,6 +199,7 @@ Quiet and safe neighborhood. Close to public transportation (bus and Bart), shop
 
     void "test xmlParsing"() {
         given:
+        Region.initializeData()
         DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance()
         DocumentBuilder dBuilder = dbFactory.newDocumentBuilder()
         InputSource input0 = new InputSource(new StringReader(CRAIGSLIST_XML0))
@@ -259,19 +264,32 @@ Quiet and safe neighborhood. Close to public transportation (bus and Bart), shop
 
     void "test craigslistRssUrl"() {
         given:
-        Query queryMinFields = new Query()
-        Query queryAllFields = new Query(searchText: 'unit',
+        Region.initializeData()
+        Neighborhood epa = Neighborhood.findByName('east palo alto')
+        Neighborhood paloAlto = Neighborhood.findByName('palo alto')
+        City peninsula = paloAlto.city
+        Region sfbay = peninsula.region
+        Query queryMinFields = new Query(region: sfbay)
+        Query queryAllFields = new Query(
+            region: sfbay,
+            city: peninsula,
+            searchText: 'unit',
             housingType: HousingType.LOFT.getValue(),
             minRent: 500,
             maxRent: 1000,
             numBedrooms: 2,
             cat: false,
             dog: true)
-        Query querySomeFields = new Query(maxRent: 2000,
+        queryAllFields.addToNeighborhoods(epa)
+        queryAllFields.addToNeighborhoods(paloAlto)
+        Query querySomeFields = new Query(
+            region: sfbay,
+            city: peninsula,
+            maxRent: 2000,
             housingType: HousingType.HOUSE.getValue(),
             numBedrooms: 1,
             dog: true)
-        Query queryWithEscaping = new Query(searchText: 'hello world? & hudson')
+        Query queryWithEscaping = new Query(region: sfbay, searchText: 'hello world? & hudson')
 
         when:
         String urlMinFields = queryMinFields.craigslistRssUrl()
@@ -280,19 +298,20 @@ Quiet and safe neighborhood. Close to public transportation (bus and Bart), shop
         String urlWithEscaping = queryWithEscaping.craigslistRssUrl()
 
         then: // TODO allow for more flexibility in parameter ordering
-        urlMinFields.equals(Query.CRAIGSLIST_URL +
+        urlMinFields.equals(CRAIGSLIST_URL +
             "search/apa?catAbb=apa&s=0&format=rss")
-        urlAllFields.equals(Query.CRAIGSLIST_URL +
-            "search/apa?bedrooms=2&catAbb=apa&housing_type=${HousingType.LOFT.getValue()}&maxAsk=1000&minAsk=500&pets_dog=wooof&query=unit&s=0&format=rss")
-        urlSomeFields.equals(Query.CRAIGSLIST_URL +
-            "search/apa?bedrooms=1&catAbb=apa&housing_type=${HousingType.HOUSE.getValue()}&maxAsk=2000&pets_dog=wooof&s=0&format=rss")
-        urlWithEscaping.equals(Query.CRAIGSLIST_URL +
+        urlAllFields.equals(CRAIGSLIST_URL +
+            "search/apa/pen?bedrooms=2&catAbb=apa&housing_type=${HousingType.LOFT.getValue()}&maxAsk=1000&minAsk=500&nh=${epa.value}&nh=${paloAlto.value}&pets_dog=wooof&query=unit&s=0&format=rss")
+        urlSomeFields.equals(CRAIGSLIST_URL +
+            "search/apa/pen?bedrooms=1&catAbb=apa&housing_type=${HousingType.HOUSE.getValue()}&maxAsk=2000&pets_dog=wooof&s=0&format=rss")
+        urlWithEscaping.equals(CRAIGSLIST_URL +
             "search/apa?catAbb=apa&query=hello+world%3F+%26+hudson&s=0&format=rss")
     }
 
     void "test searchCraigslist"() {
         given:
-        Query q = new Query()
+        Region.initializeData()
+        Query q = new Query(region: Region.sfbay())
 
         when:
         List<Post> posts = q.searchCraigslist()
@@ -304,6 +323,9 @@ Quiet and safe neighborhood. Close to public transportation (bus and Bart), shop
     }
 
     void "test next thing"() {
+        given:
+        Region.initializeData()
+
         when:
         User newUser = new User();
         newUser.email = "ckortel@stanford.edu";
@@ -312,7 +334,7 @@ Quiet and safe neighborhood. Close to public transportation (bus and Bart), shop
         Post newPost = new Post();
         newPost.link = "asdf link!";
         newPost.isNew = true;
-        Query newQuery = new Query();
+        Query newQuery = new Query(region: Region.sfbay());
         newQuery.user = newUser;
 
         List<Post> newList = new ArrayList<Post>();

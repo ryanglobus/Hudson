@@ -23,6 +23,7 @@ class RegionSpec extends Specification {
         when:
         Region sfbay = Region.findByValue('sfbay')
         Neighborhood castro = Neighborhood.findByName('castro / upper market')
+        Neighborhood aptos = Neighborhood.findByName('aptos')
 
         then:
         Region.count() > 0
@@ -32,6 +33,10 @@ class RegionSpec extends Specification {
         castro.city.value == 'sfc'
         castro.city.neighborhoods.size() > 0
         castro.city.region.id == sfbay.id
+
+        aptos != null
+        aptos.city.name == 'santa cruz'
+        aptos.city.region.id == sfbay.id
     }
 }
 
