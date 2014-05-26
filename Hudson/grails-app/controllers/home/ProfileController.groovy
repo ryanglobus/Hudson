@@ -1,6 +1,7 @@
 package home
 
 import hudson.Query
+import hudson.queue.*
 import grails.util.Environment
 import hudson.User
 import HudsonJobs.*
@@ -82,6 +83,9 @@ class ProfileController {
 		def usr = User.get(session["userid"])
 		def results = [:]
 		def queryNames = []
+		def posts = []
+		def lattitudes = []
+		def longitudes = []
 		def queries = usr.queries
 		def queryTitle = ""
 		def qry = null
@@ -109,10 +113,18 @@ class ProfileController {
 					if(tempRes.size() != 0)
 						results.put(q.name, tempRes)
 				}
+				
+				for (Post nextPost : q.posts) {
+					posts.add(nextPost)
+					//lattitudes.add(nextPost.lattitude)
+					//longitudes.add(nextPost.longitude)
+				}
 			}
 		}
-
-		[results: results, queryTitle:queryTitle, queryNames: queryNames]
+		
+		double lat = 47.6204;
+		double lon = -122.3491;
+		[results: results, queryTitle:queryTitle, queryNames: queryNames, lat : lat, lon : lon, posts : posts]
 	}
 
 	//This action is called when the user chooses to delete posts from the "new post" page
