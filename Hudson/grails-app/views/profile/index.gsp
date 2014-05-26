@@ -19,7 +19,7 @@
 			</ul>
 			<div class="tab-content">
 				<div class="tab-pane active" id="search1">
-					<g:form useToken="true" class="form-inline query-form" action = "newquery" role="form">
+					<g:form useToken="true" class="form-inline query-form" action = "newquery" role="form" id="queryForm">
 						<div class="form-group">
 							<label for="queryName" class="sr-only control-label">Name:</label>
 							<g:field type="text" name="queryName" class="form-control" placeholder="Name" />
@@ -32,6 +32,7 @@
 						<div class="form-group">
 							<g:field type="number" class="form-control" name="numRooms" placeholder="# BRs" />
 						</div>
+						<br>
 						<label class="control-label">Rent:</label>
 						<div class="form-group">
 							<label for="minrent" class="sr-only control-label">Minimum:</label>
@@ -76,8 +77,9 @@
 
 						<input type="checkbox" name="instantReply" id="instantReply"/>
 						<label for="instantReply">Auto-Reply?</label>
-						<input type = "text" name="responseMessage" placeholder = "Auto-reply message">
-							
+						<textArea form="queryForm" rows="8" cols="80" name="responseMessage" id="responseBox" style="display:none" placeholder ="Auto-reply message">Insert a Response Message Here!</textArea>
+						
+						<br>	
 						<input class="btn btn-primary" type= "submit" value="Create Query"/>
 					</g:form>
 				</div>

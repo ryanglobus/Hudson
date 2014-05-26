@@ -11,7 +11,8 @@ class Post {
 	Boolean deleted = Boolean.FALSE     //Has the user marked this post as "seen" on the site?
 										//changed to TRUE when the user manually marks it/deletes the post
 	Boolean responseSent = Boolean.FALSE 
-
+	Boolean favorite = Boolean.FALSE
+	
     static belongsTo = [query: Query]
 
     static constraints = {
