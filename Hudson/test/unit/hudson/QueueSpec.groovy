@@ -1,9 +1,9 @@
-package hudson
-
 import grails.test.mixin.TestMixin
 import grails.test.mixin.support.GrailsUnitTestMixin
 import spock.lang.Specification
 import hudson.queue.*
+import groovy.hudson.queue.Message
+import groovy.hudson.queue.SerializedStringConverter
 
 /**
  * See the API for {@link grails.test.mixin.support.GrailsUnitTestMixin} for usage instructions
@@ -19,7 +19,7 @@ class QueueSpec extends Specification {
 
 	void "test empty queue"() {
 		given:
-		Queue<String> queue = new Queue<String>('queuespec',
+		groovy.hudson.queue.Queue<String> queue = new groovy.hudson.queue.Queue<String>('queuespec',
 			new SerializedStringConverter<String>(String.class))
 
 		when:
@@ -34,7 +34,7 @@ class QueueSpec extends Specification {
 
 	void "test queue"() {
 		given:
-		Queue<String> queue = new Queue<String>('queuespec',
+		groovy.hudson.queue.Queue<String> queue = new groovy.hudson.queue.Queue<String>('queuespec',
 			new SerializedStringConverter<String>(String.class))
 		queue.clear()
 		String tm = 'hi'
@@ -56,7 +56,7 @@ class QueueSpec extends Specification {
 
 	void "test delay"() {
 		given:
-		Queue<Integer> queue = new Queue<Integer>('queuespec',
+		groovy.hudson.queue.Queue<Integer> queue = new groovy.hudson.queue.Queue<Integer>('queuespec',
 			new SerializedStringConverter<Integer>(Integer.class))
 		queue.clear()
 		Integer i1 = 556
@@ -90,7 +90,7 @@ class QueueSpec extends Specification {
 
 	void "test queue exception"() {
 		given:
-		Queue<String> queue = new Queue<String>('queuespec',
+		groovy.hudson.queue.Queue<String> queue = new groovy.hudson.queue.Queue<String>('queuespec',
 			new SerializedStringConverter<String>(String.class))
 		queue.clear()
 		Message<String> m = new Message<String>('hi')

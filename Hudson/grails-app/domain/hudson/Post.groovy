@@ -24,6 +24,8 @@ class Post {
         link url: true
         title nullable: true
 		replyEmail nullable: true
+		photoLink nullable: true
+		price nullable: true
     }
 
 }

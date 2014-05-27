@@ -16,8 +16,8 @@ import javax.xml.parsers.ParserConfigurationException
 
 import java.io.IOException
 import org.xml.sax.SAXException
-import hudson.queue.Queue
-import hudson.queue.StringConverter
+import groovy.hudson.queue.Queue
+import groovy.hudson.queue.StringConverter
 import grails.util.Environment
 
 import org.xml.sax.SAXException
@@ -50,7 +50,18 @@ class Query {
 	Integer searchFrequency = 20 // in minutes
 	String searchText
 	String name
+	Integer minRent
+	Integer maxRent
+	Integer numBedrooms // min number of bedrooms
+	Integer housingType = HousingType.ANY.getValue()
+	// for Booleans, null means "indifferent"
+	Boolean cat
+	Boolean dog
+	Boolean notify
+	Boolean instantReply
+	String responseMessage
 	
+
     // if changing isCancelled from false to true, need to put query back in queue
     Boolean isCancelled = Boolean.FALSE 
 
@@ -275,6 +286,6 @@ class Query {
 			}
 		}
 	}
-    }
+    
 
 }

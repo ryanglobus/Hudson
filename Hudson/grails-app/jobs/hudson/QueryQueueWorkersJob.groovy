@@ -2,8 +2,8 @@ package hudson
 
 import java.util.concurrent.Executors
 import java.util.concurrent.ExecutorService
-import hudson.queue.Message
-import hudson.queue.Queue
+import groovy.hudson.queue.Message
+import groovy.hudson.queue.Queue
 import java.util.concurrent.Semaphore
 import org.hibernate.Session
 import org.hibernate.SessionFactory
