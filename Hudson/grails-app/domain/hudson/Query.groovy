@@ -125,9 +125,6 @@ class Query {
         return posts
     }
 
-    /**
-     * Returns null upon failure. Does NOT save list of posts to database.
-     */
 	List<Post> searchCraigslist() throws FactoryConfigurationError,
 			ParserConfigurationException, IOException, SAXException {
 		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance()
@@ -231,7 +228,6 @@ class Query {
 		List<Post> posts = new ArrayList<Post>()
 		NodeList items = xmlDocument.getElementsByTagName('item')
 		org.jsoup.nodes.Document doc = Jsoup.connect(craigslistUrl()).get();
-		System.out.println("asdfasdfasdf" + craigslistUrl());
 		for (int i = 0; i < items.getLength(); i++) {
 			Node item = items.item(i)
 			if (!(item instanceof Element)) continue;
@@ -286,6 +282,4 @@ class Query {
 			}
 		}
 	}
-    
-
 }
