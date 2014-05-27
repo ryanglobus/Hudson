@@ -78,9 +78,6 @@ class Query {
 		responseMessage nullable: true
 	}
 
-	/**
-	 * Returns null upon failure. Does NOT save list of posts to database.
-	 */
     transient static final Queue<Query> queue = new Queue<Query>(queueName(), new StringConverter<Query>() {
         @Override
         String generateString(Query q) {
