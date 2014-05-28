@@ -5,8 +5,8 @@ import grails.util.Environment
 import hudson.User
 import HudsonJobs.*
 import hudson.Post
-import hudson.queue.Message
 import hudson.neighborhood.*
+import groovy.hudson.queue.Message
 
 
 class ProfileController {

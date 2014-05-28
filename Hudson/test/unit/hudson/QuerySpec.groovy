@@ -208,7 +208,7 @@ Quiet and safe neighborhood. Close to public transportation (bus and Bart), shop
         Document doc0 = dBuilder.parse(input0)
         Document doc1 = dBuilder.parse(input1)
         Document doc3 = dBuilder.parse(input3)
-        Query q = new Query()
+        Query q = new Query(region: Region.sfbay())
         Calendar c1, c2, c3
         c1 = Calendar.getInstance(TimeZone.getTimeZone("GMT-07"))
         c1.clear()

@@ -1,5 +1,5 @@
 import hudson.*
-import hudson.queue.*
+import groovy.hudson.queue.*
 import HudsonJobs.*
 import hudson.neighborhood.*
 
@@ -28,7 +28,7 @@ class BootStrap {
                 ryan.save(failOnError: true)
                 NotifyJob.schedule(60_000, -1, [user: ryan])
                 Query q1 = new Query(
-                    TODO region!
+                    region: Region.sfbay(),
                     user: ryan,
                     name: 'bootstrap query q1',
                     minRent: 300,
