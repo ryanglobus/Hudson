@@ -1,4 +1,4 @@
-package hudson.queue
+package groovy.hudson.queue
 
 class QueueException extends Exception {
 

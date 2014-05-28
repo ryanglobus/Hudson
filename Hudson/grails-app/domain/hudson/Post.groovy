@@ -1,5 +1,6 @@
 package hudson
 
+import hudson.Query
 
 class Post {
 
@@ -11,13 +12,23 @@ class Post {
 	Boolean deleted = Boolean.FALSE     //Has the user marked this post as "seen" on the site?
 										//changed to TRUE when the user manually marks it/deletes the post
 	Boolean responseSent = Boolean.FALSE 
-
+	Double longitude;
+	Double latitude;
+	String photoLink;
+	String price;
+	String neighborhood;
+	
     static belongsTo = [query: Query]
 
     static constraints = {
         link url: true
         title nullable: true
 		replyEmail nullable: true
+		photoLink nullable: true
+		photoLink uri: true
+		price nullable: true
+		longitude nullable: true
+		latitude nullable: true
     }
 
 }

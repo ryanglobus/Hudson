@@ -1,6 +1,7 @@
-package hudson.queue
+package groovy.hudson.queue
 
 import grails.util.Environment
+import groovy.hudson.queue.QueueException
 import groovy.transform.PackageScope
 import groovyx.net.http.RESTClient
 import groovyx.net.http.AsyncHTTPBuilder
