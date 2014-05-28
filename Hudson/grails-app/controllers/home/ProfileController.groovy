@@ -5,6 +5,7 @@ import grails.util.Environment
 import hudson.User
 import HudsonJobs.*
 import hudson.Post
+import hudson.neighborhood.*
 import groovy.hudson.queue.Message
 
 
@@ -24,7 +25,7 @@ class ProfileController {
 		if(!validForm) return
 
 
-		Query query = new Query()
+		Query query = new Query(region: Region.sfbay())
 
 		query.name = params.queryName
 		query.searchText = params.searchText

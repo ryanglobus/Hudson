@@ -18,7 +18,7 @@ hibernate {
 environments {
 	development {
 		dataSource {
-			logSql = true
+			logSql = false
 			dbCreate = "create-drop" // one of 'create', 'create-drop', 'update', 'validate', ''
 			// H2
 			//url = "jdbc:h2:mem:devDb;MVCC=TRUE;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE"
@@ -39,7 +39,7 @@ environments {
 	}
 	test {
 		dataSource {
-			logSql = true
+			logSql = false
 			dbCreate = "update"
 			// H2
 			//url = "jdbc:h2:mem:testDb;MVCC=TRUE;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE"

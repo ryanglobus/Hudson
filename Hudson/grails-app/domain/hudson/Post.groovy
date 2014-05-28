@@ -29,6 +29,7 @@ class Post {
 		price nullable: true
 		longitude nullable: true
 		latitude nullable: true
+        neighborhood nullable: true
     }
 
 }

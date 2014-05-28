@@ -19,6 +19,7 @@ import org.xml.sax.SAXException
 import groovy.hudson.queue.Queue
 import groovy.hudson.queue.StringConverter
 import grails.util.Environment
+import hudson.neighborhood.*
 
 import org.xml.sax.SAXException
 import org.jsoup.Jsoup
@@ -29,12 +30,10 @@ import hudson.User
 
 class Query {
 
-	static final String CRAIGSLIST_URL = 'http://sfbay.craigslist.org/'
-
-	enum HousingType {
-		ANY(0), APARTMENT(1), CONDO(2), COTTAGE_CABIN(3), DUPLEX(4), FLAT(5),
-		HOUSE(6), IN_LAW(7), LOFT(8), TOWNHOUSE(9), MANUFACTURED(10),
-		ASSISTED_LIVING(11), LAND(12)
+    enum HousingType {
+        ANY(0), APARTMENT(1), CONDO(2), COTTAGE_CABIN(3), DUPLEX(4), FLAT(5),
+        HOUSE(6), IN_LAW(7), LOFT(8), TOWNHOUSE(9), MANUFACTURED(10),
+        ASSISTED_LIVING(11), LAND(12)
 
 		private HousingType(int value) {
 			this.value = value;
@@ -65,18 +64,20 @@ class Query {
     // if changing isCancelled from false to true, need to put query back in queue
     Boolean isCancelled = Boolean.FALSE 
 
-	static hasMany = [posts: Post]
-	static belongsTo = [user: User]
+	static hasMany = [posts: Post, neighborhoods: Neighborhood]
+	static belongsTo = [user: User, region: Region, city: City] // TODO make region default to SFBAY
 
-	static constraints = {
-		searchText nullable: true
-		minRent nullable: true, min: 0
-		maxRent nullable: true, min: 0
-		numBedrooms nullable: true, min: 0
-		cat nullable: true
-		dog nullable: true
-		responseMessage nullable: true
-	}
+    static constraints = {
+        searchText nullable: true
+        minRent nullable: true, min: 0
+        maxRent nullable: true, min: 0
+        numBedrooms nullable: true, min: 0
+        cat nullable: true
+        dog nullable: true
+        responseMessage nullable: true
+        city nullable: true
+        neighborhoods nullable: true, lazy: false
+    }
 
     transient static final Queue<Query> queue = new Queue<Query>(queueName(), new StringConverter<Query>() {
         @Override
@@ -129,48 +130,40 @@ class Query {
 		return searchCraigslist(dBuilder.parse(craigslistRssUrl()))
 	}
 
-	String craigslistRssUrl() {
-		// note that the parameter order is important for tests to pass
-		def params = [:]
-		if (numBedrooms != null) params['bedrooms'] = numBedrooms
-		params['catAbb'] = 'apa'
-		if (housingType != HousingType.ANY.getValue()) {
-			params['housing_type'] = housingType
-		}
-		if (maxRent != null) params['maxAsk'] = maxRent
-		if (minRent != null) params['minAsk'] = minRent
-		if (cat) params['pets_cat'] = 'purrr'
-		if (dog) params['pets_dog'] = 'wooof'
-		if (searchText != null) params['query'] = searchText
-		params['s'] = '0'
-		params['format'] = 'rss'
+    String craigslistRssUrl() {
+        return craigslistUrl(true)
+    }
 
-		URIBuilder uri = new URIBuilder(CRAIGSLIST_URL)
-		uri.path = 'search/apa'
-		uri.query = params
-		return uri.toString()
-	}
-	
-	String craigslistUrl() {
-		// note that the parameter order is important for tests to pass
-		def params = [:]
-		if (numBedrooms != null) params['bedrooms'] = numBedrooms
-		params['catAbb'] = 'apa'
-		if (housingType != HousingType.ANY.getValue()) {
-			params['housing_type'] = housingType
-		}
-		if (maxRent != null) params['maxAsk'] = maxRent
-		if (minRent != null) params['minAsk'] = minRent
-		if (cat) params['pets_cat'] = 'purrr'
-		if (dog) params['pets_dog'] = 'wooof'
-		if (searchText != null) params['query'] = searchText
-		params['s'] = '0'
+    String craigslistUrl() {
+        return craigslistUrl(false)
+    }
 
-		URIBuilder uri = new URIBuilder(CRAIGSLIST_URL)
-		uri.path = 'search/apa'
-		uri.query = params
-		return uri.toString()
-	}
+    String craigslistUrl(boolean rss) {
+        String domain = "http://${region.value}.craigslist.org/"
+        String path = 'search/apa'
+        if (city != null) path += "/${city.value}"
+
+        // note that the parameter order is important for tests to pass
+        def params = [:]
+        if (numBedrooms != null) params['bedrooms'] = numBedrooms
+        params['catAbb'] = 'apa'
+        if (housingType != HousingType.ANY.getValue()) {
+            params['housing_type'] = housingType
+        }
+        if (maxRent != null) params['maxAsk'] = maxRent
+        if (minRent != null) params['minAsk'] = minRent
+        if (neighborhoods != null) params['nh'] = neighborhoods.collect { it.value }
+        if (cat) params['pets_cat'] = 'purrr'
+        if (dog) params['pets_dog'] = 'wooof'
+        if (searchText != null) params['query'] = searchText
+        params['s'] = '0'
+        if (rss) params['format'] = 'rss'
+
+        URIBuilder uri = new URIBuilder(domain)
+        uri.path = path
+        uri.query = params
+        return uri.toString()
+    }
 
 	void getLatAndLong(Post p, String link) {
 		if (link.equals("")) return;
@@ -211,6 +204,7 @@ class Query {
 		String pid = link.substring(i-1, link.length()-5); 
 		String matching2 = "[data-pid=" + pid + "]";
 		org.jsoup.nodes.Element selectionArea = doc.select(matching2).first();	
+        if (selectionArea == null) return
 		p.price = selectionArea.select(".price").text();	
 		p.neighborhood = selectionArea.select(".pnr small").text();
 	}

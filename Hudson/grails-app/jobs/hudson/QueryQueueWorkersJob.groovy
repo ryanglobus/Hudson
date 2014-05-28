@@ -35,9 +35,10 @@ class QueryQueueWorkersJob {
                 availableThreadsSem.release()
                 break
             }
-            def promise = task { // TODO how does local var msg work?
+            def promise = Query.async.task { // TODO how does local var msg work?
                 Query.withNewSession {
                     try {
+                        println("Processing a Craigslist query...")
                         Query query = msg.body
                         if (query.isCancelled) return
                         query.searchAndSaveNewPosts()
@@ -46,12 +47,11 @@ class QueryQueueWorkersJob {
                         // TODO how do I make below atomic? what if query already got again before deleted?
                         queue.enqueue(newMsg)
                         queue.delete(msg)
-                        return posts
                     } catch (Exception e) {
                         e.printStackTrace()
-                        return []
                     } finally {
                         availableThreadsSem.release()
+                        return null
                     }
                 }
             }
