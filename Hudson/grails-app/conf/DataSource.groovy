@@ -35,6 +35,10 @@ environments {
 			url = "jdbc:sqlite:../hudson-dev.db"
 			dialect = "org.hibernate.dialect.SQLiteDialect"
 			driverClassName="org.sqlite.JDBC"
+
+			properties {
+				maxActive = 1
+			}
 		}
 	}
 	test {

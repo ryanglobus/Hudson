@@ -17,6 +17,7 @@ class QueryQueueWorkersJob {
       simple startDelay: 0l, repeatInterval: 30_000l // execute job once in 30 seconds
     }
 
+    // TODO WorkersJob have some duplicated code :/
     private static final int NUM_THREADS = 10 // TODO tune this
     private static final Semaphore availableThreadsSem = new Semaphore(NUM_THREADS)
     private static final Queue<Query> queue = Query.queue
@@ -48,7 +49,11 @@ class QueryQueueWorkersJob {
                         queue.enqueue(newMsg)
                         queue.delete(msg)
                     } catch (Exception e) {
-                        e.printStackTrace()
+                        if (e instanceof org.hibernate.LazyInitializationException) {
+                            println("LazyInitializationException: ${e.getMessage()}")
+                        } else {
+                            e.printStackTrace()
+                        }
                     } finally {
                         availableThreadsSem.release()
                         return null

@@ -14,9 +14,9 @@ class BootStrap {
             development {
                 /* insert your own email address and phone number to easily
                    create an account and query: %*/
-                /*
+                String email = 'ryanglobus@gmail.com'
                 User ryan = new User(
-                    email: '',
+                    email: email,
                     firstName: 'Ryan',
                     lastName: 'Globus',
                     notifyFrequency: 30,
@@ -41,7 +41,8 @@ class BootStrap {
                 Message<Query> m = new Message<Query>(q1)
                 m.delay = 10
                 Query.queue.enqueue(m)
-                */
+                NotifyJob.schedule(60_000 /* freq in ms */, -1, [user:ryan])
+
             }
         }
     }
