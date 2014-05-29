@@ -9,21 +9,23 @@
 
 <body>
 	<div id="map-canvas" style="width: 74%; height: 43%; position: absolute; margin-top: 143px"></div>
-	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAH9FBsCMDrKGcOluS-iFLpymbNT-u0go4&sensor=flase"></script>
+	<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAH9FBsCMDrKGcOluS-iFLpymbNT-u0go4&sensor=flase"></script>	
 	<script type="text/javascript">
     	function initialize() {
+			
+        	
         	var mapOptions = {
           		center: new google.maps.LatLng(${lat}, ${lon}),
           		zoom: 8
         	};
         	var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
-
+							
         	var myLatlng = new google.maps.LatLng(${lat}, ${lon});
         	var marker = new google.maps.Marker ({
 				position:myLatlng,
 				map: map,
-				title: "Severus Snape"
         	});
+        	
       	}
       	google.maps.event.addDomListener(window, 'load', initialize);
     </script>

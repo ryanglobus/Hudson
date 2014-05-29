@@ -7,6 +7,7 @@ import hudson.User
 import HudsonJobs.*
 import hudson.Post
 import hudson.queue.Message
+import grails.converters.JSON
 
 
 class ProfileController {
@@ -83,7 +84,7 @@ class ProfileController {
 		def usr = User.get(session["userid"])
 		def results = [:]
 		def queryNames = []
-		def posts = []
+		def posts = [];
 		def lattitudes = []
 		def longitudes = []
 		def queries = usr.queries
@@ -124,7 +125,8 @@ class ProfileController {
 		
 		double lat = 47.6204;
 		double lon = -122.3491;
-		[results: results, queryTitle:queryTitle, queryNames: queryNames, lat : lat, lon : lon, posts : posts]
+		System.out.println(posts as JSON)
+		[results: results, queryTitle:queryTitle, queryNames: queryNames, lat : lat, lon : lon, posts : posts as JSON]
 	}
 
 	//This action is called when the user chooses to delete posts from the "new post" page
