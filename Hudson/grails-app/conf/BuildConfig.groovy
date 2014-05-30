@@ -3,6 +3,7 @@ grails.project.class.dir = "target/classes"
 grails.project.test.class.dir = "target/test-classes"
 grails.project.test.reports.dir = "target/test-reports"
 grails.project.work.dir = "target/work"
+grails.project.war.file = "target/${appName}.war" //your project war file
 grails.project.target.level = 1.6
 grails.project.source.level = 1.6
 //grails.project.war.file = "target/${appName}-${appVersion}.war"
@@ -60,8 +61,8 @@ grails.project.dependency.resolution = {
     }
 
     plugins {
-        // plugins for the build system only
-        build ":tomcat:7.0.52.1"
+		// plugins for the build system only
+		build ":tomcat:7.0.52.1"
 
         // plugins for the compile step
         compile ":scaffolding:2.0.2"
@@ -87,6 +88,7 @@ grails.project.dependency.resolution = {
         //compile ":sass-asset-pipeline:1.5.5"
         //compile ":less-asset-pipeline:1.5.3"
         //compile ":coffee-asset-pipeline:1.5.0"
-        //compile ":handlebars-asset-pipeline:1.3.0.1"
+        //compile ":handlebars-asset-pipeline:1.3.0.1"'
+		
     }
 }

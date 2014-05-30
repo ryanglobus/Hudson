@@ -1,10 +1,15 @@
 import hudson.*
-import hudson.queue.*
+import groovy.hudson.queue.*
 import HudsonJobs.*
+import hudson.neighborhood.*
+
 
 class BootStrap {
 
     def init = { servletContext ->
+        
+        Region.initializeData()
+
         environments {
             development {
                 /* insert your own email address and phone number to easily
@@ -23,6 +28,7 @@ class BootStrap {
                 ryan.save(failOnError: true)
                 NotifyJob.schedule(60_000, -1, [user: ryan])
                 Query q1 = new Query(
+                    region: Region.sfbay(),
                     user: ryan,
                     name: 'bootstrap query q1',
                     minRent: 300,
