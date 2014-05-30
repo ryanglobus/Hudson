@@ -1,12 +1,12 @@
 package home
 
 import hudson.Query
-import hudson.queue.*
+import groovy.hudson.queue.*
 import grails.util.Environment
 import hudson.User
 import HudsonJobs.*
 import hudson.Post
-import hudson.queue.Message
+import groovy.hudson.queue.Message
 import grails.converters.JSON
 
 
