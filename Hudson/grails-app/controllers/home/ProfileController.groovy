@@ -7,6 +7,7 @@ import HudsonJobs.*
 import hudson.Post
 import hudson.neighborhood.*
 import groovy.hudson.queue.Message
+import grails.converters.*
 
 
 class ProfileController {
@@ -25,9 +26,9 @@ class ProfileController {
 		if(!validForm) return
 
 
-		Query query = new Query(region: Region.sfbay())
-
-		query.name = params.queryName
+		Query query = new Query()
+		// TODO gracefully handle errors with params
+		query.name = params.queryName // TODO assert unique
 		query.searchText = params.searchText
 		if(params.minrent.length() == 0) query.minRent = null
 		else query.minRent = params.minrent.toInteger()
@@ -37,6 +38,21 @@ class ProfileController {
 		else query.numBedrooms = params.numRooms.toInteger()
 		query.housingType = Query.HousingType.valueOf(params.type).getValue()
 
+		if (params.region != null) {
+			query.region = Region.findByValue(params.region)
+		}
+		if (params.city != null) {
+			query.city = City.findByRegionAndValue(query.region, params.city)
+		}
+		if (query.city != null && params.neighborhoods != null) {
+			params.list('neighborhoods').each { nh ->
+				Neighborhood neighborhood = Neighborhood.findByCityAndValue(query.city, nh.toInteger())
+				if (neighborhood != null) {
+					query.addToNeighborhoods(neighborhood)
+				}
+			}
+		}
+
 		if(params.cat) query.cat = true
 		else query.cat = false
 
@@ -44,7 +60,7 @@ class ProfileController {
 		else query.dog = false
 
 		if(params.notify) query.notify = true
-		else params.notify = false
+		else query.notify = false
 
 		if(params.instantReply) {
 			query.instantReply = true
@@ -75,7 +91,6 @@ class ProfileController {
 	def queryCreated() {
 		def usr = User.get(session["userid"])
 		def query = Query.get(params.queryid)
-
 		[query: query, usr: usr, housingType: params.housingType]
 	}
 
@@ -175,6 +190,24 @@ class ProfileController {
 		usr.save(flush:true, failOnError:true)
 		flash.message = "Your password has been updated."
 		redirect(action:'settings')
+	}
+
+	def getNeighborhoods() { // TODO add region param too
+		City city = null
+		int statusCode = 200
+		if (params.city == null) {
+			statusCode = 400
+		}
+		else {
+			city = City.findByValue(params.city)
+			if (city == null) statusCode = 404
+		}
+		if (city == null) {
+			render(text: "{\"error\": \"Cannot find neighborhoods for the requested city\"}",
+				contentType: "application/json", status: statusCode)
+			return
+		}
+		render city.neighborhoods as JSON
 	}
 	
 	private static boolean passwordCheck(String pass, User usr) {

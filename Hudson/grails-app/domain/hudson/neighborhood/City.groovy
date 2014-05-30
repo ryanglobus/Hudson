@@ -13,4 +13,8 @@ class City {
         value blank: false
         // TODO make (region, city.name) and (region, city.value) pair unique
     }
+
+    static mapping = {
+        neighborhoods sort: 'name'
+    }
 }
