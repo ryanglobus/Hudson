@@ -6,8 +6,9 @@ import grails.util.Environment
 import hudson.User
 import HudsonJobs.*
 import hudson.Post
+
+import hudson.neighborhood.*
 import groovy.hudson.queue.Message
-import grails.converters.JSON
 
 
 class ProfileController {
@@ -26,7 +27,7 @@ class ProfileController {
 		if(!validForm) return
 
 
-		Query query = new Query()
+		Query query = new Query(region: Region.sfbay())
 
 		query.name = params.queryName
 		query.searchText = params.searchText
@@ -125,8 +126,7 @@ class ProfileController {
 		
 		double lat = 47.6204;
 		double lon = -122.3491;
-		System.out.println(posts as JSON)
-		[results: results, queryTitle:queryTitle, queryNames: queryNames, lat : lat, lon : lon, posts : posts as JSON]
+		[results: results, queryTitle:queryTitle, queryNames: queryNames, lat : lat, lon : lon]
 	}
 
 	//This action is called when the user chooses to delete posts from the "new post" page

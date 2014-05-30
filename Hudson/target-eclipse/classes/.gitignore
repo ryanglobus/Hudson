@@ -1,5 +1,67 @@
+<<<<<<< HEAD
 /grails
 /org
+=======
+/mysql-connector-java-5.1.30-bin.jar
+/HudsonJobs
+/_testemails
+/dbdoc
+/grails
+/groovy
+/hibernate
+/hibernate.cfg.xml
+/home
+/hudson
+/javascripts
+/messages.properties
+/messages_fr.properties
+/org
+/quartz
+/spring
+/SQLiteDialect$1.class
+/SQLiteDialect$2.class
+/SQLiteDialect$3.class
+/SQLiteDialect.class
+/DbdocUrlMappings$__clinit__closure1.class
+/DbdocUrlMappings.class
+/DefaultQuartzConfig$_run_closure1.class
+/DefaultQuartzConfig$_run_closure1_closure3.class
+/DefaultQuartzConfig$_run_closure2.class
+/DefaultQuartzConfig$_run_closure2_closure4.class
+/DefaultQuartzConfig$_run_closure2_closure4_closure5.class
+/DefaultQuartzConfig.class
+/JQueryConfig$_run_closure1.class
+/JQueryConfig.class
+/JQueryPluginResources$_run_closure1.class
+/JQueryPluginResources$_run_closure1_closure2.class
+/JQueryPluginResources$_run_closure1_closure3.class
+/JQueryPluginResources.class
+/JQueryResourceTagLib$_closure1.class
+/JQueryResourceTagLib$_closure2.class
+/JQueryResourceTagLib$_closure2_closure4.class
+/JQueryResourceTagLib$_closure2_closure5.class
+/JQueryResourceTagLib$_closure2_closure6.class
+/JQueryResourceTagLib$_closure2_closure7.class
+/JQueryResourceTagLib$_closure3.class
+/JQueryResourceTagLib.class
+/JQueryService$_closure1.class
+/JQueryService$_closure2.class
+/JQueryService$_closure3.class
+/JQueryService$_closure4.class
+/JQueryService.class
+/JQueryTagLib$_closure1.class
+/JQueryTagLib$_closure1_closure6.class
+/JQueryTagLib$_closure2.class
+/JQueryTagLib$_closure3.class
+/JQueryTagLib$_closure4.class
+/JQueryTagLib$_closure5.class
+/JQueryTagLib.class
+/QuartzBootStrap$_closure1.class
+/QuartzBootStrap$_closure2.class
+/QuartzBootStrap.class
+/QueueSpec$_$spock_feature_0_2_closure1.class
+/QueueSpec.class
+>>>>>>> master
 /ApplicationResources$_run_closure1.class
 /ApplicationResources$_run_closure1_closure2.class
 /ApplicationResources.class
@@ -35,12 +97,16 @@
 /DataSource$_run_closure3_closure6_closure9.class
 /DataSource$_run_closure3_closure6_closure9_closure10.class
 /DataSource.class
+<<<<<<< HEAD
 /DbdocUrlMappings$__clinit__closure1.class
 /DbdocUrlMappings.class
+=======
+>>>>>>> master
 /DefaultCacheConfig$_run_closure1.class
 /DefaultCacheConfig$_run_closure1_closure2.class
 /DefaultCacheConfig$_run_closure1_closure3.class
 /DefaultCacheConfig.class
+<<<<<<< HEAD
 /DefaultQuartzConfig$_run_closure1.class
 /DefaultQuartzConfig$_run_closure1_closure3.class
 /DefaultQuartzConfig$_run_closure2.class
@@ -77,6 +143,10 @@
 /QuartzBootStrap$_closure1.class
 /QuartzBootStrap$_closure2.class
 /QuartzBootStrap.class
+=======
+/DefaultWebXmlConfig$_run_closure1.class
+/DefaultWebXmlConfig.class
+>>>>>>> master
 /ResourcesBootStrap$_closure1.class
 /ResourcesBootStrap$_closure2.class
 /ResourcesBootStrap.class
@@ -84,6 +154,7 @@
 /UrlMappings$__clinit__closure1_closure2.class
 /UrlMappings$__clinit__closure1_closure2_closure3.class
 /UrlMappings.class
+<<<<<<< HEAD
 /home
 /hudson
 /resources$_run_closure1.class
@@ -91,3 +162,14 @@
 /resources.class
 /DefaultWebXmlConfig$_run_closure1.class
 /DefaultWebXmlConfig.class
+=======
+/resources$_run_closure1.class
+/resources$_run_closure1_closure2.class
+/resources.class
+/BuildConfig$_run_closure2.class
+/BuildConfig$_run_closure2_closure4.class
+/BuildConfig$_run_closure2_closure5.class
+/BuildConfig$_run_closure2_closure6.class
+/BuildConfig$_run_closure2_closure6_closure8.class
+/BuildConfig$_run_closure2_closure7.class
+>>>>>>> master
