@@ -1,13 +1,26 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
 /grails
 /org
 =======
 /mysql-connector-java-5.1.30-bin.jar
+=======
+=======
+/mysql-connector-java-5.1.30-bin.jar
+>>>>>>> master
+>>>>>>> FETCH_HEAD
 /HudsonJobs
 /_testemails
 /dbdoc
 /grails
+<<<<<<< HEAD
 /groovy
+=======
+<<<<<<< HEAD
+=======
+/groovy
+>>>>>>> master
+>>>>>>> FETCH_HEAD
 /hibernate
 /hibernate.cfg.xml
 /home
@@ -16,6 +29,11 @@
 /messages.properties
 /messages_fr.properties
 /org
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+>>>>>>> FETCH_HEAD
 /quartz
 /spring
 /SQLiteDialect$1.class
@@ -166,6 +184,11 @@
 /resources$_run_closure1.class
 /resources$_run_closure1_closure2.class
 /resources.class
+<<<<<<< HEAD
+=======
+<<<<<<< HEAD
+=======
+>>>>>>> FETCH_HEAD
 /BuildConfig$_run_closure2.class
 /BuildConfig$_run_closure2_closure4.class
 /BuildConfig$_run_closure2_closure5.class

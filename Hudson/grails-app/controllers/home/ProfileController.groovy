@@ -1,14 +1,14 @@
 package home
 
 import hudson.Query
-import groovy.hudson.queue.*
+
 import grails.util.Environment
 import hudson.User
 import HudsonJobs.*
 import hudson.Post
-
 import hudson.neighborhood.*
 import groovy.hudson.queue.Message
+
 
 
 class ProfileController {
@@ -85,7 +85,6 @@ class ProfileController {
 		def usr = User.get(session["userid"])
 		def results = [:]
 		def queryNames = []
-		def posts = [];
 		def lattitudes = []
 		def longitudes = []
 		def queries = usr.queries
