@@ -172,16 +172,13 @@ class Query {
 		org.jsoup.nodes.Element e = doc.select("#map").first();
 	
 		if (e == null) return;
-		System.out.println(e.toString());
 		StringTokenizer st = new StringTokenizer(e.toString());
 		while (st.hasMoreTokens()) {
 			String nextToken = st.nextToken();
 			if (nextToken.contains("data-latitude")) {
 				p.latitude = Double.parseDouble(nextToken.substring(15, nextToken.length() - 1));
-				System.out.println(p.latitude);
 			} else if (nextToken.contains("data-longitude")) {
 				p.longitude = Double.parseDouble(nextToken.substring(16, nextToken.length() - 8));
-				System.out.println(p.longitude);
 			}
 		}
 		if (doc.select("#iwi").first() != null) {
@@ -192,7 +189,6 @@ class Query {
 	void addPriceAndNeighborhood(org.jsoup.nodes.Document doc, Post p, String link) {
 		String matching = "a[href=" + link + "]";
 		org.jsoup.nodes.Element linkToMatch = doc.select(matching).first();
-		System.out.println(linkToMatch.toString());
 		
 		int i;
 		for (i = 0; i < link.length(); i++) {

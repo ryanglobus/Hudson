@@ -19,6 +19,7 @@ environments {
 	development {
 		dataSource {
 			logSql = false
+			// if you don't want to wipe data when recompiling, change to update
 			dbCreate = "create-drop" // one of 'create', 'create-drop', 'update', 'validate', ''
 			// H2
 			//url = "jdbc:h2:mem:devDb;MVCC=TRUE;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE"
@@ -35,6 +36,10 @@ environments {
 			url = "jdbc:sqlite:../hudson-dev.db"
 			dialect = "org.hibernate.dialect.SQLiteDialect"
 			driverClassName="org.sqlite.JDBC"
+
+			properties {
+				maxActive = 1
+			}
 		}
 	}
 	test {

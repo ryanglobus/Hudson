@@ -15,6 +15,9 @@
 		Min Rent: ${query.minRent} <br>
 		Max Rent: ${query.maxRent} <br>
 		Number of Bedrooms: ${query.numBedrooms} <br>
+		Region: ${query.region.name} <br>
+		City: ${query.city?.name} <br>
+		Neighborhoods: ${query.neighborhoods.collect {it.name}} <br>
 		Housing Type: ${housingType} <br>
 		Cats: ${query.cat} <br>
 		Dogs: ${query.dog} <br>

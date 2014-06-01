@@ -17,6 +17,10 @@ class Region {
         value blank: false, unique: true
     }
 
+    static mapping = {
+        cities sort: 'name'
+    }
+
     /**
      * This method is here because for some reason while testing, 
      * Bootstrap.groovy does not run. Thus, tests can call this to initialize
