@@ -21,12 +21,15 @@
           			zoom: 8
         		};
         		var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
-							
-        		var myLatlng = new google.maps.LatLng(latArr[0], lonArr[0]);
-        		var marker = new google.maps.Marker ({
-					position:myLatlng,
-					map: map,
-        		});
+
+				for(var i = 0; i < latArr.length; i++) {
+				
+        			var myLatlng = new google.maps.LatLng(latArr[i], lonArr[i]);
+        			var marker = new google.maps.Marker ({
+						position:myLatlng,
+						map: map,
+        			});
+				}
         	
       		}
       		google.maps.event.addDomListener(window, 'load', initialize);
