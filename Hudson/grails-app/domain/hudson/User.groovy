@@ -12,6 +12,8 @@ import org.springframework.mail.MailException
 import org.springframework.mail.MailSender
 import org.springframework.mail.SimpleMailMessage
 import grails.util.Environment
+import groovy.hudson.Notification
+import hudson.Query
 
 import java.net.URL;
 
@@ -177,8 +179,11 @@ class User {
 	}
 
 	void notifyUserOfReplyIssue(String link) {
-		sendNotification(this.email, "There was an issue auto-replying to the following post: " +
-				link + " Please check out the original listing.", false);
+		//sendNotification(this.email, "There was an issue auto-replying to the following post: " +
+		//		link + " Please check out the original listing.", false);
+		Notification n = new Notification(this.email, this.email, "There was an issue auto-replying to the following post: " +
+				link + " Please check out the original listing.", "Hudson: Auto-reply error")
+		n.enqueue()
 	}
 
 	void notifyUser() {
@@ -193,11 +198,17 @@ class User {
 						String email = getReplyEmail(nextPost.link);
 						nextPost.replyEmail = email;
 						if (email == "") notifyUserOfReplyIssue(nextPost.link);
-						if (Environment.current.equals(Environment.PRODUCTION))
-							sendNotification(nextPost.replyEmail, nextQuery.responseMessage, true);
+						if (Environment.current.equals(Environment.PRODUCTION)) {
+							Notification n = new Notification(nextPost.replyEmail, this.email, nextQuery.responseMessage, "Your post on Craigslist");
+							n.enqueue();
+						}
+							//sendNotification(nextPost.replyEmail, nextQuery.responseMessage, true);
 					} else if (!nextPost.replyEmail.isEmpty() && nextQuery.instantReply) {
-						if (Environment.current.equals(Environment.PRODUCTION))
-							sendNotification(nextPost.replyEmail, nextQuery.responseMessage, true);
+						if (Environment.current.equals(Environment.PRODUCTION)) {
+							Notification n = new Notification(nextPost.replyEmail, this.email, nextQuery.responseMessage, "Your post on Craigslist");
+							n.enqueue();
+						}
+							//sendNotification(nextPost.replyEmail, nextQuery.responseMessage, true);
 					}
 				}
 			}
@@ -208,18 +219,23 @@ class User {
 		for (String nextLink : linksToSend) {
 			if (!isFirst) allLinks += "\n ";
 			if (isFirst) isFirst = false;
-			allLinks += linksToSend;
+			allLinks += nextLink;
 		}
 
 		String messageBody = "Hey " + this.firstName + ", \nCheck out these new Craigslist listings " +
 				" that match your criteria: \n" + allLinks;
 
 		if (!allLinks.isEmpty()) {
-			if (!this.email.isEmpty())
-				sendNotification(this.email, messageBody, false);
-			if (!this.phone.isEmpty() && Environment.current.equals(Environment.PRODUCTION)) {
+			if (!this.email.isEmpty()) {
+				Notification n = new Notification(this.email, this.email, messageBody, "Hudson: New Posts!");
+				n.enqueue();
+			}
+				//sendNotification(this.email, messageBody, false);
+			if (this.phone != null && !this.phone.isEmpty() && Environment.current.equals(Environment.PRODUCTION)) {
 				String newPhoneEmail = phoneEmail(this.phone);
-				sendNotification(newPhoneEmail, messageBody, false);
+				Notification n = new Notification(newPhoneEmail, newPhoneEmail, messageBody, "Hudson: New Posts!");
+				n.enqueue();
+				//sendNotification(newPhoneEmail, messageBody, false);
 			}
 		}
 

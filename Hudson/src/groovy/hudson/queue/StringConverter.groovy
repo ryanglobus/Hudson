@@ -1,4 +1,4 @@
-package hudson.queue
+package groovy.hudson.queue
 
 /**
  * <code>
@@ -7,6 +7,13 @@ package hudson.queue
  * </code>
  */
 interface StringConverter<E> {
+    /** 
+     * e should not be null
+     */
     String generateString(E e)
+
+    /**
+     * returns null if fails to parse s
+     */
     E parseString(String s)
 }

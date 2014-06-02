@@ -7,6 +7,8 @@ import grails.util.Environment
 import hudson.User
 import HudsonJobs.*
 import hudson.Post
+import hudson.neighborhood.*
+import groovy.hudson.queue.Message
 import grails.converters.*
 
 
@@ -39,12 +41,19 @@ class ProfileController {
 		
 		Query query = setUpQuery(params, true)
 
-		//Create the job to run the query!
-		//Job will be run every ten minutes for 30 days.
-		if (Environment.current.equals(Environment.PRODUCTION))
-			CrawlJob.schedule(600000, 4319, [query: query]) 
-		else 
-			CrawlJob.schedule(60000, 4319, [query: query])
+		// TODO below is slow, and what if it fails?
+
+		// run the query now to get results
+		query.searchAndSaveNewPosts()
+
+		// Enqueue the job to run the query
+		Message<Query> msg = new Message<Query>(query)
+		if (Environment.current.equals(Environment.PRODUCTION)) {
+			msg.delay = 600 // every 10 minutes
+		} else {
+			msg.delay = 60 // every minute
+		}
+		Query.queue.enqueue(msg)
 
 		redirect(action:"queryCreated", params: [queryid : query.id, housingType: params.type])
 	}
@@ -52,7 +61,6 @@ class ProfileController {
 	def queryCreated() {
 		def usr = User.get(session["userid"])
 		def query = Query.get(params.queryid)
-
 		[query: query, usr: usr, housingType: params.housingType]
 	}
 
@@ -205,6 +213,24 @@ class ProfileController {
 		flash.message = "Your password has been updated."
 		redirect(action:'settings')
 	}
+
+	def getNeighborhoods() { // TODO add region param too
+		City city = null
+		int statusCode = 200
+		if (params.city == null) {
+			statusCode = 400
+		}
+		else {
+			city = City.findByValue(params.city)
+			if (city == null) statusCode = 404
+		}
+		if (city == null) {
+			render(text: "{\"error\": \"Cannot find neighborhoods for the requested city\"}",
+				contentType: "application/json", status: statusCode)
+			return
+		}
+		render city.neighborhoods as JSON
+	}
 	
 	def markAsResponded() {
 		Post post = Post.get(params.postId)
@@ -252,6 +278,21 @@ class ProfileController {
 		if(params.numRooms.length() == 0) query.numBedrooms = null
 		else query.numBedrooms = params.numRooms.toInteger()
 		query.housingType = Query.HousingType.valueOf(params.type).getValue()
+		
+		if (params.region != null) {
+			query.region = Region.findByValue(params.region)
+		}
+		if (params.city != null) {
+			query.city = City.findByRegionAndValue(query.region, params.city)
+		}
+		if (query.city != null && params.neighborhoods != null) {
+			params.list('neighborhoods').each { nh ->
+				Neighborhood neighborhood = Neighborhood.findByCityAndValue(query.city, nh.toInteger())
+				if (neighborhood != null) {
+					query.addToNeighborhoods(neighborhood)
+				}
+			}
+		}
 
 		if(params.cat) query.cat = true
 		else query.cat = false
