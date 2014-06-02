@@ -217,10 +217,10 @@ class User {
 		if (!allLinks.isEmpty()) {
 			if (!this.email.isEmpty())
 				sendNotification(this.email, messageBody, false);
-			//if (!this.phone.isEmpty()) {
-			//	String newPhoneEmail = phoneEmail(this.phone);
-			//	sendNotification(newPhoneEmail, messageBody, false);
-			//}
+			if (!this.phone.isEmpty() && Environment.current.equals(Environment.PRODUCTION)) {
+				String newPhoneEmail = phoneEmail(this.phone);
+				sendNotification(newPhoneEmail, messageBody, false);
+			}
 		}
 
 	}

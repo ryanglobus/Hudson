@@ -5,6 +5,7 @@
 		<meta name="layout" content="main"/>
 		<link rel="stylesheet" href="${resource(dir: 'css', file: 'profile.css')}", type="text/css">
 		<script src="${resource(dir: 'js', file: 'resultsPage.js')}"></script>
+		<script src="${resource(dir: 'js', file: 'profile.js')}"></script>
 		<g:if test="${favorites == false}">
 			<title>New Results</title>
 		</g:if>

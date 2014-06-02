@@ -8,7 +8,7 @@ jQuery(function() {
     	var id = this.id;
     	var post = this;
 
-    	$.getJSON("/Hudson/profile/markAsResponded", {postId:id}, function(data){    		
+    	$.getJSON("/markAsResponded", {postId:id}, function(data){    		
     		//Now let's switch the button styles!  		
     		if(data.responseSent) {
     			$(post).replaceWith("<button class=\"btn btn-success btn-small response\" id=\"" + data.id + "\"><span class=\"glyphicon glyphicon-ok\"></span> Yes</button>");
@@ -29,7 +29,7 @@ jQuery(function() {
     	var id = this.id;
     	var post = this;
 
-    	$.getJSON("/Hudson/profile/markAsFavorite", {postId:id}, function(data){    		
+    	$.getJSON("/markAsFavorite", {postId:id}, function(data){    		
     		//Now let's switch the button styles!  		
     		if(data.favorite) {
     			$(post).replaceWith("<button class='btn btn-custom btn-small favorite' id='" + data.id + "'><span class='glyphicon glyphicon-star'></span></button>");
