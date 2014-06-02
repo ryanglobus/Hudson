@@ -24,6 +24,17 @@ jQuery(function() {
         newTab.find('a').tab('show')
     })
     newTabButton.click() // trigger click to create first form
+    
+    //Only show textbox if the user clicks that they would like to auto-respond!
+    $('#instantReply').change(function(){
+    	if(this.checked){
+    		$("#responseBox").show();
+    	}
+    	else
+    		$("#responseBox").hide();
+    })
+    
+})
 
 })
 
@@ -79,3 +90,4 @@ jQuery(function() {
         }
     })
 })
+
