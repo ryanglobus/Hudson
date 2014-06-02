@@ -9,6 +9,28 @@
 	</head>
 	
 	<body>
+		<div id="map-canvas" style="width: 74%; height: 43%; position: absolute; margin-top: 143px"></div>
+		<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAH9FBsCMDrKGcOluS-iFLpymbNT-u0go4&sensor=flase"></script>	
+		<script type="text/javascript">
+    		function initialize() {
+			
+        		var latArr = ${lats}
+        		var lonArr = ${lons}
+        		var mapOptions = {
+          			center: new google.maps.LatLng(latArr[0], lonArr[0]),
+          			zoom: 8
+        		};
+        		var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+							
+        		var myLatlng = new google.maps.LatLng(latArr[0], lonArr[0]);
+        		var marker = new google.maps.Marker ({
+					position:myLatlng,
+					map: map,
+        		});
+        	
+      		}
+      		google.maps.event.addDomListener(window, 'load', initialize);
+    	</script>
 		<h1>Query Results For ${queryTitle}</h1>
 		<g:form action="deletePosts">
 		<%
@@ -42,7 +64,7 @@
 		</g:if>
 		<g:else>
 			<g:each var="postList" in="${results}">				
-				<div class="panel panel-default">
+				<div class="panel panel-default" style="margin-top:400px">
   						<!-- Default panel contents -->
   						<div class="panel-heading"><h3>Results For ${postList.key}   
   						<button type="button" class="btn btn-danger"><g:link action="deleteQuery" params="[queryName: postList.key]"><span class="glyphicon glyphicon-trash"></span> Delete Query</g:link></button>

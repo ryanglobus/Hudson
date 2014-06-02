@@ -98,6 +98,9 @@ class ProfileController {
 		def usr = User.get(session["userid"])
 		def results = [:]
 		def queryNames = []
+		def lats = []
+		def lons = []
+		def links = []
 		def queries = usr.queries
 		def queryTitle = ""
 		def qry = null
@@ -125,10 +128,18 @@ class ProfileController {
 					if(tempRes.size() != 0)
 						results.put(q.name, tempRes)
 				}
+				
+				for(Post p : q.posts) {
+					lats.add(p.latitude)
+					lons.add(p.longitude)
+					
+					links.add(p.link)
+				}
 			}
 		}
-
-		[results: results, queryTitle:queryTitle, queryNames: queryNames]
+		Double lon = -120.334;
+		Double lat = 30.3334;
+		[results: results, queryTitle:queryTitle, queryNames: queryNames, lats : lats, lons : lons, links: links, lat : lat, lon : lon]
 	}
 
 	//This action is called when the user chooses to delete posts from the "new post" page
