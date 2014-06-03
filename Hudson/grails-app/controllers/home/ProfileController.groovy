@@ -301,7 +301,7 @@ class ProfileController {
 		else query.dog = false
 
 		if(params.notify) query.notify = true
-		else params.notify = false
+		else query.notify = false
 
 		if(params.instantReply) {
 			query.instantReply = true
