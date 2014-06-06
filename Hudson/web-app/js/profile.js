@@ -34,7 +34,10 @@ jQuery(function() {
     		$("#responseBox").hide();
     })
     
+})
 
+jQuery(function() {
+    var $ = jQuery
 
     var neighborhood = $('#neighborhoods')
     var nonSelectedText = 'All Neighborhoods'
