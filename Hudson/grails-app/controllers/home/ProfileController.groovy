@@ -71,6 +71,15 @@ class ProfileController {
 		def queries = usr.queries
 		def queryTitle = ""
 		def favorites = params.favorites.toBoolean()
+		def needsPhoto = params.needsPhoto.toBoolean()
+		def sortOrder = "desc"
+		def sortValue = params.sortParam;
+		
+		if(params.sortParam == "priceAsc" || params.sortParam == "priceDesc")
+			sortValue = "price"
+		
+		if(params.sortParam == "priceAsc")
+			sortOrder = "asc"
 
 		if(params.queryName == "all") {
 			queryTitle = "All Queries"
@@ -85,14 +94,25 @@ class ProfileController {
 				def tempRes = []
 				
 				if(favorites == false) {
-					//Want newest dates first!
-					tempRes = Post.findAll(sort:"date", order:"desc") {
-						query == q && deleted == false
+					if(needsPhoto)	{
+						tempRes = Post.findAll(sort:sortValue, order:sortOrder) {
+							query == q && deleted == false && photoLink != null
+						}
+					} else {
+						tempRes = Post.findAll(sort:sortValue, order:sortOrder) {
+							query == q && deleted == false
+						}
 					}
 				}
 				else {
-					tempRes = Post.findAll(sort:"date", order:"desc") {
-						query == q && deleted == false && favorite == true
+					if(needsPhoto) {
+						tempRes = Post.findAll(sort:sortValue, order:sortOrder) {
+							query == q && deleted == false && favorite == true && photoLink != null
+						}
+					} else {
+						tempRes = Post.findAll(sort:sortValue, order:sortOrder) {
+							query == q && deleted == false && favorite == true
+						}
 					}
 				}
 
@@ -107,7 +127,7 @@ class ProfileController {
 			}
 		}
 
-		[results: results, queryTitle:queryTitle, queries: queriesUsed, favorites: favorites]
+		[results: results, queryTitle:queryTitle, queries: queriesUsed, favorites: favorites, sortParam:params.sortParam, needsPhoto: needsPhoto]
 	}
 
 	//This action is called when the user chooses to delete posts from the "new post" page
@@ -126,7 +146,7 @@ class ProfileController {
 		}
 
 
-		redirect(action: "newResults", params:[queryName: params.queryName, favorites:false])
+		redirect(action: "newResults", params:[queryName: params.queryName, favorites:params.favorites.toBoolean(), sortParam: params.sortParam, needsPhoto:params.needsPhoto.toBoolean()])
 	}
 	
 	//'Deletes' and individual query so that it is no longer viewable by the user.
@@ -143,7 +163,7 @@ class ProfileController {
 			post.save(flush:true, failOnError: true)
 		}
 		
-		redirect(action: "newResults", params:[queryName: "all", favorites:false])
+		redirect(action: "newResults", params:[queryName: "all", favorites:params.favorites.toBoolean(), sortParam: params.sortParam, needsPhoto:params.needsPhoto.toBoolean()])
 	}
 	
 	//Allows the user to edit a query!
