@@ -36,8 +36,6 @@ jQuery(function() {
     
 })
 
-})
-
 jQuery(function() {
     var $ = jQuery
 
@@ -89,5 +87,5 @@ jQuery(function() {
             })
         }
     })
-})
 
+})
