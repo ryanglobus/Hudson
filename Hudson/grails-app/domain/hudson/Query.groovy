@@ -24,6 +24,9 @@ import hudson.neighborhood.*
 import org.xml.sax.SAXException
 import org.jsoup.Jsoup
 import org.jsoup.select.Elements
+import java.net.URL
+import java.net.MalformedURLException
+import org.xml.sax.InputSource
 
 import hudson.Post
 import hudson.User
@@ -124,10 +127,15 @@ class Query {
     }
 
 	List<Post> searchCraigslist() throws FactoryConfigurationError,
-			ParserConfigurationException, IOException, SAXException {
+			ParserConfigurationException, IOException, SAXException,
+            MalformedURLException {
 		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance()
 		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder()
-		return searchCraigslist(dBuilder.parse(craigslistRssUrl()))
+        //return searchCraigslist(dBuilder.parse(craigslistRssUrl()))
+        URL url = new URL(craigslistRssUrl())
+        InputSource inSource = new InputSource(url.openStream())
+        inSource.setEncoding('UTF-8')
+		return searchCraigslist(dBuilder.parse(inSource))
 	}
 
     String craigslistRssUrl() {

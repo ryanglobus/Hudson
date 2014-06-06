@@ -10,11 +10,12 @@ import org.hibernate.SessionFactory
 import org.hibernate.Transaction
 import org.springframework.orm.hibernate3.SessionFactoryUtils
 import static grails.async.Promises.task
+import grails.util.Environment
 
 // TODO set TTL on queries (one month)
 class QueryQueueWorkersJob {
     static triggers = {
-      simple startDelay: 0l, repeatInterval: 30_000l // execute job once in 30 seconds
+      simple startDelay: 0l, repeatInterval: 5_000l // execute job once in 5 seconds
     }
 
     // TODO WorkersJob have some duplicated code :/
@@ -41,10 +42,20 @@ class QueryQueueWorkersJob {
                     try {
                         println("Processing a Craigslist query...")
                         Query query = msg.body
+                        println("\tat URL: ${query.craigslistUrl(true)}")
                         if (query.isCancelled) return
                         query.searchAndSaveNewPosts()
                         Message<Query> newMsg = new Message<Query>(query)
-                        newMsg.delay = msg.delay
+                        println(msg.delay)
+                        if (msg.delay == null || msg.delay < 60) {
+                            if (Environment.current.equals(Environment.PRODUCTION)) {
+                                newMsg.delay = 600 // every 10 minutes
+                            } else {
+                                newMsg.delay = 60 // every minute
+                            }
+                        } else {
+                            newMsg.delay = msg.delay
+                        }
                         // TODO how do I make below atomic? what if query already got again before deleted?
                         queue.enqueue(newMsg)
                         queue.delete(msg)

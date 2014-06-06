@@ -9,6 +9,7 @@ import HudsonJobs.*
 import hudson.Post
 import hudson.neighborhood.*
 import groovy.hudson.queue.Message
+import groovy.hudson.queue.QueueException
 import grails.converters.*
 
 
@@ -44,18 +45,32 @@ class ProfileController {
 		// TODO below is slow, and what if it fails?
 
 		// run the query now to get results
-		query.searchAndSaveNewPosts()
+		// TODO instead put in queue with 0 delay query.searchAndSaveNewPosts()
 
 		// Enqueue the job to run the query
 		Message<Query> msg = new Message<Query>(query)
-		if (Environment.current.equals(Environment.PRODUCTION)) {
+		/*if (Environment.current.equals(Environment.PRODUCTION)) {
 			msg.delay = 600 // every 10 minutes
 		} else {
 			msg.delay = 60 // every minute
+		}*/
+		msg.delay = 10 // short wait at first
+		try {
+			Query.queue.enqueue(msg)
+		} catch (QueueException qe) {
+			query.delete()
+			throw qe;
 		}
-		Query.queue.enqueue(msg)
+		String flash = null
+		try {
+			query.searchAndSaveNewPosts()
+		} catch (Exception e) {
+			e.printStackTrace()
+			flash = "Your query was saved but there was a problem loading posts. Try refreshing this page in a minute."
+		}
 
-		redirect(action:"queryCreated", params: [queryid : query.id, housingType: params.type])
+		redirect(action: "newResults", params: [queryName: query.name, favorites: false, flash: flash])
+		//redirect(action:"queryCreated", params: [queryid : query.id, housingType: params.type])
 	}
 
 	def queryCreated() {
@@ -71,6 +86,7 @@ class ProfileController {
 		def queries = usr.queries
 		def queryTitle = ""
 		def favorites = params.favorites.toBoolean()
+		if (params.flash != null) flash.message = params.flash
 
 		if(params.queryName == "all") {
 			queryTitle = "All Queries"

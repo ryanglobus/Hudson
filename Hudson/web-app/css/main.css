@@ -5,3 +5,7 @@ nav ul.nav {
     box-shadow: none;
 }
 
+.error {
+    font-weight: bold;
+    color: red;
+}

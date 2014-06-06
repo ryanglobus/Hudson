@@ -15,6 +15,9 @@
 	</head>
 	
 	<body>
+		<g:if test="${flash.message != null && !flash.message.isEmpty()}">
+			<h5 class="error">${flash.message}</h5>
+		</g:if>
 		<g:if test="${favorites == false}">
 			<h1>Query Results For ${queryTitle}</h1>
 		</g:if>
