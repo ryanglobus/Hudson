@@ -13,6 +13,7 @@ import org.springframework.mail.MailSender
 import org.springframework.mail.SimpleMailMessage
 import grails.util.Environment
 import groovy.hudson.Notification
+import hudson.Query
 
 import java.net.URL;
 
@@ -230,7 +231,7 @@ class User {
 				n.enqueue();
 			}
 				//sendNotification(this.email, messageBody, false);
-			if (this.phone != null && !this.phone.isEmpty()) {
+			if (this.phone != null && !this.phone.isEmpty() && Environment.current.equals(Environment.PRODUCTION)) {
 				String newPhoneEmail = phoneEmail(this.phone);
 				Notification n = new Notification(newPhoneEmail, newPhoneEmail, messageBody, "Hudson: New Posts!");
 				n.enqueue();

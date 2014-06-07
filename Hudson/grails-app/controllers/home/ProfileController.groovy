@@ -1,5 +1,7 @@
 package home
 
+import java.util.regex.Pattern.Ques;
+
 import hudson.Query
 import grails.util.Environment
 import hudson.User
@@ -25,52 +27,20 @@ class ProfileController {
 			validForm = false
 		}
 		if(!validForm) return
-
-
-		Query query = new Query()
-		// TODO gracefully handle errors with params
-		query.name = params.queryName // TODO assert unique
-		query.searchText = params.searchText
-		if(params.minrent.length() == 0) query.minRent = null
-		else query.minRent = params.minrent.toInteger()
-		if(params.maxrent.length() == 0) query.maxRent = null
-		else query.maxRent = params.maxrent.toInteger()
-		if(params.numRooms.length() == 0) query.numBedrooms = null
-		else query.numBedrooms = params.numRooms.toInteger()
-		query.housingType = Query.HousingType.valueOf(params.type).getValue()
-
-		if (params.region != null) {
-			query.region = Region.findByValue(params.region)
+		
+		//User cannot make two queries with the same name.
+		//Causes issues elsewhere and is just generally confusing.
+		def me = User.get(session["userid"])
+		def alreadyExists = Query.findAll {
+			user == me && name == params.queryName
 		}
-		if (params.city != null) {
-			query.city = City.findByRegionAndValue(query.region, params.city)
+		if(alreadyExists.size() != 0) {
+			flash.message = "You already have a query called " + params.queryName + "! Please choose a different name for your new query!"
+			redirect(action:'index')
+			return
 		}
-		if (query.city != null && params.neighborhoods != null) {
-			params.list('neighborhoods').each { nh ->
-				Neighborhood neighborhood = Neighborhood.findByCityAndValue(query.city, nh.toInteger())
-				if (neighborhood != null) {
-					query.addToNeighborhoods(neighborhood)
-				}
-			}
-		}
-
-		if(params.cat) query.cat = true
-		else query.cat = false
-
-		if(params.dog) query.dog = true
-		else query.dog = false
-
-		if(params.notify) query.notify = true
-		else query.notify = false
-
-		if(params.instantReply) {
-			query.instantReply = true
-			query.responseMessage = params.responseMessage
-		}
-		else query.instantReply = false
-
-		query.user = User.findById(session["userid"])
-		query.save(flush:true, failOnError: true)
+		
+		Query query = setUpQuery(params, true)
 
 		// TODO below is slow, and what if it fails?
 
@@ -98,52 +68,84 @@ class ProfileController {
 	def newResults() {
 		def usr = User.get(session["userid"])
 		def results = [:]
-		def queryNames = []
 		def lats = []
 		def lons = []
 		def links = []
 		def titles = []
+		def queriesUsed = []
 		def queries = usr.queries
 		def queryTitle = ""
-		def qry = null
+		def favorites = params.favorites.toBoolean()
+		def needsPhoto = params.needsPhoto.toBoolean()
+		def sortOrder = "desc"
+		def sortValue = params.sortParam;
+		
+		if(params.sortParam == "priceAsc" || params.sortParam == "priceDesc")
+			sortValue = "price"
+		
+		if(params.sortParam == "priceAsc")
+			sortOrder = "asc"
 
 		if(params.queryName == "all") {
 			queryTitle = "All Queries"
 		}
 		else {
-			qry = Query.findByName(params.queryName)
 			queryTitle = params.queryName
 		}
 
 		for (q in queries) {
 			if (q.isCancelled == false) {
-				queryNames.add(q.name)
-				def tempRes = Post.findAll {
-					query == q && deleted == false
+				queriesUsed.add(q)
+				def tempRes = []
+				
+				if(favorites == false) {
+					if(needsPhoto)	{
+						tempRes = Post.findAll(sort:sortValue, order:sortOrder) {
+							query == q && deleted == false && photoLink != null
+						}
+					} else {
+						tempRes = Post.findAll(sort:sortValue, order:sortOrder) {
+							query == q && deleted == false
+						}
+					}
+				}
+				else {
+					if(needsPhoto) {
+						tempRes = Post.findAll(sort:sortValue, order:sortOrder) {
+							query == q && deleted == false && favorite == true && photoLink != null
+						}
+					} else {
+						tempRes = Post.findAll(sort:sortValue, order:sortOrder) {
+							query == q && deleted == false && favorite == true
+						}
+					}
 				}
 
-				if (params.queryName != "all") { // TODO can I name my query all?
-					if(q == qry)
+				if (params.queryName != "all") {
+					if(q.name == queryTitle)
 						results.put(q.name, tempRes)
 				}
 				else {
 					if(tempRes.size() != 0)
 						results.put(q.name, tempRes)
 				}
-				
-				for(Post p : q.posts) {
-					lats.add(p.latitude)
-					lons.add(p.longitude)
-					links.add(p.link)
-					titles.add(p.title)
-				}
+			
 			}
 		}
-		Double lon = -122.2803;
-		Double lat = 37.7083;
+		
+		for(postList in results) {
+			for(p in postList.value) {
+				lats.add(p.latitude)
+				lons.add(p.longitude)
+				links.add(p.link)
+				titles.add(p.title)
+			}
+		}
+
 		def shmoobli = links as grails.converters.JSON
 		def boobli = titles as grails.converters.JSON
-		[results: results, queryTitle:queryTitle, queryNames: queryNames, lats : lats, lons : lons, links : shmoobli, titles : boobli, lat : lat, lon : lon]
+
+		[results: results, queryTitle:queryTitle, queries: queriesUsed, favorites: favorites, sortParam:params.sortParam, needsPhoto: needsPhoto, lats : lats, lons : lons, links : shmoobli, titles : boobli]
 	}
 
 	//This action is called when the user chooses to delete posts from the "new post" page
@@ -162,7 +164,7 @@ class ProfileController {
 		}
 
 
-		redirect(action: "newResults", params:[queryName: params.queryName])
+		redirect(action: "newResults", params:[queryName: params.queryName, favorites:params.favorites.toBoolean(), sortParam: params.sortParam, needsPhoto:params.needsPhoto.toBoolean()])
 	}
 	
 	//'Deletes' and individual query so that it is no longer viewable by the user.
@@ -171,10 +173,53 @@ class ProfileController {
 		query.isCancelled = true
 		query.save(flush:true, failOnError: true)
 		
-		redirect(action: "newResults", params:[queryName: "all"])
+		//IF you delete a query you must also delete all of it's posts!
+		//Here we don't actually delete the DB entry, since the things will stick
+		//around in the "archive" section for up to a month.
+		for(post in query.posts) {
+			post.deleted = true
+			post.save(flush:true, failOnError: true)
+		}
+		
+		redirect(action: "newResults", params:[queryName: "all", favorites:params.favorites.toBoolean(), sortParam: params.sortParam, needsPhoto:params.needsPhoto.toBoolean()])
 	}
 	
-	def settings() {}
+	//Allows the user to edit a query!
+	def editQuery() {
+		boolean validForm
+		withForm {
+			validForm = true
+		} .invalidToken {
+			flash.message = "Form token test failed"
+			redirect(action:'settings')
+			validForm = false
+		}
+		if(!validForm) return
+		
+		//User cannot make two queries with the same name.
+		//This is of course allowed if they are keeping the name the same
+		//for the query they are editing : )
+		def me = User.get(session["userid"])
+		def alreadyExists = Query.findAll {
+			user == me && name == params.queryName && id != params.qryId
+		}
+		if(alreadyExists.size() != 0) {
+			flash.message = "You already have a query called " + params.queryName + "! Please choose a different name for your new query!"
+			redirect(action:'settings')
+			return
+		}
+		
+		//For now let's just make the query and return to settings.
+		setUpQuery(params, false)
+		redirect(action: "settings")
+	}
+	
+	//Settings allows you to change your password as well as edit queries!!
+	def settings() {
+		def usr = User.get(session["userid"])
+		
+		[queries: usr.queries]
+	}
 	
 	def changePassword() {
 		boolean validForm
@@ -225,9 +270,93 @@ class ProfileController {
 		render city.neighborhoods as JSON
 	}
 	
+	def markAsResponded() {
+		Post post = Post.get(params.postId)
+		
+		if (post.responseSent == true) {
+			post.responseSent = false
+		}
+		else {
+			post.responseSent = true
+		}
+		post.save(flush:true, failOnError:true)
+		
+		render post as JSON
+	}
+	
+	def markAsFavorite() {
+		Post post = Post.get(params.postId)
+		
+		if (post.favorite == true) {
+			post.favorite = false
+		}
+		else {
+			post.favorite = true
+		}
+		post.save(flush:true, failOnError:true)
+		render post as JSON
+	}
+	
+	//Code for making/editing a query, used in newquery as well as in editQuery
+	private Query setUpQuery(params, boolean isNew) {
+		Query query = null
+		if (isNew) {
+			query = new Query()
+		}
+		else{
+			query = Query.get(params.qryId)
+		}
+		
+		query.name = params.queryName
+		query.searchText = params.searchText
+		if(params.minrent.length() == 0) query.minRent = null
+		else query.minRent = params.minrent.toInteger()
+		if(params.maxrent.length() == 0) query.maxRent = null
+		else query.maxRent = params.maxrent.toInteger()
+		if(params.numRooms.length() == 0) query.numBedrooms = null
+		else query.numBedrooms = params.numRooms.toInteger()
+		query.housingType = Query.HousingType.valueOf(params.type).getValue()
+		
+		if (params.region != null) {
+			query.region = Region.findByValue(params.region)
+		}
+		if (params.city != null) {
+			query.city = City.findByRegionAndValue(query.region, params.city)
+		}
+		if (query.city != null && params.neighborhoods != null) {
+			params.list('neighborhoods').each { nh ->
+				Neighborhood neighborhood = Neighborhood.findByCityAndValue(query.city, nh.toInteger())
+				if (neighborhood != null) {
+					query.addToNeighborhoods(neighborhood)
+				}
+			}
+		}
+
+		if(params.cat) query.cat = true
+		else query.cat = false
+
+		if(params.dog) query.dog = true
+		else query.dog = false
+
+		if(params.notify) query.notify = true
+		else query.notify = false
+
+		if(params.instantReply) {
+			query.instantReply = true
+			query.responseMessage = params.responseMessage
+		}
+		else query.instantReply = false
+
+		query.user = User.findById(session["userid"])
+		query.save(flush:true, failOnError: true)
+		
+		return query
+	}
+	
 	private static boolean passwordCheck(String pass, User usr) {
 		String hashedPassword = HomeController.getHashedPassword(pass, usr.salt)
 		if(hashedPassword != usr.passwordHash) return false
 		return true
 	}
+	
 }
