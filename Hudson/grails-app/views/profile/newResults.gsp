@@ -29,25 +29,26 @@
           			zoom: 8
         		};
         		var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
-				var infoarr = new Object();
-				var markerarr = [];
+				
+				var infowindow = new google.maps.InfoWindow ({
+					content : "",
+				});
 				for(var i = 0; i < latArr.length; i++) {
         			var contentString = linkArr[i*2 + 1];
+        			//var html = <a 
 					
         			var myLatlng = new google.maps.LatLng(latArr[i], lonArr[i]);
         			var marker = new google.maps.Marker ({
 						position:myLatlng,
 						map: map,
+						//add in ID here to store something maybe html?
 						title: contentString,
         			});
-
-					var infowindow = new google.maps.InfoWindow ({
-						content : contentString,
-					});
-					infoarr[contentString] = infowindow;
-					
+	
 					google.maps.event.addListener(marker, 'click', function() {
-    			    	infoarr[this.title].open(map, this);
+						//def content = 
+						infowindow.setContent('<a href = "'+this.title+'">'+this.title+'</a>'); //maybe?
+    			    	infowindow.open(map, this);
     				});
 					//infoarr[i] = infowindow;
 					//markerarr[i] = marker;
