@@ -6,6 +6,7 @@ import hudson.User
 import HudsonJobs.*
 import hudson.Post
 import hudson.neighborhood.*
+import org.codehaus.groovy.grails.web.json.*
 import groovy.hudson.queue.Message
 import grails.converters.*
 
@@ -132,14 +133,16 @@ class ProfileController {
 				for(Post p : q.posts) {
 					lats.add(p.latitude)
 					lons.add(p.longitude)
-					
 					links.add(p.link)
 				}
 			}
 		}
-		Double lon = -120.334;
-		Double lat = 30.3334;
-		[results: results, queryTitle:queryTitle, queryNames: queryNames, lats : lats, lons : lons, links: links, lat : lat, lon : lon]
+		Double lon = -122.2803;
+		Double lat = 37.7083;
+		def test = ["hello", "goodbye", "hoorya"]
+		def shmoobli = links as grails.converters.JSON
+		//def linkJSON = (links as JSON).toString();
+		[results: results, queryTitle:queryTitle, queryNames: queryNames, lats : lats, lons : lons, test : shmoobli, lat : lat, lon : lon]
 	}
 
 	//This action is called when the user chooses to delete posts from the "new post" page

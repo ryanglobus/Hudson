@@ -12,25 +12,48 @@
 		<div id="map-canvas" style="width: 74%; height: 43%; position: absolute; margin-top: 143px"></div>
 		<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAH9FBsCMDrKGcOluS-iFLpymbNT-u0go4&sensor=flase"></script>	
 		<script type="text/javascript">
+		
     		function initialize() {
-			
         		var latArr = ${lats}
         		var lonArr = ${lons}
+        		var test = [
+        	        		<% for (String t : test) { %>
+								"${t}"
+							<% } %>
+        	        		]
+        		var str = test[0];
+        		var linkArr = str.split("&quot;");
+        		//alert(linkArr[2]);
         		var mapOptions = {
-          			center: new google.maps.LatLng(latArr[0], lonArr[0]),
+          			center: new google.maps.LatLng(${lat}, ${lon}),
           			zoom: 8
         		};
         		var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
-
+				var infoarr = new Object();
+				var markerarr = [];
 				for(var i = 0; i < latArr.length; i++) {
-				
+        			var contentString = linkArr[i*2 + 1];
+					
         			var myLatlng = new google.maps.LatLng(latArr[i], lonArr[i]);
         			var marker = new google.maps.Marker ({
 						position:myLatlng,
 						map: map,
+						title: contentString,
         			});
+
+					var infowindow = new google.maps.InfoWindow ({
+						content : contentString,
+					});
+					infoarr[contentString] = infowindow;
+					
+					google.maps.event.addListener(marker, 'click', function() {
+    			    	infoarr[this.title].open(map, this);
+    				});
+					//infoarr[i] = infowindow;
+					//markerarr[i] = marker;
+        			
 				}
-        	
+				
       		}
       		google.maps.event.addDomListener(window, 'load', initialize);
     	</script>
