@@ -16,45 +16,54 @@
     		function initialize() {
         		var latArr = ${lats}
         		var lonArr = ${lons}
-        		var test = [
-        	        		<% for (String t : test) { %>
-								"${t}"
-							<% } %>
-        	        		]
-        		var str = test[0];
-        		var linkArr = str.split("&quot;");
-        		//alert(linkArr[2]);
+        		
+        		var linkTemp = [
+        	        			<% for (String l : links) { %>
+									"${l}"
+								<% } %>
+								]
+        		var linkstr = linkTemp[0];
+        		var linkArr = linkstr.split("&quot;");
+
+        		var titleTemp = [
+        		         		<% for (String t : titles) { %>
+									 "${t}"
+								<% } %>
+								]
+				var titlestr = titleTemp[0];
+				var titleArr = titlestr.split("&quot;");
+        		
         		var mapOptions = {
           			center: new google.maps.LatLng(${lat}, ${lon}),
           			zoom: 8
         		};
         		var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
-				
+				var bounds = new google.maps.LatLngBounds();
 				var infowindow = new google.maps.InfoWindow ({
 					content : "",
 				});
 				for(var i = 0; i < latArr.length; i++) {
-        			var contentString = linkArr[i*2 + 1];
-        			//var html = <a 
 					
-        			var myLatlng = new google.maps.LatLng(latArr[i], lonArr[i]);
-        			var marker = new google.maps.Marker ({
-						position:myLatlng,
-						map: map,
-						//add in ID here to store something maybe html?
-						title: contentString,
-        			});
+					if(latArr[i] != null && lonArr[i] != null) {
+					
+        				var link = linkArr[i*2 + 1];
+        				var Title = titleArr[i*2 + 1];								
+        				var myLatlng = new google.maps.LatLng(latArr[i], lonArr[i]);
+        				var marker = new google.maps.Marker ({
+							position:myLatlng,
+							map: map,
+							id: link,
+							title: Title,
+        				});
+        				bounds.extend(myLatlng);
 	
-					google.maps.event.addListener(marker, 'click', function() {
-						//def content = 
-						infowindow.setContent('<a href = "'+this.title+'">'+this.title+'</a>'); //maybe?
-    			    	infowindow.open(map, this);
-    				});
-					//infoarr[i] = infowindow;
-					//markerarr[i] = marker;
-        			
+						google.maps.event.addListener(marker, 'click', function() {
+							infowindow.setContent('<a href = "'+this.id+'">'+this.title+'</a>'); 
+    			    		infowindow.open(map, this);
+    					});
+					}
 				}
-				
+				map.fitBounds(bounds);		
       		}
       		google.maps.event.addDomListener(window, 'load', initialize);
     	</script>

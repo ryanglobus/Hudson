@@ -102,6 +102,7 @@ class ProfileController {
 		def lats = []
 		def lons = []
 		def links = []
+		def titles = []
 		def queries = usr.queries
 		def queryTitle = ""
 		def qry = null
@@ -134,15 +135,15 @@ class ProfileController {
 					lats.add(p.latitude)
 					lons.add(p.longitude)
 					links.add(p.link)
+					titles.add(p.title)
 				}
 			}
 		}
 		Double lon = -122.2803;
 		Double lat = 37.7083;
-		def test = ["hello", "goodbye", "hoorya"]
 		def shmoobli = links as grails.converters.JSON
-		//def linkJSON = (links as JSON).toString();
-		[results: results, queryTitle:queryTitle, queryNames: queryNames, lats : lats, lons : lons, test : shmoobli, lat : lat, lon : lon]
+		def boobli = titles as grails.converters.JSON
+		[results: results, queryTitle:queryTitle, queryNames: queryNames, lats : lats, lons : lons, links : shmoobli, titles : boobli, lat : lat, lon : lon]
 	}
 
 	//This action is called when the user chooses to delete posts from the "new post" page
