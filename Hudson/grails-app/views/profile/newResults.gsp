@@ -17,7 +17,7 @@
 		<g:if test="${flash.message != null && !flash.message.isEmpty()}">
 			<h5 class="error">${flash.message}</h5>
 		</g:if>
-		<div id="map-canvas" style="width: 74%; height: 43%; position: absolute; margin-top: 143px"></div>
+		<div id="map-canvas" style="width: 80%; max-width:1150px; height: 43%; position: absolute; margin-top: 143px"></div>
 		<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAH9FBsCMDrKGcOluS-iFLpymbNT-u0go4&sensor=flase"></script>	
 		<script type="text/javascript">
 		
