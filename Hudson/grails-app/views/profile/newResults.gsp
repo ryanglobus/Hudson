@@ -172,7 +172,7 @@
 				<g:else>
 					<div class="panel panel-default">
 				</g:else>
-				<% queryNum++; %>
+				<% queryNum++ %>
   						<!-- Default panel contents -->
   						<div class="panel-heading"><h3>Results For ${postList.key}   
   						<a href="/Hudson/profile/deleteQuery?queryName=${postList.key}&favorites=${favorites}&sortParam=${sortParam}&needsPhoto=${needsPhoto}" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span> Delete Query</a>
