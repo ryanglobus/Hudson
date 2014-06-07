@@ -56,7 +56,13 @@ class HomeController {
 		}
 		session["newPostCount"] = newPostCount
 		
-		redirect(controller:"profile")
+		if(usr.queries.size() == 0) {
+			redirect(controller:"profile")
+			return;
+		}
+		else {
+			redirect(controller:"profile", action:"newResults", params: [queryName: "all", favorites: false, sortParam:"date", needsPhoto:false])
+		}
 		
 	}
 

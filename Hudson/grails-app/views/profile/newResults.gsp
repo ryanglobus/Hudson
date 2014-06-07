@@ -163,7 +163,7 @@
 			<p>Looks like you don't have any new posts at this time, but we'll keep looking!</p>
 		</g:if>
 		<g:else>
-			<g:each var="postList" in="${results}">				
+			<g:each var="postList" in="${results}">			
 				<div class="panel panel-default" style="margin-top:400px">
   						<!-- Default panel contents -->
   						<div class="panel-heading"><h3>Results For ${postList.key}   
@@ -184,7 +184,7 @@
 							<g:each var="post" in="${postList.value}">
 								<tr>
 									<td><input type="checkbox" name="delete" value="${post.id}"></td>
-									<td>${post.date.get(Calendar.MONTH)}/${post.date.get(Calendar.DAY_OF_MONTH)}/${post.date.get(Calendar.YEAR)}</td>
+									<td>${post.date.get(Calendar.MONTH) + 1}/${post.date.get(Calendar.DAY_OF_MONTH)}/${post.date.get(Calendar.YEAR)}</td>
 									<td>${post.price}</td>
 									<td><a href="${post.link}" target="_blank">${post.title}</a></td>
 									<g:if test="${post.photoLink != null }">
