@@ -65,7 +65,7 @@
         				bounds.extend(myLatlng);
 	
 						google.maps.event.addListener(marker, 'click', function() {
-							infowindow.setContent('<a href = "'+this.id+'">'+this.title+'</a>'); 
+							infowindow.setContent('<a href = "'+this.id+'" target = "_blank">'+this.title+'</a>'); 
     			    		infowindow.open(map, this);
     					});
 					}
