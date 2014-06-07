@@ -8,6 +8,7 @@ import hudson.User
 import HudsonJobs.*
 import hudson.Post
 import hudson.neighborhood.*
+import org.codehaus.groovy.grails.web.json.*
 import groovy.hudson.queue.Message
 import grails.converters.*
 
@@ -67,6 +68,10 @@ class ProfileController {
 	def newResults() {
 		def usr = User.get(session["userid"])
 		def results = [:]
+		def lats = []
+		def lons = []
+		def links = []
+		def titles = []
 		def queriesUsed = []
 		def queries = usr.queries
 		def queryTitle = ""
@@ -124,10 +129,23 @@ class ProfileController {
 					if(tempRes.size() != 0)
 						results.put(q.name, tempRes)
 				}
+			
+			}
+		}
+		
+		for(postList in results) {
+			for(p in postList.value) {
+				lats.add(p.latitude)
+				lons.add(p.longitude)
+				links.add(p.link)
+				titles.add(p.title)
 			}
 		}
 
-		[results: results, queryTitle:queryTitle, queries: queriesUsed, favorites: favorites, sortParam:params.sortParam, needsPhoto: needsPhoto]
+		def shmoobli = links as grails.converters.JSON
+		def boobli = titles as grails.converters.JSON
+
+		[results: results, queryTitle:queryTitle, queries: queriesUsed, favorites: favorites, sortParam:params.sortParam, needsPhoto: needsPhoto, lats : lats, lons : lons, links : shmoobli, titles : boobli]
 	}
 
 	//This action is called when the user chooses to delete posts from the "new post" page

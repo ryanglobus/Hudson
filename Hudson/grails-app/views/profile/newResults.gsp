@@ -14,6 +14,63 @@
 	</head>
 	
 	<body>
+		<div id="map-canvas" style="width: 74%; height: 43%; position: absolute; margin-top: 143px"></div>
+		<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAH9FBsCMDrKGcOluS-iFLpymbNT-u0go4&sensor=flase"></script>	
+		<script type="text/javascript">
+		
+    		function initialize() {
+        		var latArr = ${lats}
+        		var lonArr = ${lons}
+        		
+        		var linkTemp = [
+        	        			<% for (String l : links) { %>
+									"${l}"
+								<% } %>
+								]
+        		var linkstr = linkTemp[0];
+        		var linkArr = linkstr.split("&quot;");
+
+        		var titleTemp = [
+        		         		<% for (String t : titles) { %>
+									 "${t}"
+								<% } %>
+								]
+				var titlestr = titleTemp[0];
+				var titleArr = titlestr.split("&quot;");
+        		
+        		var mapOptions = {
+          			zoom: 8
+        		};
+        		var map = new google.maps.Map(document.getElementById("map-canvas"), mapOptions);
+				var bounds = new google.maps.LatLngBounds();
+				var infowindow = new google.maps.InfoWindow ({
+					content : "",
+				});
+				for(var i = 0; i < latArr.length; i++) {
+					
+					if(latArr[i] != null && lonArr[i] != null) {
+					
+        				var link = linkArr[i*2 + 1];
+        				var Title = titleArr[i*2 + 1];								
+        				var myLatlng = new google.maps.LatLng(latArr[i], lonArr[i]);
+        				var marker = new google.maps.Marker ({
+							position:myLatlng,
+							map: map,
+							id: link,
+							title: Title,
+        				});
+        				bounds.extend(myLatlng);
+	
+						google.maps.event.addListener(marker, 'click', function() {
+							infowindow.setContent('<a href = "'+this.id+'">'+this.title+'</a>'); 
+    			    		infowindow.open(map, this);
+    					});
+					}
+				}
+				map.fitBounds(bounds);		
+      		}
+      		google.maps.event.addDomListener(window, 'load', initialize);
+    	</script>
 		<g:if test="${favorites == false}">
 			<h1>Query Results For ${queryTitle}</h1>
 			
@@ -104,7 +161,7 @@
 		</g:if>
 		<g:else>
 			<g:each var="postList" in="${results}">				
-				<div class="panel panel-default">
+				<div class="panel panel-default" style="margin-top:400px">
   						<!-- Default panel contents -->
   						<div class="panel-heading"><h3>Results For ${postList.key}   
   						<a href="/Hudson/profile/deleteQuery?queryName=${postList.key}&favorites=${favorites}&sortParam=${sortParam}&needsPhoto=${needsPhoto}" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span> Delete Query</a>
