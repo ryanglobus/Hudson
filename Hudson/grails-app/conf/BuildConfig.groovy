@@ -45,12 +45,14 @@ grails.project.dependency.resolution = {
         //mavenRepo "http://repository.codehaus.org"
         //mavenRepo "http://download.java.net/maven/2/"
         //mavenRepo "http://repository.jboss.com/maven2/"
+        //mavenRepo "https://hibernate-sqlite.googlecode.com/svn/trunk/mavenrepo"
     }
 
     dependencies {
         // specify dependencies here under either 'build', 'compile', 'runtime', 'test' or 'provided' scopes e.g.
         runtime 'mysql:mysql-connector-java:5.1.30'
         // runtime 'org.postgresql:postgresql:9.3-1100-jdbc41'
+        //runtime 'com.applerao:hibernatesqlite:1.0'
         runtime 'org.xerial:sqlite-jdbc:3.6.17'
         runtime('org.codehaus.groovy.modules.http-builder:http-builder:0.5.1') {
             excludes 'xalan'

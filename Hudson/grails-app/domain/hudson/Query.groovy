@@ -232,6 +232,8 @@ class Query {
 			p.replyEmail = ""
 			p.link = elem.getElementsByTagName('link').item(0)?.getTextContent()
 			p.title = elem.getElementsByTagName('title').item(0)?.getTextContent()
+            // what I cut out in the line below has useful info, like price and size
+            p.title = p.title?.replaceFirst('\\([^\\)]*?\\)\\Q &#x0024;\\E.*', '').trim()
 			StringBuilder dateSB =
 				new StringBuilder(
 				elem.getElementsByTagName('dc:date').item(0)?.getTextContent())

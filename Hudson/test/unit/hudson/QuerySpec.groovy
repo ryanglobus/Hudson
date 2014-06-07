@@ -93,7 +93,7 @@ class QuerySpec extends Specification {
 </items>
 </channel>
 <item rdf:about="http://sfbay.craigslist.org/sfc/apa/4426589093.html">
-<title><![CDATA[Sat. Open House 10am to 5pm! Must See!! Amazing Location & Great Bldg (lower pac hts) &#x0024;3350 2bd 884sqft]]></title>
+<title><![CDATA[Sat. Open House 10am to 5pm! Must See (please)!! Amazing Location & Great Bldg (lower pac hts) &#x0024;3350 2bd 884sqft]]></title>
 <link>http://sfbay.craigslist.org/sfc/apa/4426589093.html</link>
 <description><![CDATA[Location: Lower Pacific Heights 
 Open House all week Monday to Saturday from 10:00 am to 5:30 pm!! 
@@ -102,7 +102,7 @@ Great unfurnished and recently remodeled 2BR/1BA apartment on 4th floor. Modern 
 <dc:language>en-us</dc:language>
 <dc:rights>&#x26;copy; 2014 &#x3C;span class=&#x22;desktop&#x22;&#x3E;craigslist&#x3C;/span&#x3E;&#x3C;span class=&#x22;mobile&#x22;&#x3E;CL&#x3C;/span&#x3E;</dc:rights>
 <dc:source>http://sfbay.craigslist.org/sfc/apa/4426589093.html</dc:source>
-<dc:title><![CDATA[Sat. Open House 10am to 5pm! Must See!! Amazing Location & Great Bldg (lower pac hts) &#x0024;3350 2bd 884sqft]]></dc:title>
+<dc:title><![CDATA[Sat. Open House 10am to 5pm! Must See (please)!! Amazing Location & Great Bldg (lower pac hts) &#x0024;3350 2bd 884sqft]]></dc:title>
 <dc:type>text</dc:type>
 <enc:enclosure resource="http://images.craigslist.org/00b0b_eNqi8svkKON_300x300.jpg" type="image/jpeg"/>
 <dcterms:issued>2014-04-18T19:04:50-07:00</dcterms:issued>
@@ -148,7 +148,7 @@ Great unfurnished and recently remodeled 2BR/1BA apartment on 4th floor. Modern 
 </items>
 </channel>
 <item rdf:about="http://sfbay.craigslist.org/sfc/apa/4426589093.html">
-<title><![CDATA[Sat. Open House 10am to 5pm! Must See!! Amazing Location & Great Bldg (lower pac hts) &#x0024;3350 2bd 884sqft]]></title>
+<title><![CDATA[Sat. Open House 10am to 5pm! Must See (please)!! Amazing Location & Great Bldg (lower pac hts) &#x0024;3350 2bd 884sqft]]></title>
 <link>http://sfbay.craigslist.org/sfc/apa/4426589093.html</link>
 <description><![CDATA[Location: Lower Pacific Heights 
 Open House all week Monday to Saturday from 10:00 am to 5:30 pm!! 
@@ -157,7 +157,7 @@ Great unfurnished and recently remodeled 2BR/1BA apartment on 4th floor. Modern 
 <dc:language>en-us</dc:language>
 <dc:rights>&#x26;copy; 2014 &#x3C;span class=&#x22;desktop&#x22;&#x3E;craigslist&#x3C;/span&#x3E;&#x3C;span class=&#x22;mobile&#x22;&#x3E;CL&#x3C;/span&#x3E;</dc:rights>
 <dc:source>http://sfbay.craigslist.org/sfc/apa/4426589093.html</dc:source>
-<dc:title><![CDATA[Sat. Open House 10am to 5pm! Must See!! Amazing Location & Great Bldg (lower pac hts) &#x0024;3350 2bd 884sqft]]></dc:title>
+<dc:title><![CDATA[Sat. Open House 10am to 5pm! Must See (please)!! Amazing Location & Great Bldg (lower pac hts) &#x0024;3350 2bd 884sqft]]></dc:title>
 <dc:type>text</dc:type>
 <enc:enclosure resource="http://images.craigslist.org/00b0b_eNqi8svkKON_300x300.jpg" type="image/jpeg"/>
 <dcterms:issued>2014-04-18T19:04:50-07:00</dcterms:issued>
@@ -176,7 +176,7 @@ Great unfurnished and recently remodeled 2BR/1BA apartment on 4th floor. Modern 
 <dcterms:issued>2014-04-18T19:04:35-07:00</dcterms:issued>
 </item>
 <item rdf:about="http://sfbay.craigslist.org/eby/apa/4429624005.html">
-<title><![CDATA[1 Bedroom for rent (berkeley) &#x0024;700 1bd]]></title>
+<title><![CDATA[1 Bedroom for (cheap) rent (berkeley) &#x0024;700 1bd]]></title>
 <link>http://sfbay.craigslist.org/eby/apa/4429624005.html</link>
 <description><![CDATA[your own super large room with great light, the joy of your own bathroom and shower in private No. Berk. home, close to Shattuck shops, cafes, BART, and bus. 
 Quiet and safe neighborhood. Close to public transportation (bus and Bart), shopping and hi [...]]]></description>
@@ -184,7 +184,7 @@ Quiet and safe neighborhood. Close to public transportation (bus and Bart), shop
 <dc:language>en-us</dc:language>
 <dc:rights>&#x26;copy; 2014 &#x3C;span class=&#x22;desktop&#x22;&#x3E;craigslist&#x3C;/span&#x3E;&#x3C;span class=&#x22;mobile&#x22;&#x3E;CL&#x3C;/span&#x3E;</dc:rights>
 <dc:source>http://sfbay.craigslist.org/eby/apa/4429624005.html</dc:source>
-<dc:title><![CDATA[1 Bedroom for rent (berkeley) &#x0024;700 1bd]]></dc:title>
+<dc:title><![CDATA[1 Bedroom for (cheap) rent (berkeley) &#x0024;700 1bd]]></dc:title>
 <dc:type>text</dc:type>
 <dcterms:issued>2014-04-18T19:03:20-07:00</dcterms:issued>
 </item>
@@ -222,15 +222,15 @@ Quiet and safe neighborhood. Close to public transportation (bus and Bart), shop
         c3.setTime(new Date(114, Calendar.APRIL, 18, 19, 3, 20))
         Post p1 = new Post(
             link: 'http://sfbay.craigslist.org/sfc/apa/4426589093.html',
-            title: "Sat. Open House 10am to 5pm! Must See!! Amazing Location & Great Bldg (lower pac hts) &#x0024;3350 2bd 884sqft",
+            title: "Sat. Open House 10am to 5pm! Must See (please)!! Amazing Location & Great Bldg",
             date: c1)
         Post p2 = new Post(
             link: 'http://sfbay.craigslist.org/sby/apa/4429732232.html',
-            title: "Recently Reduced price-Renovated 2 bedroom 2 bath! (san jose south) &#x0024;2479 2bd 1038sqft",
+            title: "Recently Reduced price-Renovated 2 bedroom 2 bath!",
             date: c2)
         Post p3 = new Post(
             link: 'http://sfbay.craigslist.org/eby/apa/4429624005.html',
-            title: "1 Bedroom for rent (berkeley) &#x0024;700 1bd",
+            title: "1 Bedroom for (cheap) rent",
             date: c3)
 
         when:

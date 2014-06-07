@@ -63,6 +63,17 @@ environments {
 	}
 	production {
 		dataSource {
+			// SQLite
+			dbCreate = "update"
+			url = "jdbc:sqlite:../hudson-prod.db"
+			dialect = "org.hibernate.dialect.SQLiteDialect"
+			driverClassName="org.sqlite.JDBC"
+
+			properties {
+				maxActive = 1
+			}
+			// MySQL
+			/*
 			dbCreate = "update"
 			//url = "jdbc:h2:prodDb;MVCC=TRUE;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE"
 			url = "jdbc:mysql://hudsondb.cyxciiu7qvuv.us-west-2.rds.amazonaws.com:3306/hudsondb"
@@ -90,6 +101,7 @@ environments {
 				jdbcInterceptors = "ConnectionState"
 				defaultTransactionIsolation = java.sql.Connection.TRANSACTION_READ_COMMITTED
 			}
+			*/
 		}
 	}
 }

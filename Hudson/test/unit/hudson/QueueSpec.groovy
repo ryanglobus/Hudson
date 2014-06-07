@@ -1,9 +1,12 @@
+package hudson
+
 import grails.test.mixin.TestMixin
 import grails.test.mixin.support.GrailsUnitTestMixin
 import spock.lang.Specification
 import hudson.queue.*
 import groovy.hudson.queue.Message
 import groovy.hudson.queue.SerializedStringConverter
+import groovy.hudson.queue.QueueException
 
 /**
  * See the API for {@link grails.test.mixin.support.GrailsUnitTestMixin} for usage instructions
