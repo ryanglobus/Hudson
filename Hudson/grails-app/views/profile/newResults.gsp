@@ -194,7 +194,7 @@
 									</g:if>
 									<g:else>
 										<td>
-											<a class="btn btn-small"><span class="glyphicon glyphicon-remove"></a>
+											<a class="btn btn-small no-photo"><span class="glyphicon glyphicon-remove"></a>
 										</td>
 									</g:else>
 									<g:if test="${post.responseSent == true}">
