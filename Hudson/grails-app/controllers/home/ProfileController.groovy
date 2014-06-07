@@ -42,18 +42,8 @@ class ProfileController {
 		
 		Query query = setUpQuery(params, true)
 
-		// TODO below is slow, and what if it fails?
-
-		// run the query now to get results
-		// TODO instead put in queue with 0 delay query.searchAndSaveNewPosts()
-
 		// Enqueue the job to run the query
 		Message<Query> msg = new Message<Query>(query)
-		/*if (Environment.current.equals(Environment.PRODUCTION)) {
-			msg.delay = 600 // every 10 minutes
-		} else {
-			msg.delay = 60 // every minute
-		}*/
 		msg.delay = 10 // short wait at first
 		try {
 			Query.queue.enqueue(msg)
@@ -63,14 +53,13 @@ class ProfileController {
 		}
 		String flash = null
 		try {
-			query.searchAndSaveNewPosts()
+			query.searchAndSaveNewPosts() // get results now
 		} catch (Exception e) {
 			e.printStackTrace()
 			flash = "Your query was saved but there was a problem loading posts. Try refreshing this page in a minute."
 		}
 
 		redirect(action: "newResults", params: [queryName: query.name, favorites: false, flash: flash])
-		//redirect(action:"queryCreated", params: [queryid : query.id, housingType: params.type])
 	}
 
 	def queryCreated() {

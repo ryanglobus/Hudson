@@ -27,6 +27,7 @@ import org.jsoup.select.Elements
 import java.net.URL
 import java.net.MalformedURLException
 import org.xml.sax.InputSource
+import java.io.InputStream
 
 import hudson.Post
 import hudson.User
@@ -133,9 +134,24 @@ class Query {
 		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder()
         //return searchCraigslist(dBuilder.parse(craigslistRssUrl()))
         URL url = new URL(craigslistRssUrl())
-        InputSource inSource = new InputSource(url.openStream())
-        inSource.setEncoding('UTF-8')
-		return searchCraigslist(dBuilder.parse(inSource))
+        String errorMessage = ''
+        for (String encoding : ['UTF-8', 'ISO-8859-1', 'UTF-16']) {
+            InputStream inStream = null
+            try {
+                inStream = url.openStream()
+                InputSource inSource = new InputSource(url.openStream())
+                inSource.setEncoding(encoding)
+                return searchCraigslist(dBuilder.parse(inSource))
+            } catch (SAXException se) {
+                println("Encoding ${encoding} failed.")
+                errorMessage += "Encoding ${encoding} failed with the following error message: ${se.getMessage()}"
+                errorMessage += "\n\n"
+            } finally {
+                if (inStream != null) inStream.close()
+            }
+        }
+        // if got here, no encoding worked
+        throw new SAXException(errorMessage)
 	}
 
     String craigslistRssUrl() {
