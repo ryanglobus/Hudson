@@ -59,3 +59,10 @@ input[type=checkbox].form-control {
   box-shadow: none;
 }
 
+.no-photo {
+  cursor: default;
+}
+
+.no-photo span {
+  color: black;
+}
