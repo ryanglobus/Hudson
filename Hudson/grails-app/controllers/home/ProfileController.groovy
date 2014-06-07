@@ -8,6 +8,7 @@ import hudson.User
 import HudsonJobs.*
 import hudson.Post
 import hudson.neighborhood.*
+import org.codehaus.groovy.grails.web.json.*
 import groovy.hudson.queue.Message
 import groovy.hudson.queue.QueueException
 import grails.converters.*
@@ -59,7 +60,7 @@ class ProfileController {
 			flash = "Your query was saved but there was a problem loading posts. Try refreshing this page in a minute."
 		}
 
-		redirect(action: "newResults", params: [queryName: query.name, favorites: false, flash: flash])
+		redirect(action: "newResults", params: [queryName: query.name, favorites: false, flash: flash, sortParam:"date", needsPhoto:false])
 	}
 
 	def queryCreated() {
@@ -71,11 +72,24 @@ class ProfileController {
 	def newResults() {
 		def usr = User.get(session["userid"])
 		def results = [:]
+		def lats = []
+		def lons = []
+		def links = []
+		def titles = []
 		def queriesUsed = []
 		def queries = usr.queries
 		def queryTitle = ""
 		def favorites = params.favorites.toBoolean()
 		if (params.flash != null) flash.message = params.flash
+		def needsPhoto = params.needsPhoto.toBoolean()
+		def sortOrder = "desc"
+		def sortValue = params.sortParam;
+		
+		if(params.sortParam == "priceAsc" || params.sortParam == "priceDesc")
+			sortValue = "price"
+		
+		if(params.sortParam == "priceAsc")
+			sortOrder = "asc"
 
 		if(params.queryName == "all") {
 			queryTitle = "All Queries"
@@ -90,14 +104,25 @@ class ProfileController {
 				def tempRes = []
 				
 				if(favorites == false) {
-					//Want newest dates first!
-					tempRes = Post.findAll(sort:"date", order:"desc") {
-						query == q && deleted == false
+					if(needsPhoto)	{
+						tempRes = Post.findAll(sort:sortValue, order:sortOrder) {
+							query == q && deleted == false && photoLink != null
+						}
+					} else {
+						tempRes = Post.findAll(sort:sortValue, order:sortOrder) {
+							query == q && deleted == false
+						}
 					}
 				}
 				else {
-					tempRes = Post.findAll(sort:"date", order:"desc") {
-						query == q && deleted == false && favorite == true
+					if(needsPhoto) {
+						tempRes = Post.findAll(sort:sortValue, order:sortOrder) {
+							query == q && deleted == false && favorite == true && photoLink != null
+						}
+					} else {
+						tempRes = Post.findAll(sort:sortValue, order:sortOrder) {
+							query == q && deleted == false && favorite == true
+						}
 					}
 				}
 
@@ -109,10 +134,23 @@ class ProfileController {
 					if(tempRes.size() != 0)
 						results.put(q.name, tempRes)
 				}
+			
+			}
+		}
+		
+		for(postList in results) {
+			for(p in postList.value) {
+				lats.add(p.latitude)
+				lons.add(p.longitude)
+				links.add(p.link)
+				titles.add(p.title)
 			}
 		}
 
-		[results: results, queryTitle:queryTitle, queries: queriesUsed, favorites: favorites]
+		def shmoobli = links as grails.converters.JSON
+		def boobli = titles as grails.converters.JSON
+
+		[results: results, queryTitle:queryTitle, queries: queriesUsed, favorites: favorites, sortParam:params.sortParam, needsPhoto: needsPhoto, lats : lats, lons : lons, links : shmoobli, titles : boobli]
 	}
 
 	//This action is called when the user chooses to delete posts from the "new post" page
@@ -131,7 +169,7 @@ class ProfileController {
 		}
 
 
-		redirect(action: "newResults", params:[queryName: params.queryName, favorites:false])
+		redirect(action: "newResults", params:[queryName: params.queryName, favorites:params.favorites.toBoolean(), sortParam: params.sortParam, needsPhoto:params.needsPhoto.toBoolean()])
 	}
 	
 	//'Deletes' and individual query so that it is no longer viewable by the user.
@@ -148,7 +186,7 @@ class ProfileController {
 			post.save(flush:true, failOnError: true)
 		}
 		
-		redirect(action: "newResults", params:[queryName: "all", favorites:false])
+		redirect(action: "newResults", params:[queryName: "all", favorites:params.favorites.toBoolean(), sortParam: params.sortParam, needsPhoto:params.needsPhoto.toBoolean()])
 	}
 	
 	//Allows the user to edit a query!
