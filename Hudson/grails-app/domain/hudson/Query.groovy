@@ -24,6 +24,10 @@ import hudson.neighborhood.*
 import org.xml.sax.SAXException
 import org.jsoup.Jsoup
 import org.jsoup.select.Elements
+import java.net.URL
+import java.net.MalformedURLException
+import org.xml.sax.InputSource
+import java.io.InputStream
 
 import hudson.Post
 import hudson.User
@@ -124,10 +128,30 @@ class Query {
     }
 
 	List<Post> searchCraigslist() throws FactoryConfigurationError,
-			ParserConfigurationException, IOException, SAXException {
+			ParserConfigurationException, IOException, SAXException,
+            MalformedURLException {
 		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance()
 		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder()
-		return searchCraigslist(dBuilder.parse(craigslistRssUrl()))
+        //return searchCraigslist(dBuilder.parse(craigslistRssUrl()))
+        URL url = new URL(craigslistRssUrl())
+        String errorMessage = ''
+        for (String encoding : ['UTF-8', 'ISO-8859-1', 'UTF-16']) {
+            InputStream inStream = null
+            try {
+                inStream = url.openStream()
+                InputSource inSource = new InputSource(url.openStream())
+                inSource.setEncoding(encoding)
+                return searchCraigslist(dBuilder.parse(inSource))
+            } catch (SAXException se) {
+                println("Encoding ${encoding} failed.")
+                errorMessage += "Encoding ${encoding} failed with the following error message: ${se.getMessage()}"
+                errorMessage += "\n\n"
+            } finally {
+                if (inStream != null) inStream.close()
+            }
+        }
+        // if got here, no encoding worked
+        throw new SAXException(errorMessage)
 	}
 
     String craigslistRssUrl() {
@@ -224,6 +248,8 @@ class Query {
 			p.replyEmail = ""
 			p.link = elem.getElementsByTagName('link').item(0)?.getTextContent()
 			p.title = elem.getElementsByTagName('title').item(0)?.getTextContent()
+            // what I cut out in the line below has useful info, like price and size
+            p.title = p.title?.replaceFirst('\\([^\\)]*?\\)\\Q &#x0024;\\E.*', '').trim()
 			StringBuilder dateSB =
 				new StringBuilder(
 				elem.getElementsByTagName('dc:date').item(0)?.getTextContent())

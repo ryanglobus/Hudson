@@ -1,6 +1,7 @@
+// outdated tab code
 jQuery(function() {
     var $ = jQuery
-
+    /*
     var queryFormTemplate = $('#query-tabs #search-template')
     // can't use hide() and show() but instead must edit css/display
     // since hide() and show() would override .active class and
@@ -24,7 +25,8 @@ jQuery(function() {
         newTab.find('a').tab('show')
     })
     newTabButton.click() // trigger click to create first form
-    
+    */
+
     //Only show textbox if the user clicks that they would like to auto-respond!
     $('#instantReply').change(function(){
     	if(this.checked){

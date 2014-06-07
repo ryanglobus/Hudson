@@ -1,3 +1,5 @@
+package org.hibernate.dialect;
+
 /*
  * Source: https://github.com/gwenn/sqlite-dialect
  * The author disclaims copyright to this source code.  In place of
