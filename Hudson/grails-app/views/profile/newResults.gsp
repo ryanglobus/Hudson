@@ -75,7 +75,7 @@
       		google.maps.event.addDomListener(window, 'load', initialize);
     	</script>
 		<g:if test="${favorites == false}">
-			<h1>Query Results For ${queryTitle}</h1>
+			<h1>Posts For ${queryTitle}</h1>
 			
 		</g:if>
 		<g:else>
@@ -110,11 +110,13 @@
 		</div>
 		<div class="btn-group">
 			<%
-				def sortParamUpper = sortParam.substring(0, 1).toUpperCase() + sortParam.substring(1);
-				if(sortParam == "priceDesc")
-					sortParamUpper = "Price High To Low"
-				if(sortParam == "priceAsc")
-					sortParamUpper = "Price Low To High"
+                if (sortParam != null) {
+    				def sortParamUpper = sortParam.substring(0, 1).toUpperCase() + sortParam.substring(1);
+    				if(sortParam == "priceDesc")
+    					sortParamUpper = "Price High To Low"
+    				if(sortParam == "priceAsc")
+    					sortParamUpper = "Price Low To High"
+                }
 				
 			 %>
   			<button type="button" class="btn btn-default">Sort By ${sortParamUpper}</button>

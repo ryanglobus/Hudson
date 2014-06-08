@@ -34,7 +34,7 @@ def titlize = { String str ->
 			Invalid form token!
 		</g:if>
 		<div class="col-sm-offset-3 col-sm-6" id="query-tabs">
-			<h2>Create a Query</h2>
+			<h2>Start Your New Housing Search</h2>
 			<div class="tab-content">
 					<g:form useToken="true" class="query-form form-horizontal" action = "newquery" role="form" id="queryForm">
 
@@ -129,7 +129,7 @@ def titlize = { String str ->
 						<div class="category">
 							<h4 class="center-block">General</h4>
 							<div class="form-group">
-								<label for="queryName" class="control-label col-sm-3">Query Name:</label>
+								<label for="queryName" class="control-label col-sm-3">Search Name:</label>
 								<div class="col-sm-9">
 									<g:field type="text" name="queryName" class="form-control" placeholder="Name" />
 								</div>
@@ -148,7 +148,7 @@ def titlize = { String str ->
 
 							<textArea class="col-sm-offset-3" form="queryForm" rows="8" cols="60" name="responseMessage" id="responseBox" style="display:none" placeholder ="Insert a Response Message Here!"></textArea>
 						</div>
-						<input class="btn btn-primary center-block" type= "submit" value="Create Query"/>
+						<input class="btn btn-primary center-block" type= "submit" value="Create Search!"/>
 					</g:form>
 				<!-- </div> -->
 			</div>

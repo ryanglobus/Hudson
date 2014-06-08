@@ -21,7 +21,7 @@
       				<img src="/Hudson/images/sanfran.jpg" alt="Much apartments!" width="100%">
       				<div class="carousel-caption">
         				<h2>Welcome To Hudson</h2>
-        				<p>Your One Stop Shop For All Of Your Housing Needs!</p>
+        				<p>Your One-Stop Shop For All Of Your Housing Needs!</p>
       				</div>
     			</div>
     			<div class="item">
