@@ -42,6 +42,7 @@
 					<ul class="nav navbar-nav">
 					</ul>
 					<ul class="nav navbar-nav navbar-left">
+						<li><g:link controller="home" action="about">About</g:link></li>
 						<%if (user != null) { %>
 							<li><g:link controller="profile" action="index">New Search</g:link></li>
 							<li><g:link controller="profile" action="newResults" params="[queryName: "all", favorites: false, sortParam:"date", needsPhoto:false]">New Posts <span class="badge"><%=session["newPostCount"]%></span></g:link></li>

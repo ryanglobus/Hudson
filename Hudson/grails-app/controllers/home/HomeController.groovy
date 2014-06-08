@@ -20,6 +20,8 @@ class HomeController {
 			return
 		}
 	}
+
+	def about() {}
 	
 	
 	//The below if else statement seems like it should be taken out..
