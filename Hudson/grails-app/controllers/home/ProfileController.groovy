@@ -28,19 +28,39 @@ class ProfileController {
 			validForm = false
 		}
 		if(!validForm) return
-		
+
 		//User cannot make two queries with the same name.
 		//Causes issues elsewhere and is just generally confusing.
 		def me = User.get(session["userid"])
 		def alreadyExists = Query.findAll {
-			user == me && name == params.queryName
+			user == me && name == params.queryName && isCancelled == false
 		}
 		if(alreadyExists.size() != 0) {
 			flash.message = "You already have a query called " + params.queryName + "! Please choose a different name for your new query!"
 			redirect(action:'index')
 			return
 		}
-		
+
+		if(params.queryName == "") {
+			flash.message = "Woops! You forgot to give your query a name! Please include a name."
+			redirect(action: 'index')
+			return
+		}
+
+		if(params.minRent != "" && params.maxrent != "") {
+			if(params.minrent.toInteger() > params.maxrent.toInteger()){
+				flash.message = "Min rent cannot be greater than max rent!"
+				redirect(action: 'index')
+				return
+			}
+		}
+
+		if(params.queryName == "all" || params.queryName == "All") {
+			flash.message = "Sorry, you can't name a query " + params.queryName + ". Try a different name."
+			redirect(action: 'index')
+			return
+		}
+
 		Query query = setUpQuery(params, true)
 
 		// Enqueue the job to run the query
@@ -84,10 +104,10 @@ class ProfileController {
 		def needsPhoto = params.needsPhoto.toBoolean()
 		def sortOrder = "desc"
 		def sortValue = params.sortParam;
-		
+
 		if(params.sortParam == "priceAsc" || params.sortParam == "priceDesc")
 			sortValue = "price"
-		
+
 		if(params.sortParam == "priceAsc")
 			sortOrder = "asc"
 
@@ -102,7 +122,7 @@ class ProfileController {
 			if (q.isCancelled == false) {
 				queriesUsed.add(q)
 				def tempRes = []
-				
+
 				if(favorites == false) {
 					if(needsPhoto)	{
 						tempRes = Post.findAll(sort:sortValue, order:sortOrder) {
@@ -134,10 +154,10 @@ class ProfileController {
 					if(tempRes.size() != 0)
 						results.put(q.name, tempRes)
 				}
-			
+
 			}
 		}
-		
+
 		for(postList in results) {
 			for(p in postList.value) {
 				lats.add(p.latitude)
@@ -171,13 +191,13 @@ class ProfileController {
 
 		redirect(action: "newResults", params:[queryName: params.queryName, favorites:params.favorites.toBoolean(), sortParam: params.sortParam, needsPhoto:params.needsPhoto.toBoolean()])
 	}
-	
+
 	//'Deletes' and individual query so that it is no longer viewable by the user.
 	def deleteQuery() {
 		def query = Query.findByName(params.queryName)
 		query.isCancelled = true
 		query.save(flush:true, failOnError: true)
-		
+
 		//IF you delete a query you must also delete all of it's posts!
 		//Here we don't actually delete the DB entry, since the things will stick
 		//around in the "archive" section for up to a month.
@@ -185,10 +205,10 @@ class ProfileController {
 			post.deleted = true
 			post.save(flush:true, failOnError: true)
 		}
-		
+
 		redirect(action: "newResults", params:[queryName: "all", favorites:params.favorites.toBoolean(), sortParam: params.sortParam, needsPhoto:params.needsPhoto.toBoolean()])
 	}
-	
+
 	//Allows the user to edit a query!
 	def editQuery() {
 		boolean validForm
@@ -200,7 +220,7 @@ class ProfileController {
 			validForm = false
 		}
 		if(!validForm) return
-		
+
 		//User cannot make two queries with the same name.
 		//This is of course allowed if they are keeping the name the same
 		//for the query they are editing : )
@@ -213,19 +233,19 @@ class ProfileController {
 			redirect(action:'settings')
 			return
 		}
-		
+
 		//For now let's just make the query and return to settings.
 		setUpQuery(params, false)
 		redirect(action: "settings")
 	}
-	
+
 	//Settings allows you to change your password as well as edit queries!!
 	def settings() {
 		def usr = User.get(session["userid"])
-		
+
 		[queries: usr.queries]
 	}
-	
+
 	def changePassword() {
 		boolean validForm
 		withForm {
@@ -236,20 +256,20 @@ class ProfileController {
 			validForm = false
 		}
 		if(!validForm) return
-		
-		User usr = User.findById(session["userid"])	
+
+			User usr = User.findById(session["userid"])
 		if(!passwordCheck(params.oldPassword, usr)) {
 			flash.message = "Error: Please enter your old password"
 			redirect(action:'settings')
 			return
 		}
-		
+
 		if(params.newPassword != params.confirmPassword) { //or .equals?
 			flash.message = "Error: Make sure you confirm the correct password"
 			redirect(action:'settings')
 			return
 		}
-		
+
 		usr.salt = HomeController.getSalt()
 		usr.passwordHash = HomeController.getHashedPassword(params.newPassword, usr.salt)
 		usr.save(flush:true, failOnError:true)
@@ -269,15 +289,15 @@ class ProfileController {
 		}
 		if (city == null) {
 			render(text: "{\"error\": \"Cannot find neighborhoods for the requested city\"}",
-				contentType: "application/json", status: statusCode)
+			contentType: "application/json", status: statusCode)
 			return
 		}
 		render city.neighborhoods as JSON
 	}
-	
+
 	def markAsResponded() {
 		Post post = Post.get(params.postId)
-		
+
 		if (post.responseSent == true) {
 			post.responseSent = false
 		}
@@ -285,13 +305,13 @@ class ProfileController {
 			post.responseSent = true
 		}
 		post.save(flush:true, failOnError:true)
-		
+
 		render post as JSON
 	}
-	
+
 	def markAsFavorite() {
 		Post post = Post.get(params.postId)
-		
+
 		if (post.favorite == true) {
 			post.favorite = false
 		}
@@ -301,7 +321,7 @@ class ProfileController {
 		post.save(flush:true, failOnError:true)
 		render post as JSON
 	}
-	
+
 	//Code for making/editing a query, used in newquery as well as in editQuery
 	private Query setUpQuery(params, boolean isNew) {
 		Query query = null
@@ -311,7 +331,7 @@ class ProfileController {
 		else{
 			query = Query.get(params.qryId)
 		}
-		
+
 		query.name = params.queryName
 		query.searchText = params.searchText
 		if(params.minrent.length() == 0) query.minRent = null
@@ -321,7 +341,7 @@ class ProfileController {
 		if(params.numRooms.length() == 0) query.numBedrooms = null
 		else query.numBedrooms = params.numRooms.toInteger()
 		query.housingType = Query.HousingType.valueOf(params.type).getValue()
-		
+
 		if (params.region != null) {
 			query.region = Region.findByValue(params.region)
 		}
@@ -354,14 +374,14 @@ class ProfileController {
 
 		query.user = User.findById(session["userid"])
 		query.save(flush:true, failOnError: true)
-		
+
 		return query
 	}
-	
+
 	private static boolean passwordCheck(String pass, User usr) {
 		String hashedPassword = HomeController.getHashedPassword(pass, usr.salt)
 		if(hashedPassword != usr.passwordHash) return false
 		return true
 	}
-	
+
 }

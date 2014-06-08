@@ -151,10 +151,10 @@
 		<button type="submit" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span> Delete Selected Posts</button>
 		
 		<g:if test="${favorites == false}">
-			<a class="btn btn-custom" href="/Hudson/profile/newResults?queryName=${queryTitleTemp}&favorites=true&sortParam=${sortParam}&needsPhoto=${needsPhoto}"><span class="glyphicon glyphicon-star"></span> View Favorites</a>
+			<g:link class ="btn btn-custom" action="newResults" params="[queryName: queryTitleTemp, favorites: true, sortParam:sortParam, needsPhoto:needsPhoto]"><span class="glyphicon glyphicon-star"></span> View Favorites</g:link>
 		</g:if>
 		<g:else>
-			<a class="btn btn-primary" href="/Hudson/profile/newResults?queryName=${queryTitleTemp}&favorites=false&sortParam=${sortParam}&needsPhoto=${needsPhoto}">View All Posts</a>
+			<g:link class ="btn btn-primary" action="newResults" params="[queryName: queryTitleTemp, favorites: false, sortParam:sortParam, needsPhoto:needsPhoto]">View All Posts</g:link>
 		</g:else>
 				
 		<br>
@@ -162,14 +162,14 @@
 		<br>
 		<g:if test="${results.size() == 0}">
 			<br>
-			<p>Looks like you don't have any new posts at this time, but we'll keep looking!</p>
+			<h2 style="margin-top:400px">Looks like you don't have any new posts at this time, but we'll keep looking!</h2>
 		</g:if>
 		<g:else>
 		<% def queryNum = 1 %>
 			<g:each var="postList" in="${results}">		
 			
 				<g:if test="${queryNum == 1}">	
-					<div class="panel panel-default" style="margin-top:400px">
+					<div class="panel panel-default" style="margin-top:380px">
 				</g:if>
 				<g:else>
 					<div class="panel panel-default">
@@ -177,8 +177,8 @@
 				<% queryNum++ %>
   						<!-- Default panel contents -->
   						<div class="panel-heading"><h3>Results For ${postList.key}   
-  						<a href="/Hudson/profile/deleteQuery?queryName=${postList.key}&favorites=${favorites}&sortParam=${sortParam}&needsPhoto=${needsPhoto}" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span> Delete Query</a>
-  						<a class="btn btn-success" href="/Hudson/profile/settings" ><span class="glyphicon glyphicon-wrench"></span> Edit Query</a>
+  						<g:link class ="btn btn-danger" action="deleteQuery" params="[queryName: postList.key, favorites: favorites, sortParam:sortParam, needsPhoto:needsPhoto]"><span class="glyphicon glyphicon-trash"></span> Delete Query</g:link>
+  						<g:link class="btn btn-success" action="settings" ><span class="glyphicon glyphicon-wrench"></span> Edit Query</g:link>
   						</h3></div>
   						<!-- Table -->
   						<table class="table table-striped table-hover">
