@@ -137,7 +137,7 @@ class Query {
         List<Post> posts = searchCraigslist();
         // closure below assumes posts are all unique
         posts = posts.findAll { p ->
-            Post.findByLink(p.link) == null
+            Post.findByQueryAndLink(this, p.link) == null
         }
         posts.each { p ->
             p.query = this
