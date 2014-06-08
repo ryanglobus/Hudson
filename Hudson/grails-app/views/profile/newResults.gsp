@@ -163,8 +163,16 @@
 			<p>Looks like you don't have any new posts at this time, but we'll keep looking!</p>
 		</g:if>
 		<g:else>
+			<%def queryNum = 1%>
 			<g:each var="postList" in="${results}">			
-				<div class="panel panel-default" style="margin-top:400px">
+				<g:if test="${queryNum == 1}">
+					<div class="panel panel-default" style="margin-top:400px">
+				</g:if>
+				<g:else>
+					<div class="panel panel-default">
+				</g:else>
+				
+				<%queryNum = queryNum + 1%>
   						<!-- Default panel contents -->
   						<div class="panel-heading"><h3>Results For ${postList.key}   
   						<a href="/Hudson/profile/deleteQuery?queryName=${postList.key}&favorites=${favorites}&sortParam=${sortParam}&needsPhoto=${needsPhoto}" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span> Delete Query</a>
