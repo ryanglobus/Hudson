@@ -39,6 +39,7 @@
 	<h4>Select a query to edit:</h4>
 	<div class="panel-group" id="accordion">
   		<g:each var="qry" in="${queries}">
+  		<g:if test="${qry.isCancelled == false}">
   		<div class="panel panel-default">
     		<div class="panel-heading">
       			<h4 class="panel-title">
@@ -116,6 +117,7 @@
       			</div>
     		</div>
   		</div>
+  		</g:if>
   		</g:each>
 	</div>
 	

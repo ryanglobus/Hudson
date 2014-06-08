@@ -18,21 +18,21 @@
   			<!-- Wrapper for slides -->
   			<div class="carousel-inner">
     			<div class="item active">
-      				<img src="/Hudson/images/sanfran.jpg" alt="Much apartments!" width="100%">
+      				<img src="${resource(dir: 'images', file:'sanfran.jpg')}" alt="Much apartments!" width="100%">
       				<div class="carousel-caption">
         				<h2>Welcome To Hudson</h2>
         				<p>Your One Stop Shop For All Of Your Housing Needs!</p>
       				</div>
     			</div>
     			<div class="item">
-      				<img src="/Hudson/images/houses.jpg" alt="Such space" width="100%">
+      				<img src="${resource(dir: 'images', file:'houses.jpg')}" alt="Such space" width="100%">
       				<div class="carousel-caption">
         				<h2>Search All Of Your Favorite Neighborhoods</h2>
         				<p>From the Mission, to Palo Alto, to Santa Cruz. Hudson's got you covered.</p>
       				</div>
     			</div>
     			<div class="item">
-      				<img src="/Hudson/images/bridge.jpg" alt="Wow" width="100%">
+      				<img src="${resource(dir: 'images', file:'bridge.jpg')}" alt="Wow" width="100%">
       				<div class="carousel-caption">
         				<h2>Live Your Life!</h2>
         				<p>Create a query and let Hudson do the rest. Housing results in real time, without the stress.</p>

@@ -33,11 +33,29 @@ class ProfileController {
 		//Causes issues elsewhere and is just generally confusing.
 		def me = User.get(session["userid"])
 		def alreadyExists = Query.findAll {
-			user == me && name == params.queryName
+			user == me && name == params.queryName && isCancelled == false
 		}
 		if(alreadyExists.size() != 0) {
 			flash.message = "You already have a query called " + params.queryName + "! Please choose a different name for your new query!"
 			redirect(action:'index')
+			return
+		}
+		
+		if(params.queryName == "") {
+			flash.message = "Woops! You forgot to give your query a name! Please include a name."
+			redirect(action: 'index')
+			return
+		}
+		
+		if(params.minrent.toInteger() > params.maxrent.toInteger()){
+			flash.message = "Min rent cannot be greater than max rent!"
+			redirect(action: 'index')
+			return
+		}
+		
+		if(params.queryName == "all" || params.queryName == "All") {
+			flash.message = "Sorry, you can't name a query " + params.queryName + ". Try a different name."
+			redirect(action: 'index')
 			return
 		}
 		
