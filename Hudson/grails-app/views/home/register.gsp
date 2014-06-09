@@ -26,12 +26,18 @@
 			<% for (def field : fields) { %>
 			
 			<div class="form-group">
-				<label for="${field[0]}" class="col-sm-offset-3 col-sm-2 control-label">${field[1]}:</label>
-				<% if (field[0] == 'phone') { %>
+				<%if (field[0] == "phone") { %>
+					<label for="${field[0]}" class="col-sm-offset-3 col-sm-2 control-label">${field[1]} (Optional):</label>
 					<span class="glyphicon glyphicon-question-sign" data-toggle="tooltip" data-placement="top" title="Include your phone number to receive SMS notifications"></span>
+				<% } else { %>
+					<label for="${field[0]}" class="col-sm-offset-3 col-sm-2 control-label">${field[1]}</label>
 				<% } %>
 				<div class="col-sm-3">
-					<g:field class="form-control" type="${field[2]}" name="${field[0]}" required="true" placeholder="${field[1]}"/>
+					<%if (field[0] == "phone") { %>
+						<g:field class="form-control" type="${field[2]}" name="${field[0]}" placeholder="${field[1]} (Optional)"/>
+					<% } else { %>
+						<g:field class="form-control" type="${field[2]}" name="${field[0]}" required="true" placeholder="${field[1]}"/>
+					<% } %>
 				</div>
 			</div>
 			<% } %>

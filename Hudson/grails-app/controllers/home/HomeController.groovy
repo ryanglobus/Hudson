@@ -5,6 +5,8 @@ import grails.util.Environment
 import hudson.User
 import java.security.MessageDigest
 import java.security.SecureRandom
+import java.util.regex.Matcher
+import java.util.regex.Pattern
 import javax.xml.bind.DatatypeConverter
 import hudson.Post
 import hudson.Query
@@ -107,7 +109,17 @@ class HomeController {
 		usr.email = params.email
 		usr.firstName = params.firstName
 		usr.lastName = params.lastName
-		usr.phone = params?.phone
+		if(params.phone != null) {
+			def phoneNum = "" 
+			Pattern p = Pattern.compile("\\d+")
+			Matcher m = p.matcher(params.phone)
+			while(m.find()) {
+				phoneNum = phoneNum + m.group()
+			}
+			usr.phone = phoneNum;
+		} else {
+			usr.phone = params.phone
+		}
 		usr.notifyFrequency = params.frequency.toInteger()
 		usr.carrier = User.Carrier.valueOf(params.carrier).getValue()
 
