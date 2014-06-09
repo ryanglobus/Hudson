@@ -18,7 +18,7 @@
 		<g:if test="${flash.invalidToken }">
 			Invalid form token!
 		</g:if>
-		<div class="col-sm-offset-3 col-sm-6" id="query-tabs">
+		<div style="text-align:center" id="query-tabs">
 			<h2>Start Your New Housing Search</h2>
 			<div class="tab-content">
 				<g:render template="/shared/queryFormTemplate" model="['isNew': true, 'query': new Query()]" />

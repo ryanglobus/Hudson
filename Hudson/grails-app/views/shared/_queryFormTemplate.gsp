@@ -27,10 +27,33 @@ if (typeof(initialNeighborhoods) === 'undefined') {
 </script>
 
 <g:form useToken="true" class="query-form form-horizontal" controller="profile" action="${isNew ? 'newquery' : 'editQuery'}" role="form" data-query-id="${query.id}">
+	<div class="category">
+        <h4 class="center-block">General</h4>
+        <div class="form-group">
+            <label for="queryName" class="control-label col-sm-2">Query Name:</label>
+            <div class="col-sm-9">
+                <g:field type="text" name="queryName" class="form-control" placeholder="Query Name" value="${query.name}" />
+            </div>
+        </div>
+        
+        <% checkboxes = [['notify', 'Receive Notifications?', isNew || query.notify],
+                        ['instantReply', 'Auto-Reply', query.instantReply]] %>
+        <% for (def checkbox : checkboxes) { %>
+            <div class="form-group">
+                <label class="control-label col-sm-2" for="${checkbox[0]}">${checkbox[1]}</label>
+                <div class="col-sm-2">
+                    <g:checkBox name="${checkbox[0]}" class="form-control" value="${checkbox[2]}" />
+                </div>
+            </div>
+        <% } %>
+        <textArea rows="6" cols="60" name="responseMessage" id="responseBox" style="${query.instantReply ? '' : 'display:none'}" placeholder ="Insert a Response Message Here!">${query.responseMessage}</textArea>
+    </div>
+    <br>
+
     <div class="category">
         <h4>Location</h4>
         <div class="form-group">
-            <label for="region" class="col-sm-3 control-label">Region:</label>
+            <label for="region" class="col-sm-2 control-label">Region:</label>
             <div class="col-sm-9">
                 <select class="form-control col-sm-9" name="region">
                     <% Region region = Region.sfbay() %>
@@ -38,8 +61,9 @@ if (typeof(initialNeighborhoods) === 'undefined') {
                 </select>
             </div>
         </div>
+        
         <div class="form-group">
-            <label for="city" class="col-sm-3 control-label">City:</label>
+            <label for="city" class="col-sm-2 control-label">City:</label>
             <div class="col-sm-9">
                 <select class="form-control" name="city">
                     <option value="">All cities</option>
@@ -50,8 +74,8 @@ if (typeof(initialNeighborhoods) === 'undefined') {
             </div>
         </div>
         <div class="form-group">
-            <label for="neighborhoods" class="col-sm-3 control-label">Neighborhood(s):</label>
-            <div class="col-sm-9">
+            <label for="neighborhoods" class="col-sm-2 control-label">Neighborhood(s):</label>
+            <div class="col-sm-1">
                 <select class="form-control multiselect" name="neighborhoods" multiple disabled>
                 </select>
                 <% if (!isNew) { %>
@@ -67,26 +91,27 @@ if (typeof(initialNeighborhoods) === 'undefined') {
         </div>
     </div>
 
+	<br>
     <div class="category">
         <h4>Housing Preferences</h4>
         <div class="form-group">
-            <label for="numRooms" class="col-sm-3 control-label"># Bedrooms:</label>
+            <label for="numRooms" class="col-sm-2 control-label"># Bedrooms:</label>
             <div class="col-sm-9"> 
                 <g:field type="number" class="form-control" name="numRooms" placeholder="# BRs" value="${query.numBedrooms}" />
             </div>
         </div>
         <div class="form-group">
-            <label class="control-label col-sm-3">Rent:</label>
+            <label class="control-label col-sm-2">Rent:</label>
             <div class="col-sm-9">
                 <label for="minrent" class="sr-only control-label">Minimum:</label>
-                <g:field type="number" class="form-control col-sm-3" name="minrent" placeholder="Minimum" value="${query.minRent}" />
-                <label class="control-label col-sm-1">to</label>
+                <g:field type="number" class="form-control col-sm-2" name="minrent" placeholder="Minimum" value="${query.minRent}" />
+                <label class="control-label col-sm-1" style="text-align:center">to</label>
                 <label for="maxrent" class="sr-only control-label">Maximum:</label>
-                <g:field type="number" class="form-control col-sm-3" name="maxrent" placeholder="Maximum" value="${query.maxRent}"/>
+                <g:field type="number" class="form-control col-sm-2" name="maxrent" placeholder="Maximum" value="${query.maxRent}"/>
             </div>
         </div>
         <div class="form-group">
-            <label class="control-label col-sm-3" for="type">Type:</label>
+            <label class="control-label col-sm-2" for="type">Type:</label>
             <div class="col-sm-9">
                 <select class="form-control" name = "type" id="type">
                     <g:each var="housingType" in="${Query.HousingType.values()}">
@@ -96,8 +121,8 @@ if (typeof(initialNeighborhoods) === 'undefined') {
             </div>
         </div>
         <div class="form-group">
-            <label class="control-label col-sm-3">Pets?</label>
-            <div class="col-sm-9">
+            <label class="control-label col-sm-2">Pets:</label>
+            <div class="col-sm-2" style="text-align:left">
                 <% def checkboxes = [['cat', 'Cats', query.cat],
                                     ['dog', 'Dogs', query.dog]] %>
                 <% for (def checkbox : checkboxes) { %>
@@ -107,34 +132,13 @@ if (typeof(initialNeighborhoods) === 'undefined') {
             </div>
         </div>
         <div class="form-group">
-            <label for="searchText" class="col-sm-3 control-label">Keywords:</label>
+            <label for="searchText" class="col-sm-2 control-label">Keywords:</label>
             <div class="col-sm-9">
                 <g:field type="text" name="searchText" class="form-control" placeholder="Search" value="${query.searchText}" />
             </div>
         </div>
     </div>
-
-    <div class="category">
-        <h4 class="center-block">General</h4>
-        <div class="form-group">
-            <label for="queryName" class="control-label col-sm-3">Search Name:</label>
-            <div class="col-sm-9">
-                <g:field type="text" name="queryName" class="form-control" placeholder="Name" value="${query.name}" />
-            </div>
-        </div>
-        
-        <% checkboxes = [['notify', 'Receive Notifications?', isNew || query.notify],
-                        ['instantReply', 'Auto-Reply', query.instantReply]] %>
-        <% for (def checkbox : checkboxes) { %>
-            <div class="form-group">
-                <label class="control-label col-sm-3" for="${checkbox[0]}">${checkbox[1]}</label>
-                <div class="col-sm-9">
-                    <g:checkBox name="${checkbox[0]}" class="form-control" value="${checkbox[2]}" />
-                </div>
-            </div>
-        <% } %>
-        <textArea class="col-sm-offset-3" rows="8" cols="60" name="responseMessage" id="responseBox" style="${query.instantReply ? '' : 'display:none'}" placeholder ="Insert a Response Message Here!">${query.responseMessage}</textArea>
-    </div>
+    
     <g:if test="isNew">
         <input type="hidden" name="qryId" value="${query.id}" />
     </g:if>

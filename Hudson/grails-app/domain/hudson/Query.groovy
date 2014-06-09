@@ -244,7 +244,13 @@ class Query {
 		String matching2 = "[data-pid=" + pid + "]";
 		org.jsoup.nodes.Element selectionArea = doc.select(matching2).first();	
         if (selectionArea == null) return
-		p.price = selectionArea.select(".price").text();
+		String price = selectionArea.select(".price").text();
+		price = price.substring(1);
+		try {
+			p.price = Integer.parseInt(price);
+		} catch (NumberFormatException e) {
+			p.price = null;
+		}
 		p.neighborhood = selectionArea.select(".pnr small").text();
 	}
 
