@@ -13,6 +13,11 @@
 				$('#' + $(this).attr('data-modal-id')).modal('show')
 			})
 		})
+		
+		jQuery(function() {
+    		var $ = jQuery
+    		$('[data-toggle=tooltip]').tooltip()
+    	})
 		</script>
 		<g:if test="${favorites == false}">
 			<title>New Results</title>
@@ -198,7 +203,7 @@
 								<th>Price</th>
 								<th>Post Title</th>
 								<th>Photo</th>
-								<th>Responded?</th>
+								<th>Responded <span class="glyphicon glyphicon-question-sign" data-toggle="tooltip" data-placement="bottom" title="Toggle to help organize which posts you've responded to"></span></th>
 								<th>Favorite</th>
 							</tr>
 							<g:each var="post" in="${postList.value}">
