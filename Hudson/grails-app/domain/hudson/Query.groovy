@@ -34,10 +34,10 @@ import hudson.User
 
 class Query {
 
-    enum HousingType {
-        ANY(0), APARTMENT(1), CONDO(2), COTTAGE_CABIN(3), DUPLEX(4), FLAT(5),
-        HOUSE(6), IN_LAW(7), LOFT(8), TOWNHOUSE(9), MANUFACTURED(10),
-        ASSISTED_LIVING(11), LAND(12)
+	enum HousingType {
+		ANY(0), APARTMENT(1), CONDO(2), COTTAGE_CABIN(3), DUPLEX(4), FLAT(5),
+		HOUSE(6), IN_LAW(7), LOFT(8), TOWNHOUSE(9), MANUFACTURED(10),
+		ASSISTED_LIVING(11), LAND(12)
 
 		private HousingType(int value) {
 			this.value = value;
@@ -47,28 +47,28 @@ class Query {
 			return value;
 		}
 
-        public String userFriendlyName() {
-            switch (this) {
-                case ANY: return 'Any Housing Type'
-                case APARTMENT: return 'Apartment'
-                case CONDO: return 'Condo'
-                case COTTAGE_CABIN: 'Cottage/Cabin'
-                case DUPLEX: return 'Duplex'
-                case FLAT: return 'Flat'
-                case HOUSE: return 'House'
-                case IN_LAW: return 'In-Law'
-                case LOFT: return 'Loft'
-                case TOWNHOUSE: return 'Townhouse'
-                case MANUFACTURED: return 'Manufactured'
-                case ASSISTED_LIVING: return 'Assisted Living'
-                case LAND: return 'Land'
-                default: return null
-            }
-        }
+		public String userFriendlyName() {
+			switch (this) {
+				case ANY: return 'Any Housing Type'
+				case APARTMENT: return 'Apartment'
+				case CONDO: return 'Condo'
+				case COTTAGE_CABIN: 'Cottage/Cabin'
+				case DUPLEX: return 'Duplex'
+				case FLAT: return 'Flat'
+				case HOUSE: return 'House'
+				case IN_LAW: return 'In-Law'
+				case LOFT: return 'Loft'
+				case TOWNHOUSE: return 'Townhouse'
+				case MANUFACTURED: return 'Manufactured'
+				case ASSISTED_LIVING: return 'Assisted Living'
+				case LAND: return 'Land'
+				default: return null
+			}
+		}
 
 		private final int value;
 	}
-	
+
 	Integer searchFrequency = 20 // in minutes
 	String searchText
 	String name
@@ -82,138 +82,138 @@ class Query {
 	Boolean notify
 	Boolean instantReply
 	String responseMessage
-	
 
-    // if changing isCancelled from false to true, need to put query back in queue
-    Boolean isCancelled = Boolean.FALSE 
+
+	// if changing isCancelled from false to true, need to put query back in queue
+	Boolean isCancelled = Boolean.FALSE
 
 	static hasMany = [posts: Post, neighborhoods: Neighborhood]
 	static belongsTo = [user: User, region: Region, city: City] // TODO make region default to SFBAY
 
-    static constraints = {
-        searchText nullable: true
-        minRent nullable: true, min: 0
-        maxRent nullable: true, min: 0
-        numBedrooms nullable: true, min: 0
-        cat nullable: true
-        dog nullable: true
-        responseMessage nullable: true
-        city nullable: true
-        neighborhoods nullable: true, lazy: false
-    }
-
-    transient static final Queue<Query> queue = new Queue<Query>(queueName(), new StringConverter<Query>() {
-        @Override
-        String generateString(Query q) {
-            return q.id.toString()
-        }
-
-        @Override
-        Query parseString(String s) {
-            try {
-                Integer id = s.toInteger()
-                return Query.get(id)
-            } catch (NumberFormatException nfe) {
-                nfe.printStackTrace()
-                return null
-            }
-        }
-    })
-
-    private static String queueName() {
-        if (Environment.current.equals(Environment.PRODUCTION)) {
-            return 'query'
-        } else {
-            // create a timestamped query for each dev/test run to ensure
-            // starting with an empty queue
-            return 'query' + Long.toString(System.currentTimeMillis())
-        }
-    }
-
-    /**
-     * Searches for new posts, saves them, and returns them.
-     */
-    List<Post> searchAndSaveNewPosts() {
-        List<Post> posts = searchCraigslist();
-        // closure below assumes posts are all unique
-        posts = posts.findAll { p ->
-            Post.findByQueryAndLink(this, p.link) == null
-        }
-        posts.each { p ->
-            p.query = this
-            p.save(flush: true, failOnError: true)
-        }
-        return posts
-    }
-
-	List<Post> searchCraigslist() throws FactoryConfigurationError,
-			ParserConfigurationException, IOException, SAXException,
-            MalformedURLException {
-		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance()
-		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder()
-        //return searchCraigslist(dBuilder.parse(craigslistRssUrl()))
-        URL url = new URL(craigslistRssUrl())
-        String errorMessage = ''
-        for (String encoding : ['UTF-8', 'ISO-8859-1', 'UTF-16']) {
-            InputStream inStream = null
-            try {
-                inStream = url.openStream()
-                InputSource inSource = new InputSource(url.openStream())
-                inSource.setEncoding(encoding)
-                return searchCraigslist(dBuilder.parse(inSource))
-            } catch (SAXException se) {
-                println("Encoding ${encoding} failed.")
-                errorMessage += "Encoding ${encoding} failed with the following error message: ${se.getMessage()}"
-                errorMessage += "\n\n"
-            } finally {
-                if (inStream != null) inStream.close()
-            }
-        }
-        // if got here, no encoding worked
-        throw new SAXException(errorMessage)
+	static constraints = {
+		searchText nullable: true
+		minRent nullable: true, min: 0
+		maxRent nullable: true, min: 0
+		numBedrooms nullable: true, min: 0
+		cat nullable: true
+		dog nullable: true
+		responseMessage nullable: true
+		city nullable: true
+		neighborhoods nullable: true, lazy: false
 	}
 
-    String craigslistRssUrl() {
-        return craigslistUrl(true)
-    }
+	transient static final Queue<Query> queue = new Queue<Query>(queueName(), new StringConverter<Query>() {
+		@Override
+		String generateString(Query q) {
+			return q.id.toString()
+		}
 
-    String craigslistUrl() {
-        return craigslistUrl(false)
-    }
+		@Override
+		Query parseString(String s) {
+			try {
+				Integer id = s.toInteger()
+				return Query.get(id)
+			} catch (NumberFormatException nfe) {
+				nfe.printStackTrace()
+				return null
+			}
+		}
+	})
 
-    String craigslistUrl(boolean rss) {
-        String domain = "http://${region.value}.craigslist.org/"
-        String path = 'search/apa'
-        if (city != null) path += "/${city.value}"
+	private static String queueName() {
+		if (Environment.current.equals(Environment.PRODUCTION)) {
+			return 'query'
+		} else {
+			// create a timestamped query for each dev/test run to ensure
+			// starting with an empty queue
+			return 'query' + Long.toString(System.currentTimeMillis())
+		}
+	}
 
-        // note that the parameter order is important for tests to pass
-        def params = [:]
-        if (numBedrooms != null) params['bedrooms'] = numBedrooms
-        params['catAbb'] = 'apa'
-        if (housingType != HousingType.ANY.getValue()) {
-            params['housing_type'] = housingType
-        }
-        if (maxRent != null) params['maxAsk'] = maxRent
-        if (minRent != null) params['minAsk'] = minRent
-        if (neighborhoods != null) params['nh'] = neighborhoods.collect { it.value }
-        if (cat) params['pets_cat'] = 'purrr'
-        if (dog) params['pets_dog'] = 'wooof'
-        if (searchText != null) params['query'] = searchText
-        params['s'] = '0'
-        if (rss) params['format'] = 'rss'
+	/**
+	 * Searches for new posts, saves them, and returns them.
+	 */
+	List<Post> searchAndSaveNewPosts() {
+		List<Post> posts = searchCraigslist();
+		// closure below assumes posts are all unique
+		posts = posts.findAll { p ->
+			Post.findByQueryAndLink(this, p.link) == null
+		}
+		posts.each { p ->
+			p.query = this
+			p.save(flush: true, failOnError: true)
+		}
+		return posts
+	}
 
-        URIBuilder uri = new URIBuilder(domain)
-        uri.path = path
-        uri.query = params
-        return uri.toString()
-    }
+	List<Post> searchCraigslist() throws FactoryConfigurationError,
+	ParserConfigurationException, IOException, SAXException,
+	MalformedURLException {
+		DocumentBuilderFactory dbFactory = DocumentBuilderFactory.newInstance()
+		DocumentBuilder dBuilder = dbFactory.newDocumentBuilder()
+		//return searchCraigslist(dBuilder.parse(craigslistRssUrl()))
+		URL url = new URL(craigslistRssUrl())
+		String errorMessage = ''
+		for (String encoding : ['UTF-8', 'ISO-8859-1', 'UTF-16']) {
+			InputStream inStream = null
+			try {
+				inStream = url.openStream()
+				InputSource inSource = new InputSource(url.openStream())
+				inSource.setEncoding(encoding)
+				return searchCraigslist(dBuilder.parse(inSource))
+			} catch (SAXException se) {
+				println("Encoding ${encoding} failed.")
+				errorMessage += "Encoding ${encoding} failed with the following error message: ${se.getMessage()}"
+				errorMessage += "\n\n"
+			} finally {
+				if (inStream != null) inStream.close()
+			}
+		}
+		// if got here, no encoding worked
+		throw new SAXException(errorMessage)
+	}
+
+	String craigslistRssUrl() {
+		return craigslistUrl(true)
+	}
+
+	String craigslistUrl() {
+		return craigslistUrl(false)
+	}
+
+	String craigslistUrl(boolean rss) {
+		String domain = "http://${region.value}.craigslist.org/"
+		String path = 'search/apa'
+		if (city != null) path += "/${city.value}"
+
+		// note that the parameter order is important for tests to pass
+		def params = [:]
+		if (numBedrooms != null) params['bedrooms'] = numBedrooms
+		params['catAbb'] = 'apa'
+		if (housingType != HousingType.ANY.getValue()) {
+			params['housing_type'] = housingType
+		}
+		if (maxRent != null) params['maxAsk'] = maxRent
+		if (minRent != null) params['minAsk'] = minRent
+		if (neighborhoods != null) params['nh'] = neighborhoods.collect { it.value }
+		if (cat) params['pets_cat'] = 'purrr'
+		if (dog) params['pets_dog'] = 'wooof'
+		if (searchText != null) params['query'] = searchText
+		params['s'] = '0'
+		if (rss) params['format'] = 'rss'
+
+		URIBuilder uri = new URIBuilder(domain)
+		uri.path = path
+		uri.query = params
+		return uri.toString()
+	}
 
 	void getLatAndLong(Post p, String link) {
 		if (link.equals("")) return;
 
 		org.jsoup.nodes.Document doc = Jsoup.connect(link).get();
 		org.jsoup.nodes.Element e = doc.select("#map").first();
-	
+
 		if (e == null) return;
 		StringTokenizer st = new StringTokenizer(e.toString());
 		while (st.hasMoreTokens()) {
@@ -228,33 +228,39 @@ class Query {
 			p.photoLink = doc.select("#iwi").first().attr("src");
 		}
 	}
-	
+
 	void addPriceAndNeighborhood(org.jsoup.nodes.Document doc, Post p, String link) {
 		String matching = "a[href=" + link + "]";
 		org.jsoup.nodes.Element linkToMatch = doc.select(matching).first();
-		
+
 		int i;
 		for (i = 0; i < link.length(); i++) {
 			int tempIndex = link.indexOf('/', i);
 			if (tempIndex == -1) break;
 			i = tempIndex+1;
 		}
-		
-		String pid = link.substring(i-1, link.length()-5); 
+
+		String pid = link.substring(i-1, link.length()-5);
 		String matching2 = "[data-pid=" + pid + "]";
-		org.jsoup.nodes.Element selectionArea = doc.select(matching2).first();	
-        if (selectionArea == null) return
-		String price = selectionArea.select(".price").text();
-		price = price.substring(1);
-		try {
-			p.price = Integer.parseInt(price);
-		} catch (NumberFormatException e) {
-			p.price = null;
+		org.jsoup.nodes.Element selectionArea = doc.select(matching2).first();
+		if (selectionArea == null) return
+			String price = selectionArea.select(".price").text();
+		if(price != null && !price.isEmpty()) {
+			price = price.substring(1);
+			try {
+				p.price = Integer.parseInt(price);
+			} catch (NumberFormatException e) {
+				p.price = null;
+			}
+		} else {
+			p.price = null
 		}
+		
+		
 		p.neighborhood = selectionArea.select(".pnr small").text();
 	}
 
-	
+
 	/**
 	 * xmlDocument: XML Document of posts which much already match the query
 	 */
@@ -273,18 +279,18 @@ class Query {
 			p.replyEmail = ""
 			p.link = elem.getElementsByTagName('link').item(0)?.getTextContent()
 			p.title = elem.getElementsByTagName('title').item(0)?.getTextContent()
-            // what I cut out in the line below has useful info, like price and size
-            p.title = p.title?.replaceFirst('\\([^\\)]*?\\)\\Q &#x0024;\\E.*', '').trim()
+			// what I cut out in the line below has useful info, like price and size
+			p.title = p.title?.replaceFirst('\\([^\\)]*?\\)\\Q &#x0024;\\E.*', '').trim()
 			StringBuilder dateSB =
-				new StringBuilder(
-				elem.getElementsByTagName('dc:date').item(0)?.getTextContent())
+					new StringBuilder(
+					elem.getElementsByTagName('dc:date').item(0)?.getTextContent())
 			if (dateSB != null) {
 				// the last colon, in the time zone, needs to be removed for parsing
 				int lastColonIndex = dateSB.lastIndexOf(':')
 				if (lastColonIndex == -1) continue;
 				dateSB.deleteCharAt(lastColonIndex)
 				SimpleDateFormat sdf =
-					new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssz")
+						new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ssz")
 				p.date = Calendar.getInstance()
 				p.date.setTime(sdf.parse(dateSB.toString()))
 			}

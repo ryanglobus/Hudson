@@ -48,10 +48,10 @@ if (typeof(initialNeighborhoods) === 'undefined') {
 				<div class="col-sm-2">
 	                <label class="control-label" for="${checkbox[0]}">${checkbox[1]}</label> <br />
 					<% if (checkbox[1] == 'Receive Notifications:') { %>
-						<span class="glyphicon glyphicon-question-sign" data-toggle="tooltip" data-placement="bottom" title="Select to recieve notifications"></span>
+						<span class="glyphicon glyphicon-question-sign" data-toggle="tooltip" data-placement="right" title="Select to recieve notifications"></span>
 	                <% } %>
 					<% if (checkbox[1] == 'Auto-Reply:') { %>
-						<span class="glyphicon glyphicon-question-sign" data-toggle="tooltip" data-placement="bottom" title="Select to have Hudson automatically reply to new posts"></span>
+						<span class="glyphicon glyphicon-question-sign" data-toggle="tooltip" data-placement="right" title="Select to have Hudson automatically reply to new posts"></span>
 					<% } %>
 				</div>
 				<div class="col-sm-2">

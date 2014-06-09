@@ -47,7 +47,7 @@ class ProfileController {
 			return
 		}
 
-		if(params.minRent != "" && params.maxrent != "") {
+		if(params.minrent != "" && params.maxrent != "" && params.minrent != null && params.maxrent != null) {
 			if(params.minrent.toInteger() > params.maxrent.toInteger()){
 				flash.message = "Min rent cannot be greater than max rent!"
 				redirect(action: 'index')
@@ -240,7 +240,7 @@ class ProfileController {
 			return
 		}
 
-		if(params.minRent != "" && params.maxrent != "") {
+		if(params.minrent != "" && params.maxrent != "" && params.minrent != null && params.maxrent != null) {
 			if(params.minrent.toInteger() > params.maxrent.toInteger()){
 				flash.message = "Min rent cannot be greater than max rent!"
 				redirect(action: 'settings')

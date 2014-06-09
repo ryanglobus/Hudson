@@ -124,8 +124,9 @@
 		</div>
 		<div class="btn-group">
 			<%
+				def sortParamUpper = ""
                 if (sortParam != null) {
-    				def sortParamUpper = sortParam.substring(0, 1).toUpperCase() + sortParam.substring(1);
+    				sortParamUpper = sortParam.substring(0, 1).toUpperCase() + sortParam.substring(1);
     				if(sortParam == "priceDesc")
     					sortParamUpper = "Price High To Low"
     				if(sortParam == "priceAsc")
@@ -231,12 +232,12 @@
 									</g:else>
 									<g:if test="${post.responseSent == true}">
 										<td>
-											<button class="btn btn-success btn-small response" id="${post.id}" data-toggle="tooltip" data-placement="top" title="Click here to keep track of what posts you have responded to!"Click here once you've responded to this post to keep track of what you've already responded to!"><span class="glyphicon glyphicon-ok"></span> Yes</button>
+											<button class="btn btn-success btn-small response" id="${post.id}"><span class="glyphicon glyphicon-ok"></span> Yes</button>
 										</td>
 									</g:if>
 									<g:else>
 										<td>			
-											<button class="btn btn-danger btn-small response" id="${post.id}" data-toggle="tooltip" data-placement="top" title="Click here once you've responded to this post to keep track of what you've already responded to!"><span class="glyphicon glyphicon-remove"></span> No</button>
+											<button class="btn btn-danger btn-small response" id="${post.id}"><span class="glyphicon glyphicon-remove"></span> No</button>
 										</td>
 									</g:else>
 									<g:if test="${post.favorite == false}">
