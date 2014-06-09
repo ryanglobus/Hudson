@@ -158,10 +158,10 @@
   			</ul>
 		</div>
 		
-		<button type="submit" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span> Delete Selected Posts</button>
+		<button type="submit" style="float:right" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span> Delete Selected Posts</button>
 		
 		<g:if test="${favorites == false}">
-			<g:link class ="btn btn-custom" action="newResults" params="[queryName: queryTitleTemp, favorites: true, sortParam:sortParam, needsPhoto:needsPhoto]"><span class="glyphicon glyphicon-star"></span> View Favorites</g:link>
+			<g:link class ="btn btn-custom" style = "float:right; margin-right:5px"action="newResults" params="[queryName: queryTitleTemp, favorites: true, sortParam:sortParam, needsPhoto:needsPhoto]"><span class="glyphicon glyphicon-star"></span> View Favorites</g:link>
 		</g:if>
 		<g:else>
 			<g:link class ="btn btn-primary" action="newResults" params="[queryName: queryTitleTemp, favorites: false, sortParam:sortParam, needsPhoto:needsPhoto]">View All Posts</g:link>
@@ -187,8 +187,8 @@
 				<% queryNum++ %>
   						<!-- Default panel contents -->
   						<div class="panel-heading"><h3>Results For ${postList.key}   
-  						<g:link class ="btn btn-danger" action="deleteQuery" params="[queryName: postList.key, favorites: favorites, sortParam:sortParam, needsPhoto:needsPhoto]"><span class="glyphicon glyphicon-trash"></span> Delete Query</g:link>
-  						<g:link class="btn btn-success" action="settings" ><span class="glyphicon glyphicon-wrench"></span> Edit Query</g:link>
+  						<g:link class ="btn btn-danger" style="float:right" action="deleteQuery" params="[queryName: postList.key, favorites: favorites, sortParam:sortParam, needsPhoto:needsPhoto]"><span class="glyphicon glyphicon-trash"></span> Delete Query</g:link>
+  						<g:link class="btn btn-success" style="float:right; margin-right:5px" action="settings" ><span class="glyphicon glyphicon-wrench"></span> Edit Query</g:link>
   						</h3></div>
   						<!-- Table -->
   						<table class="table table-striped table-hover">
@@ -205,14 +205,14 @@
 								<tr>
 									<td><input type="checkbox" name="delete" value="${post.id}"></td>
 									<td>${post.date.get(Calendar.MONTH) + 1}/${post.date.get(Calendar.DAY_OF_MONTH)}/${post.date.get(Calendar.YEAR)}</td>
-									<td>${post.price}</td>
+									<td>$${post.price}</td>
 									<td><a href="${post.link}" target="_blank">${post.title}</a></td>
 									<g:if test="${post.photoLink != null }">
 										<td>
 												<button data-modal-id="myModal${post.id}" type="button" class="btn btn-default btn-small photo-button" role="button" data-toggle="modal"><span class="glyphicon glyphicon-camera"></span></button>
 												<div class="modal fade" id="myModal${post.id}" tabindex="-1" role="dialog" aria-labelledby="loginDlgLabel" aria-hidden="true">
 													<div class="modal-dialog">
-														<div class="modal-content">
+														<div class="modal-content modal-sm">
 											    			<img src = "${post.photoLink}" alt="No image">
 											    	</div>
 											    	</div>

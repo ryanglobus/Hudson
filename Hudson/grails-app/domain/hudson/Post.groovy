@@ -16,7 +16,7 @@ class Post {
 	Double longitude;
 	Double latitude;
 	String photoLink;
-	String price;
+	Integer price;
 	String neighborhood;
 
 	

@@ -53,7 +53,7 @@
 							<li><g:link controller="home" action="index">Log In</g:link></li>
 						<% } else { %>
 							<li class="dropdown">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown">Hi, ${user.firstName}<b class="caret"></b></a>
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown">Hi, ${user.firstName} <b class="caret"></b></a>
 							<ul class="dropdown-menu">
 								<li><g:link controller="profile" action="settings">Profile Settings</g:link></li>
 								<li><g:link controller="home" action="logout">Log Out</g:link></li>
