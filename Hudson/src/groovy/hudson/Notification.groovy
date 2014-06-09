@@ -105,12 +105,9 @@ class Notification {
 		message.setReplyTo([new InternetAddress(replyEmail)].toArray(new Address[1]));
 		// Set Subject: header field
 		message.setSubject(subject);
-			
-		// Now set the actual message
-		message.setText(body);
-
+		
+		message.setContent(body, "text/html");
 		Transport.send(message);
-
 	}
 	 
 	public void enqueue() {

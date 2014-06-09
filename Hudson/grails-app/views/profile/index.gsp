@@ -23,6 +23,7 @@
 			<div class="tab-content">
 				<g:render template="/shared/queryFormTemplate" model="['isNew': true, 'query': new Query()]" />
 			</div>
+			<br><br>
 		</div>
 	</body>	
 </html>

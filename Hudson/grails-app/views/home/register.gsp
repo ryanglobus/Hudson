@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html>
 	<head>
-		<meta name="layout" content="main"/>
+		<meta name="layout" content="mainRegister"/>
 		<title>Register</title>
 	</head>
 	
 	<body>
 		${flash.message}
 		<h2 class="text-center">Register an Account</h2>
+		<br>
 		<g:form class="form-horizontal" action="newusersession" useToken="true" role="form">
 			<% def fields = [['firstName', 'First Name', 'text'],
 							 ['lastName', 'Last Name', 'text'],
@@ -50,10 +51,11 @@
 				</div>
 			</div>
 			<div class="form-group">
-				<div class="col-sm-offset-5 col-sm-4">
+				<div style="text-align:center">
 					<g:field class="btn btn-default" name="submit" type="submit" value="Submit"/>
 				</div>
 			</div>
+			
 		</g:form>
 	</body>
 </html>

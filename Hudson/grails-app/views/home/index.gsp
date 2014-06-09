@@ -2,12 +2,12 @@
 <html>
 	
 	<head>
-		<meta name="layout" content="main"/>
+		<meta name="layout" content="mainHome"/>
 		<title>Login</title>
 	</head>
 	
 	<body>
-		<div id="carousel" class="carousel slide" data-ride="carousel">
+		<div id="carousel" class="carousel slide" data-ride="carousel" style="width:100%">
   			<!-- Indicators -->
   			<ol class="carousel-indicators">
     			<li data-target="#carousel" data-slide-to="0" class="active"></li>
@@ -51,35 +51,36 @@
 		
 	
 		${flash.message}
+
 		
 		<h2 class="text-center">Log In</h2>
 
 		<g:form class="form-horizontal" controller="home" action = "login" useToken="true" role="form">
 			<%-- TODO: useToken="true" on ALL forms to prevent CSRF AND in controllers --%>
 			<div class="form-group">
-				<label for="username" class="col-sm-offset-3 col-sm-2 control-label">Email:</label>
-				<div class="col-sm-3">
-					<g:field class="form-control" type= "email" name= "username" required="true" placeholder="Email"/>
+				<div class="col-sm-4 col-md-offset-4">
+					<g:field class="form-control" type= "email" name= "username" required="true" placeholder="Email" style="background-color: #fff !important"/>
 				</div>
 			</div>
 			<div class="form-group">
-				<label for="password" class="col-sm-offset-3 col-sm-2 control-label">Password:</label>
-				<div class="col-sm-3">
-					<g:field class="form-control" type= "password" name= "password" required="true" placeholder="Password"/>
+				<div class="col-sm-4 col-md-offset-4">
+					<g:field class="form-control" type= "password" name= "password" required="true" placeholder="Password" style="background-color: #fff !important"/>
 				</div>
 			</div>
 			<div class="form-group">
-				<div class="col-sm-offset-5 col-sm-4">
+				<div style="text-align:center">
 					<g:field class="btn btn-default" name="submit" type= "submit" value="Login"/>
 				</div>
 			</div>
 		</g:form>
+		
+		<hr>
 
 		<p class="text-center">
-			<g:link action= "register">Don't have an account? Register for Hudson!</g:link>
+			<g:link action= "register" style="color: #999">Don't have an account? Click here to register!</g:link>
 		</p>
 		<p class="text-center">
-			<g:link action ="forgotPassword">Forgot password? Click here to reset</g:link>
+			<g:link action ="forgotPassword" style="color: #999">Forgot password? Reset here</g:link>
 		</p>
 			
 	</body>

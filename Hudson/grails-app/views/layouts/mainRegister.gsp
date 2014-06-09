@@ -19,7 +19,7 @@
 		<link rel="stylesheet" href="${resource(dir: 'css', file: 'main.css')}" type="text/css">
 		<link rel="stylesheet" href="${resource(dir: 'css', file: 'mobile.css')}" type="text/css">
 		<script src="${resource(dir: 'js', file: 'jquery-2.1.0.min.js')}"></script>
-		<script src="${resource(dir: 'bootstrap-3.1.1-dist/js', file: 'bootstrap.min.js')}"></script> 
+		<script src="${resource(dir: 'bootstrap-3.1.1-dist/js', file: 'bootstrap.min.js')}"></script>
 		<g:layoutHead/>
 		<g:javascript library="application"/>		
 		<r:layoutResources />
@@ -36,31 +36,6 @@
 				    	<span class="icon-bar"></span>
 				     </button>
 					<g:link class="navbar-brand" uri="/">Hudson</g:link>
-				</div>
-				<div class="collapse navbar-collapse" id="main-navbar-body">
-					<% def user = User.findById(session["userid"]) %>
-					<ul class="nav navbar-nav">
-					</ul>
-					<ul class="nav navbar-nav navbar-left">
-						<li><g:link controller="home" action="about">About</g:link></li>
-						<%if (user != null) { %>
-							<li><g:link controller="profile" action="index">New Search</g:link></li>
-							<li><g:link controller="profile" action="newResults" params="[queryName: "all", favorites: false, sortParam:"date", needsPhoto:false]">New Posts <span class="badge"><%=session["newPostCount"]%></span></g:link></li>
-						<% } %>
-					</ul>
-					<ul class="nav navbar-nav navbar-right">
-						<% if (user == null) { %>
-							<li><g:link controller="home" action="index">Log In</g:link></li>
-						<% } else { %>
-							<li class="dropdown">
-							<a href="#" class="dropdown-toggle" data-toggle="dropdown">Hi, ${user.firstName}<b class="caret"></b></a>
-							<ul class="dropdown-menu">
-								<li><g:link controller="profile" action="settings">Profile Settings</g:link></li>
-								<li><g:link controller="home" action="logout">Log Out</g:link></li>
-							</ul>
-							</li>
-						<% } %>
-					</ul>
 				</div>
 			</div>
 		</nav>

@@ -187,6 +187,7 @@ class User {
 	}
 
 	void notifyUser() {
+		ArrayList<String> titlesToSend = new ArrayList<String>();
 		ArrayList<String> linksToSend = new ArrayList<String>();
 		for (Query nextQuery : this.queries) {
 			if (!nextQuery.notify) continue;
@@ -194,6 +195,7 @@ class User {
 				if (nextPost.isNew) {
 					nextPost.isNew = false;
 					linksToSend.add(nextPost.link);
+					titlesToSend.add(nextPost.title);
 					if (nextPost.replyEmail.isEmpty() && nextQuery.instantReply) {
 						String email = getReplyEmail(nextPost.link);
 						nextPost.replyEmail = email;
@@ -214,16 +216,23 @@ class User {
 			}
 		}
 
-		String allLinks = "";
+		if (linksToSend.size() == 0) return;
+		
+		String allLinks = "<p><ol>";
 		boolean isFirst = true;
+		int index = 0;
 		for (String nextLink : linksToSend) {
 			if (!isFirst) allLinks += "\n ";
 			if (isFirst) isFirst = false;
-			allLinks += nextLink;
+			allLinks += "<li><a href = \'" + nextLink + "\'>" + titlesToSend.getAt(index) + "</a></li><br>";
+			index++;
 		}
+		allLinks += "</ol></p>";
 
-		String messageBody = "Hey " + this.firstName + ", \nCheck out these new Craigslist listings " +
-				" that match your criteria: \n" + allLinks;
+		String messageBody = "<p>Hey " + this.firstName + ", <br><br>Check out these new Craigslist listings " +
+				" that match your criteria: </p>" + allLinks;
+				
+		String phoneMessageBody = "We found new listings that match your criteria! Check them out on hudsonalerts.com";
 
 		if (!allLinks.isEmpty()) {
 			if (!this.email.isEmpty()) {
@@ -231,14 +240,13 @@ class User {
 				n.enqueue();
 			}
 				//sendNotification(this.email, messageBody, false);
-			if (this.phone != null && !this.phone.isEmpty() && Environment.current.equals(Environment.PRODUCTION)) {
+			if (this.phone != null && !this.phone.isEmpty()) { 
 				String newPhoneEmail = phoneEmail(this.phone);
-				Notification n = new Notification(newPhoneEmail, newPhoneEmail, messageBody, "Hudson: New Posts!");
+				Notification n = new Notification(newPhoneEmail, newPhoneEmail, phoneMessageBody, "Hudson: New Posts!");
 				n.enqueue();
 				//sendNotification(newPhoneEmail, messageBody, false);
 			}
 		}
-
 	}
 }
 
