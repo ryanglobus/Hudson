@@ -225,7 +225,7 @@ class Query {
 		String matching2 = "[data-pid=" + pid + "]";
 		org.jsoup.nodes.Element selectionArea = doc.select(matching2).first();	
         if (selectionArea == null) return
-		p.price = selectionArea.select(".price").text();	
+		p.price = selectionArea.select(".price").text();
 		p.neighborhood = selectionArea.select(".pnr small").text();
 	}
 
@@ -265,9 +265,9 @@ class Query {
 			}
 			// list all fields to be validated
 			if (p.validate(['link', 'title', 'date'])) {
-				getLatAndLong(p, p.link);
 				String prefix = "http://sfbay.craigslist.org";
 				addPriceAndNeighborhood(doc, p, p.link.substring(prefix.length(), p.link.length()));
+				getLatAndLong(p, p.link);
 				posts.add(p);
 			}
 		}

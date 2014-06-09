@@ -33,15 +33,16 @@ def titlize = { String str ->
 		<g:if test="${flash.invalidToken }">
 			Invalid form token!
 		</g:if>
-		<div class="col-sm-offset-3 col-sm-6" id="query-tabs">
-			<h2>Create a Query</h2>
+		<div class="col-sm-offset-2 col-sm-8" id="query-tabs">
+			<h2 style="text-align:center">Create a Query</h2>
+			<br>
 			<div class="tab-content">
 					<g:form useToken="true" class="query-form form-horizontal" action = "newquery" role="form" id="queryForm">
 
 						<div class="category">
 							<h4>Location</h4>
 							<div class="form-group">
-								<label for="region" class="col-sm-3 control-label">Region:</label>
+								<label for="region" class="col-sm-2 control-label">Region:</label>
 								<div class="col-sm-9">
 									<select class="form-control col-sm-9" name="region">
 										<% Region region = Region.sfbay() %>
@@ -50,7 +51,7 @@ def titlize = { String str ->
 								</div>
 							</div>
 							<div class="form-group">
-								<label for="city" class="col-sm-3 control-label">City:</label>
+								<label for="city" class="col-sm-2 control-label">City:</label>
 								<div class="col-sm-9">
 									<select class="form-control" name="city" id="city">
 										<option value="">All cities</option>
@@ -61,7 +62,7 @@ def titlize = { String str ->
 								</div>
 							</div>
 							<div class="form-group">
-								<label for="neighborhoods" class="col-sm-3 control-label">Neighborhood(s):</label>
+								<label for="neighborhoods" class="col-sm-2 control-label">Neighborhoods:</label>
 								<div class="col-sm-9">
 									<select class="form-control multiselect" name="neighborhoods" id="neighborhoods" multiple disabled>
 									</select>
@@ -69,16 +70,17 @@ def titlize = { String str ->
 							</div>
 						</div>
 
+						<br>
 						<div class="category">
 							<h4>Housing Preferences</h4>
 							<div class="form-group">
-								<label for="numRooms" class="col-sm-3 control-label"># Bedrooms:</label>
+								<label for="numRooms" class="col-sm-2 control-label"># Bedrooms:</label>
 								<div class="col-sm-9"> 
 									<g:field type="number" class="form-control" name="numRooms" placeholder="# BRs" />
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="control-label col-sm-3">Rent:</label>
+								<label class="control-label col-sm-2">Rent:</label>
 								<div class="col-sm-9">
 									<label for="minrent" class="sr-only control-label">Minimum:</label>
 									<g:field type="number" class="form-control col-sm-3" name="minrent" placeholder="Minimum" />
@@ -88,7 +90,7 @@ def titlize = { String str ->
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="control-label col-sm-3" for="type">Type:</label>
+								<label class="control-label col-sm-2" for="type">Type:</label>
 								<div class="col-sm-9">
 									<select class="form-control" name = "type" id="type">
 										<option value = "ANY">Any Housing Type</option>
@@ -108,7 +110,7 @@ def titlize = { String str ->
 								</div>
 							</div>
 							<div class="form-group">
-								<label class="control-label col-sm-3">Pets?</label>
+								<label class="control-label col-sm-2">Pets?</label>
 								<div class="col-sm-9">
 									<% def checkboxes = [['cat', 'Cats'],
 												 		['dog', 'Dogs']] %>
@@ -119,17 +121,18 @@ def titlize = { String str ->
 								</div>
 							</div>
 							<div class="form-group">
-								<label for="searchText" class="col-sm-3 control-label">Keywords:</label>
+								<label for="searchText" class="col-sm-2 control-label">Keywords:</label>
 								<div class="col-sm-9">
 									<g:field type="text" name="searchText" class="form-control" placeholder="Search" />
 								</div>
 							</div>
 						</div>
 
+						<br>
 						<div class="category">
 							<h4 class="center-block">General</h4>
 							<div class="form-group">
-								<label for="queryName" class="control-label col-sm-3">Query Name:</label>
+								<label for="queryName" class="control-label col-sm-2">Query Name:</label>
 								<div class="col-sm-9">
 									<g:field type="text" name="queryName" class="form-control" placeholder="Name" />
 								</div>
@@ -151,7 +154,9 @@ def titlize = { String str ->
 						<input class="btn btn-primary center-block" type= "submit" value="Create Query"/>
 					</g:form>
 				<!-- </div> -->
+				<br>
 			</div>
+			<br><br>
 		</div>
 	</body>	
 </html>

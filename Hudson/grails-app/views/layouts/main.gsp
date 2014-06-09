@@ -19,13 +19,13 @@
 		<link rel="stylesheet" href="${resource(dir: 'css', file: 'main.css')}" type="text/css">
 		<link rel="stylesheet" href="${resource(dir: 'css', file: 'mobile.css')}" type="text/css">
 		<script src="${resource(dir: 'js', file: 'jquery-2.1.0.min.js')}"></script>
-		<script src="${resource(dir: 'bootstrap-3.1.1-dist/js', file: 'bootstrap.min.js')}"></script>
+		<script src="${resource(dir: 'bootstrap-3.1.1-dist/js', file: 'bootstrap.min.js')}"></script> 
 		<g:layoutHead/>
 		<g:javascript library="application"/>		
 		<r:layoutResources />
 	</head>
 	<body>
-		<nav class="navbar navbar-inverse" role="navigation">
+		<nav class="navbar navbar-inverse" role="navigation" style="border-radius:0px">
 			<div class="container-fluid">
 				<div class="navbar-header">
 					<button type="button" class="navbar-toggle"
@@ -51,9 +51,13 @@
 						<% if (user == null) { %>
 							<li><g:link controller="home" action="index">Log In</g:link></li>
 						<% } else { %>
-							<li><p class="navbar-text">Hi, ${user.firstName}</p></li>
-							<li><g:link controller="home" action="logout">Log Out</g:link></li>
-							<li><g:link controller="profile" action="settings">Profile Settings</g:link></li>
+							<li class="dropdown">
+							<a href="#" class="dropdown-toggle" data-toggle="dropdown">Hi, ${user.firstName}<b class="caret"></b></a>
+							<ul class="dropdown-menu">
+								<li><g:link controller="profile" action="settings">Profile Settings</g:link></li>
+								<li><g:link controller="home" action="logout">Log Out</g:link></li>
+							</ul>
+							</li>
 						<% } %>
 					</ul>
 				</div>

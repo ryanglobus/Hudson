@@ -5,6 +5,15 @@
 		<meta name="layout" content="main"/>
 		<link rel="stylesheet" href="${resource(dir: 'css', file: 'profile.css')}", type="text/css">
 		<script src="${resource(dir: 'js', file: 'resultsPage.js')}"></script>
+		<script>
+		jQuery(function() {
+			var $ = jQuery
+
+			$('.photo-button').click(function(event) {
+				$('#' + $(this).attr('data-modal-id')).modal('show')
+			})
+		})
+		</script>
 		<g:if test="${favorites == false}">
 			<title>New Results</title>
 		</g:if>
@@ -17,7 +26,7 @@
 		<g:if test="${flash.message != null && !flash.message.isEmpty()}">
 			<h5 class="error">${flash.message}</h5>
 		</g:if>
-		<div id="map-canvas" style="width: 80%; max-width:1150px; height: 43%; position: absolute; margin-top: 143px"></div>
+		<div id="map-canvas" style="width: 100%; max-width:1138px; height: 38%; position: absolute; margin-top: 120px"></div>
 		<script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAH9FBsCMDrKGcOluS-iFLpymbNT-u0go4&sensor=flase"></script>	
 		<script type="text/javascript">
 		
@@ -73,7 +82,7 @@
 				map.fitBounds(bounds);		
       		}
       		google.maps.event.addDomListener(window, 'load', initialize);
-    	</script>
+    	</script> 
 		<g:if test="${favorites == false}">
 			<h1>Query Results For ${queryTitle}</h1>
 			
@@ -117,6 +126,7 @@
 					sortParamUpper = "Price Low To High"
 				
 			 %>
+			 
   			<button type="button" class="btn btn-default">Sort By ${sortParamUpper}</button>
   			<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
     			<span class="caret"></span>
@@ -167,7 +177,7 @@
 			<g:each var="postList" in="${results}">		
 			
 				<g:if test="${queryNum == 1}">	
-					<div class="panel panel-default" style="margin-top:400px">
+					<div class="panel panel-default" style="margin-top:250px">
 				</g:if>
 				<g:else>
 					<div class="panel panel-default">
@@ -197,7 +207,14 @@
 									<td><a href="${post.link}" target="_blank">${post.title}</a></td>
 									<g:if test="${post.photoLink != null }">
 										<td>
-											<a class="btn btn-default btn-small" href="${post.photoLink}" target="_blank"><span class="glyphicon glyphicon-camera"></span></a>
+												<button data-modal-id="myModal${post.id}" type="button" class="btn btn-default btn-small photo-button" role="button" data-toggle="modal"><span class="glyphicon glyphicon-camera"></span></button>
+												<div class="modal fade" id="myModal${post.id}" tabindex="-1" role="dialog" aria-labelledby="loginDlgLabel" aria-hidden="true">
+													<div class="modal-dialog">
+														<div class="modal-content">
+											    			<img src = "${post.photoLink}" alt="No image">
+											    	</div>
+											    	</div>
+											    </div>
 										</td>
 									</g:if>
 									<g:else>
