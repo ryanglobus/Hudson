@@ -233,6 +233,21 @@ class ProfileController {
 			redirect(action:'settings')
 			return
 		}
+		
+		if(params.queryName == "") {
+			flash.message = "Woops! You forgot to give your query a name! Please include a name."
+			redirect(action: 'settings')
+			return
+		}
+
+		if(params.minRent != "" && params.maxrent != "") {
+			if(params.minrent.toInteger() > params.maxrent.toInteger()){
+				flash.message = "Min rent cannot be greater than max rent!"
+				redirect(action: 'settings')
+				return
+			}
+		}
+
 
 		//For now let's just make the query and return to settings.
 		setUpQuery(params, false)

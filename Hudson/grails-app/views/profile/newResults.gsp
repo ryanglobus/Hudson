@@ -226,12 +226,12 @@
 									</g:else>
 									<g:if test="${post.responseSent == true}">
 										<td>
-											<button class="btn btn-success btn-small response" id="${post.id}"><span class="glyphicon glyphicon-ok"></span> Yes</button>
+											<button class="btn btn-success btn-small response" id="${post.id}" data-toggle="tooltip" data-placement="top" title="Click here to keep track of what posts you have responded to!"Click here once you've responded to this post to keep track of what you've already responded to!"><span class="glyphicon glyphicon-ok"></span> Yes</button>
 										</td>
 									</g:if>
 									<g:else>
 										<td>			
-											<button class="btn btn-danger btn-small response" id="${post.id}"><span class="glyphicon glyphicon-remove"></span> No</button>
+											<button class="btn btn-danger btn-small response" id="${post.id}" data-toggle="tooltip" data-placement="top" title="Click here once you've responded to this post to keep track of what you've already responded to!"><span class="glyphicon glyphicon-remove"></span> No</button>
 										</td>
 									</g:else>
 									<g:if test="${post.favorite == false}">

@@ -49,7 +49,7 @@ class User {
 
 	static constraints = {
 		email email: true, blank: false
-		phone nullable: true, blank: false
+		phone nullable: true
 		carrier nullable: true
 		passwordHash blank: false
 		salt blank: false
