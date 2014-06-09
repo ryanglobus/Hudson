@@ -1,8 +1,15 @@
-<!DOCTYPE html>
+	<!DOCTYPE html>
 <html>
 	<head>
 		<meta name="layout" content="mainRegister"/>
 		<title>Register</title>
+		<script>
+		jQuery(function() {
+			var $ = jQuery
+
+			$('[data-toggle=tooltip]').tooltip()
+		})
+		</script>
 	</head>
 	
 	<body>
@@ -17,9 +24,11 @@
 							 ['password', 'Password', 'password'],
 							 ['confirmPassword', 'Confirm Password', 'password']] %>
 			<% for (def field : fields) { %>
+			
 			<div class="form-group">
 				<%if (field[0] == "phone") { %>
 					<label for="${field[0]}" class="col-sm-offset-3 col-sm-2 control-label">${field[1]} (Optional):</label>
+					<span class="glyphicon glyphicon-question-sign" data-toggle="tooltip" data-placement="top" title="Include your phone number to receive SMS notifications"></span>
 				<% } else { %>
 					<label for="${field[0]}" class="col-sm-offset-3 col-sm-2 control-label">${field[1]}</label>
 				<% } %>

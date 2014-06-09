@@ -23,6 +23,11 @@ def titlize = { String str ->
 <script>
 if (typeof(initialNeighborhoods) === 'undefined') {
     initialNeighborhoods = {}
+    jQuery(function() {
+    	var $ = jQuery
+
+    	$('[data-toggle=tooltip]').tooltip()
+    })
 } 
 </script>
 
@@ -36,12 +41,20 @@ if (typeof(initialNeighborhoods) === 'undefined') {
             </div>
         </div>
         
-        <% checkboxes = [['notify', 'Receive Notifications?', isNew || query.notify],
-                        ['instantReply', 'Auto-Reply', query.instantReply]] %>
+        <% checkboxes = [['notify', 'Receive Notifications:', isNew || query.notify],
+                        ['instantReply', 'Auto-Reply:', query.instantReply]] %>
         <% for (def checkbox : checkboxes) { %>
             <div class="form-group">
-                <label class="control-label col-sm-2" for="${checkbox[0]}">${checkbox[1]}</label>
-                <div class="col-sm-2">
+				<div class="col-sm-2">
+	                <label class="control-label" for="${checkbox[0]}">${checkbox[1]}</label> <br />
+					<% if (checkbox[1] == 'Receive Notifications:') { %>
+						<span class="glyphicon glyphicon-question-sign" data-toggle="tooltip" data-placement="bottom" title="Select to recieve notifications"></span>
+	                <% } %>
+					<% if (checkbox[1] == 'Auto-Reply:') { %>
+						<span class="glyphicon glyphicon-question-sign" data-toggle="tooltip" data-placement="bottom" title="Select to have Hudson automatically reply to new posts"></span>
+					<% } %>
+				</div>
+				<div class="col-sm-2">
                     <g:checkBox name="${checkbox[0]}" class="form-control" value="${checkbox[2]}" />
                 </div>
             </div>
