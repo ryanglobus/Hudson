@@ -47,6 +47,25 @@ class Query {
 			return value;
 		}
 
+        public String userFriendlyName() {
+            switch (this) {
+                case ANY: return 'Any Housing Type'
+                case APARTMENT: return 'Apartment'
+                case CONDO: return 'Condo'
+                case COTTAGE_CABIN: 'Cottage/Cabin'
+                case DUPLEX: return 'Duplex'
+                case FLAT: return 'Flat'
+                case HOUSE: return 'House'
+                case IN_LAW: return 'In-Law'
+                case LOFT: return 'Loft'
+                case TOWNHOUSE: return 'Townhouse'
+                case MANUFACTURED: return 'Manufactured'
+                case ASSISTED_LIVING: return 'Assisted Living'
+                case LAND: return 'Land'
+                default: return null
+            }
+        }
+
 		private final int value;
 	}
 	

@@ -84,7 +84,7 @@
       		google.maps.event.addDomListener(window, 'load', initialize);
     	</script> 
 		<g:if test="${favorites == false}">
-			<h1>Query Results For ${queryTitle}</h1>
+			<h1>Posts For ${queryTitle}</h1>
 			
 		</g:if>
 		<g:else>
@@ -119,11 +119,13 @@
 		</div>
 		<div class="btn-group">
 			<%
-				def sortParamUpper = sortParam.substring(0, 1).toUpperCase() + sortParam.substring(1);
-				if(sortParam == "priceDesc")
-					sortParamUpper = "Price High To Low"
-				if(sortParam == "priceAsc")
-					sortParamUpper = "Price Low To High"
+                if (sortParam != null) {
+    				def sortParamUpper = sortParam.substring(0, 1).toUpperCase() + sortParam.substring(1);
+    				if(sortParam == "priceDesc")
+    					sortParamUpper = "Price High To Low"
+    				if(sortParam == "priceAsc")
+    					sortParamUpper = "Price Low To High"
+                }
 				
 			 %>
 			 
@@ -159,10 +161,10 @@
 		<button type="submit" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span> Delete Selected Posts</button>
 		
 		<g:if test="${favorites == false}">
-			<a class="btn btn-custom" href="/Hudson/profile/newResults?queryName=${queryTitleTemp}&favorites=true&sortParam=${sortParam}&needsPhoto=${needsPhoto}"><span class="glyphicon glyphicon-star"></span> View Favorites</a>
+			<g:link class ="btn btn-custom" action="newResults" params="[queryName: queryTitleTemp, favorites: true, sortParam:sortParam, needsPhoto:needsPhoto]"><span class="glyphicon glyphicon-star"></span> View Favorites</g:link>
 		</g:if>
 		<g:else>
-			<a class="btn btn-primary" href="/Hudson/profile/newResults?queryName=${queryTitleTemp}&favorites=false&sortParam=${sortParam}&needsPhoto=${needsPhoto}">View All Posts</a>
+			<g:link class ="btn btn-primary" action="newResults" params="[queryName: queryTitleTemp, favorites: false, sortParam:sortParam, needsPhoto:needsPhoto]">View All Posts</g:link>
 		</g:else>
 				
 		<br>
@@ -170,7 +172,7 @@
 		<br>
 		<g:if test="${results.size() == 0}">
 			<br>
-			<p>Looks like you don't have any new posts at this time, but we'll keep looking!</p>
+			<h2 style="margin-top:400px">Looks like you don't have any new posts at this time, but we'll keep looking!</h2>
 		</g:if>
 		<g:else>
 		<% def queryNum = 1 %>
@@ -185,8 +187,8 @@
 				<% queryNum++ %>
   						<!-- Default panel contents -->
   						<div class="panel-heading"><h3>Results For ${postList.key}   
-  						<a href="/Hudson/profile/deleteQuery?queryName=${postList.key}&favorites=${favorites}&sortParam=${sortParam}&needsPhoto=${needsPhoto}" class="btn btn-danger"><span class="glyphicon glyphicon-trash"></span> Delete Query</a>
-  						<a class="btn btn-success" href="/Hudson/profile/settings" ><span class="glyphicon glyphicon-wrench"></span> Edit Query</a>
+  						<g:link class ="btn btn-danger" action="deleteQuery" params="[queryName: postList.key, favorites: favorites, sortParam:sortParam, needsPhoto:needsPhoto]"><span class="glyphicon glyphicon-trash"></span> Delete Query</g:link>
+  						<g:link class="btn btn-success" action="settings" ><span class="glyphicon glyphicon-wrench"></span> Edit Query</g:link>
   						</h3></div>
   						<!-- Table -->
   						<table class="table table-striped table-hover">

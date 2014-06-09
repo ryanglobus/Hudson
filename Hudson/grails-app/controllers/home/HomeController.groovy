@@ -14,7 +14,12 @@ class HomeController {
 	private static final Random RANDOM = new SecureRandom();
 	public static final int PASSWORD_LENGTH = 8;
 	
-    def index() {}
+    def index() {
+		if(session["userid"] != null) {
+			redirect(controller: "profile", action: "newResults", params: [queryName: "all", favorites: false, sortParam:"date", needsPhoto:false])
+			return
+		}
+	}
 	
 	
 	//The below if else statement seems like it should be taken out..
